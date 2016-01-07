@@ -47,7 +47,7 @@ module CloudSearch
 			# =========================================
 
 			def search
-				result = CloudSearch::Domain::Base.instances[@searchable_class].client.search request.compile
+				result = searchable_class.cloudsearch.client.search request.compile
 				reset
 				result
 			end
