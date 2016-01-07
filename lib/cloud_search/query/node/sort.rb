@@ -1,24 +1,35 @@
 module CloudSearch
 	module Query
 		module Node
-			class Sort
+			class Sort < Base
 
-				def add(attribute, order = :asc)
-					attributes[attribute.to_sym] = order
+				attr_reader :sorting_attributes
+
+				def initialize(context)
+					@sorting_attributes = deserialize context[:sort]
+					super
 				end
 
-				def run
-					{ sort: serialized_attributes }
+				def [](attribute)
+					sorting_attributes[attribute.to_sym]
+				end
+
+				def []=(attribute, order = nil)
+					sorting_attributes[attribute.to_sym] = order.to_sym if order
+				end
+
+				def compile
+					(result = serialize(sorting_attributes)).empty? ? {} : { sort: result }
 				end
 
 				private
 
-				def serialized_attributes
-					attributes.to_a.map { |array| array.join(' ') }.join(',')
+				def serialize(hash = {})
+					hash.to_a.map { |i| i.join(' ') }.join(',')
 				end
 
-				def attributes
-					@attributes ||= {}
+				def deserialize(string)
+					Hash[*((string || "").split(',').map { |i| i.strip.split(' ').map(&:to_sym) }.flatten)]
 				end
 
 			end

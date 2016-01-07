@@ -2,20 +2,24 @@ module CloudSearch
 	module Query
 		class Builder
 
-			def initialize(client, searchable_class)
-				@client = client
+			def initialize(context, searchable_class)
+				@context = context
 				@searchable_class = searchable_class
 			end
 
-			def default_size=(value)
+			def request
+				@request ||= Node::Request.new @context
+			end
 
+			def reset
+				@request = nil
 			end
 
 			# CHAINABLE METHODS
 			# =========================================
 
 			def text(text)
-				request.query.add text
+				request.query.terms << text
 				return self
 			end
 
@@ -29,22 +33,23 @@ module CloudSearch
 				return self
 			end
 
-			def sort(*args)
-				# request.search_options.sort.add
+			def sort(hash = {})
+				hash.each { |key, value| request.sort[key] = value }
+				return self
+			end
+
+			def where(&block)
+				request.filter_query.instance_eval &block
 				return self
 			end
 
 			# ENDING METHODS
 			# =========================================
 
-			def send
-				@client.search request.run
-			end
-
-			# private
-
-			def request
-				@request ||= Node::Request.new
+			def search
+				result = CloudSearch::Domain::Base.instances[@searchable_class].client.search request.compile
+				reset
+				result
 			end
 
 		end

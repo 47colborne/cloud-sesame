@@ -3,7 +3,6 @@ module CloudSearch
 		class Client
 			extend Forwardable
 
-			# delegate #search to aws_client
 			def_delegator :aws_client, :search
 
 			def self.configure

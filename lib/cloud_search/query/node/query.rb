@@ -1,20 +1,25 @@
 module CloudSearch
 	module Query
 		module Node
-			class Query
+			class Query < Base
 
-				def add(text)
-					text_array << text
+				attr_accessor :terms
+
+				def initialize(context)
+					@terms = (context[:query] || "").split(' ')
+					super
 				end
 
-				def run
-					{ query: text_array.join(' ') }
+				def query
+					terms.map!(&:strip).join(' ')
 				end
 
-				private
+				def empty?
+					terms.empty?
+				end
 
-				def text_array
-					@text_array ||= []
+				def compile
+					{ query: query }
 				end
 
 			end
