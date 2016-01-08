@@ -2,7 +2,7 @@ module CloudSearch
   module Query
     module Node
       class Root < Base
-        include ::CloudSearch::Query::Parser
+        include ::CloudSearch::Query::DSL
 
         attr_accessor :child
 

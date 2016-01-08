@@ -1,7 +1,6 @@
 # External Libraries
 # ===============================================
 require 'aws-sdk'
-require 'active_support/concern'
 
 # Internal Libraries
 # ===============================================
@@ -10,7 +9,7 @@ require 'cloud_search/config/credential'
 
 require 'cloud_search/query/error/invalid_format'
 
-require 'cloud_search/query/parser'
+require 'cloud_search/query/dsl'
 require 'cloud_search/query/node/base'
 require 'cloud_search/query/node/root'
 require 'cloud_search/query/node/operator'

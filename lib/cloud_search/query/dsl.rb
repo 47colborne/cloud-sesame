@@ -1,26 +1,29 @@
 module CloudSearch
   module Query
-    module Parser
+    module DSL
 
-      # Alias Method: AND
-      def all(&block)
-        and! &block
-      end
-
-      def and!(&block)
-        attach(node = Node::And.new(context)).instance_eval &block
+      # CLAUSE: AND
+      # =========================================
+      def and(&block)
+        attach(Node::And.new context).instance_eval &block
         return self
       end
 
-      # Alias Method: OR
-      def any(&block)
-        or! &block
-      end
+      alias_method :all, :and
+      alias_method :and!, :and
 
-      def or!(&block)
-        attach(node = Node::Or.new(context)).instance_eval &block
+      # CLAUSE: OR
+      # =========================================
+      def or(&block)
+        attach(Node::Or.new context).instance_eval &block
         return self
       end
+
+      alias_method :any, :or
+      alias_method :or!, :or
+
+      # CLAUSE: LITERAL
+      # =========================================
 
       def literal(field, *values)
         ensure_format(values.size)
@@ -31,9 +34,7 @@ module CloudSearch
       private
 
       def method_missing(name, *args, &block)
-        if (options = context[:fields][name])
-          literal name, *args
-        end
+        literal(name, *args) if (options = context[:fields][name])
       end
 
       def ensure_format(size)

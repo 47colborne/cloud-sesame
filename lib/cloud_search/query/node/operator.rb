@@ -2,7 +2,7 @@ module CloudSearch
   module Query
     module Node
       class Operator < Base
-        include CloudSearch::Query::Parser
+        include CloudSearch::Query::DSL
 
         def children
           @children ||= []
