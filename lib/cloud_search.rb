@@ -36,14 +36,21 @@ require 'cloud_search/domain/context'
 # Public Interface
 # ===============================================
 module CloudSearch
-	extend ActiveSupport::Concern
 
-	included do
+  def self.included(base)
+    base.extend ClassMethods
+  end
 
-		def self.cloudsearch
-			@cloudsearch ||= CloudSearch::Domain::Base.new(self)
-		end
+  module ClassMethods
 
-	end
+    def cloudsearch
+      @cloudsearch ||= CloudSearch::Domain::Base.new self
+    end
+
+    def define_cloudsearch(&block)
+      cloudsearch.instance_eval &block if block_given?
+    end
+
+  end
 
 end

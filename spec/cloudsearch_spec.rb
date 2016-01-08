@@ -18,7 +18,7 @@ describe CloudSearch do
 	class Product
 		include CloudSearch
 
-		cloudsearch.define_search do
+		define_cloudsearch do
 
 			# Product CloudSearch Config
 			config.endpoint = ENV['AWS_ENDPOINT']

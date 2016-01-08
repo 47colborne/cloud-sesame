@@ -21,10 +21,6 @@ module CloudSearch
 				self.class.instances[searchable_class] = self
 			end
 
-			def define_search(&block)
-				instance_eval &block if block_given?
-			end
-
 			def client
 				@client ||= Client.new
 			end
