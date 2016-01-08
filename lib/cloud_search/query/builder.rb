@@ -17,11 +17,25 @@ module CloudSearch
 				@request = nil
 			end
 
+			def inspect
+				"#<CloudSearch::Query::Builder:#{ object_id } #{ request.compile }>"
+			end
+
 			# CHAINABLE METHODS
 			# =========================================
 
-			def text(text)
-				request.query.terms << text
+			def query(string)
+				request.query.query = string
+				return self
+			end
+
+			def terms(*terms)
+				request.query.terms.concat terms
+				return self
+			end
+
+			def exclude_term(*terms)
+				request.query.terms.concat terms.map { |t| "-#{ t }" }
 				return self
 			end
 
@@ -41,16 +55,12 @@ module CloudSearch
 			end
 
 			def and(&block)
-				node = AST::And.new context[:filter_query], &block
-				request.filter_query.root.children << node
-
+				request.filter_query.root.and &block
 				return self
 			end
 
 			def or(&block)
-				node = AST::Or.new context[:filter_query], &block
-				request.filter_query.root.children << node
-
+				request.filter_query.root.or &block
 				return self
 			end
 

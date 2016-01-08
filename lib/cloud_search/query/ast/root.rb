@@ -5,15 +5,21 @@ module CloudSearch
 
         def compile
           if children.size > 1
-            default << children
-            default.compile
+            inject_default_operator(children).compile
           else
             serialize_children
           end
         end
 
         def default
-          @default ||= And.new(context)
+          @default ||= And.new context
+        end
+
+        private
+
+        def inject_default_operator(children)
+          default.children.concat children
+          default
         end
 
       end

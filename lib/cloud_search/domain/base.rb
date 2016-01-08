@@ -7,22 +7,12 @@ module CloudSearch
 
 			def_delegator :client, :config
 
-			def_delegators 	:builder, :page, :size,
-																:sort, :text,
-																:and, :or
-
-			# Instances of CloudSearch::Domain
-			def self.instances
-				@instances ||= {}
-			end
-
-			def self.[](klass)
-				instances[klass]
-			end
+			def_delegators 	:builder, :query, :terms,
+																:page, :size,
+																:sort, :and, :or
 
 			def initialize(searchable_class)
 				@searchable_class = searchable_class
-				self.class.instances[searchable_class] = self
 			end
 
 			def client

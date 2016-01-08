@@ -49,7 +49,7 @@ module CloudSearch
 						compiled.merge!(node.compile || {})
 					end
 
-					convert_to_structured_query(compiled) if query.empty?
+					convert_to_structured_query(compiled) if compiled[:query].empty?
 
 					compiled
 				end

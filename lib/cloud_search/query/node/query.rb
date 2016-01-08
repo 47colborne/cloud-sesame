@@ -3,8 +3,6 @@ module CloudSearch
 		module Node
 			class Query < Abstract
 
-				attr_writer :terms
-
 				def terms
 					@terms ||= (q = context[:query]) ? q.split(' ') : []
 				end
@@ -13,8 +11,8 @@ module CloudSearch
 					terms.map!(&:strip).join(' ')
 				end
 
-				def empty?
-					terms.empty?
+				def query=(string = '')
+					@terms = string.split(' ')
 				end
 
 				def compile

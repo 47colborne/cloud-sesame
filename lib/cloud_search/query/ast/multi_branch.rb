@@ -11,10 +11,6 @@ module CloudSearch
           instance_eval &block if block_given?
         end
 
-        def << (*children)
-          self.children.concat children
-        end
-
         def children
           @children ||= []
         end
