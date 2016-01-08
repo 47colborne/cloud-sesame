@@ -9,7 +9,7 @@ module CloudSearch
 
 			def_delegators 	:builder, :page, :size,
 																:sort, :text,
-																:where
+																:and, :or
 
 			# Instances of CloudSearch::Domain
 			def self.instances

@@ -1,7 +1,7 @@
 module CloudSearch
   module Query
     module Node
-      class Base
+      class Abstract
         attr_reader :context
 
         def initialize(context)

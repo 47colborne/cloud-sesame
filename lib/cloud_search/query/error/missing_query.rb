@@ -1,7 +1,7 @@
 module CloudSearch
   module Query
     module Error
-      class InvalidFormat < Exception
+      class MissingQuery < Exception
       end
     end
   end

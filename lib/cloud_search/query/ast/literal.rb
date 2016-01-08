@@ -1,7 +1,7 @@
 module CloudSearch
   module Query
-    module Node
-      class Literal
+    module AST
+      class Literal < SingleBranch
 
         attr_accessor :field, :value
 

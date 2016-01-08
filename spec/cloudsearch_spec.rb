@@ -86,13 +86,17 @@ describe CloudSearch do
 	# date greater_than a, :inclusive
 
 
-	result = Product.cloudsearch.where {
-		and! {
-			or! { currency 'USD', 'CAD' }
-			or! { price "{10,100}"}
+	result = Product.cloudsearch.and {
+		or! {
+			tags "flash_deal"
+			tags "sales"
 		}
-
+		or! {
+			currency "USD"
+			currency "CAD"
+		}
 	}
+
 	binding.pry
 
 

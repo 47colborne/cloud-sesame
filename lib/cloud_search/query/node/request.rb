@@ -1,7 +1,7 @@
 module CloudSearch
 	module Query
 		module Node
-			class Request < Base
+			class Request < Abstract
 
 				# CHILDREN
 				# =========================================

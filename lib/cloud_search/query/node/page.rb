@@ -1,14 +1,16 @@
 module CloudSearch
 	module Query
 		module Node
-			class Page < Base
+			class Page < Abstract
 
-				attr_accessor :page, :size
+				attr_writer :page, :size
 
-				def initialize(context)
-					@page = context[:page] || 1
-					@size = context[:size] || 10
-					super
+				def page
+					@page ||= (context[:page] || 1)
+				end
+
+				def size
+					@size ||= (context[:size] || 10)
 				end
 
 				def start

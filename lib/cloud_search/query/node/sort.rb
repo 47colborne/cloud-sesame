@@ -1,13 +1,12 @@
 module CloudSearch
 	module Query
 		module Node
-			class Sort < Base
+			class Sort < Abstract
 
 				attr_reader :sorting_attributes
 
-				def initialize(context)
-					@sorting_attributes = deserialize context[:sort]
-					super
+				def sorting_attributes
+					@sorting_attributes ||= deserialize context[:sort]
 				end
 
 				def [](attribute)

@@ -5,7 +5,7 @@ module CloudSearch
       # CLAUSE: AND
       # =========================================
       def and(&block)
-        attach(Node::And.new context).instance_eval &block
+        children << AST::And.new(context, &block)
         return self
       end
 
@@ -15,7 +15,7 @@ module CloudSearch
       # CLAUSE: OR
       # =========================================
       def or(&block)
-        attach(Node::Or.new context).instance_eval &block
+        children << AST::Or.new(context, &block)
         return self
       end
 
@@ -24,10 +24,8 @@ module CloudSearch
 
       # CLAUSE: LITERAL
       # =========================================
-
       def literal(field, *values)
-        ensure_format(values.size)
-        values.each { |value| attach Node::Literal.new(field, value) }
+        values.each { |value| children << AST::Literal.new(field, value) }
         return self
       end
 
@@ -35,15 +33,6 @@ module CloudSearch
 
       def method_missing(name, *args, &block)
         literal(name, *args) if (options = context[:fields][name])
-      end
-
-      def ensure_format(size)
-        raise Error::InvalidFormat if !respond_to?(:children) && size != 1
-      end
-
-      def attach(node)
-        respond_to?(:children) ? self.children << node : self.child = node
-        return node
       end
 
     end

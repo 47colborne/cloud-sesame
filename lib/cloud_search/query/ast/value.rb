@@ -1,7 +1,7 @@
 module CloudSearch
   module Query
-    module Node
-      class Value
+    module AST
+      class Value < Leaf
 
         attr_accessor :value
 

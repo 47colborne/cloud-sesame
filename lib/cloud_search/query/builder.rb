@@ -10,7 +10,7 @@ module CloudSearch
 			end
 
 			def request
-				@request ||= Node::Request.new context
+				@request ||= Node::Request.new context.dup
 			end
 
 			def reset
@@ -40,8 +40,17 @@ module CloudSearch
 				return self
 			end
 
-			def where(&block)
-				request.filter_query.instance_eval &block
+			def and(&block)
+				node = AST::And.new context[:filter_query], &block
+				request.filter_query.root.children << node
+
+				return self
+			end
+
+			def or(&block)
+				node = AST::Or.new context[:filter_query], &block
+				request.filter_query.root.children << node
+
 				return self
 			end
 
@@ -49,7 +58,9 @@ module CloudSearch
 			# =========================================
 
 			def search
-				result = searchable_class.cloudsearch.client.search request.compile
+				compiled = request.compile
+				raise Error::MissingQuery.new("Query can not be empty!") unless compiled[:query] && !compiled[:query].empty?
+				result = searchable_class.cloudsearch.client.search compiled
 				reset
 				result
 			end
