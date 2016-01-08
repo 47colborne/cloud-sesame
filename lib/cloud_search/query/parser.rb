@@ -45,14 +45,6 @@ module CloudSearch
         return node
       end
 
-      def filter_query
-        CloudSearch::Query::Node::FilterQuery
-      end
-
-      def operator_node
-        CloudSearch::Query::Node::Operator
-      end
-
     end
   end
 end

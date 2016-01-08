@@ -2,13 +2,15 @@ module CloudSearch
 	module Query
 		class Builder
 
-			def initialize(context, searchable_class)
-				@context = context
+			attr_accessor :context, :searchable_class
+
+			def initialize(default_context, searchable_class)
+				@context = default_context
 				@searchable_class = searchable_class
 			end
 
 			def request
-				@request ||= Node::Request.new @context
+				@request ||= Node::Request.new context
 			end
 
 			def reset
@@ -47,7 +49,7 @@ module CloudSearch
 			# =========================================
 
 			def search
-				result = CloudSearch::Domain::Base.instances[@searchable_class].client.search request.compile
+				result = searchable_class.cloudsearch.client.search request.compile
 				reset
 				result
 			end

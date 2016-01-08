@@ -11,9 +11,13 @@ module CloudSearch
 																:sort, :text,
 																:where
 
-			# Domain instances using Searchable Class as key
+			# Instances of CloudSearch::Domain
 			def self.instances
 				@instances ||= {}
+			end
+
+			def self.[](klass)
+				instances[klass]
 			end
 
 			def initialize(searchable_class)
