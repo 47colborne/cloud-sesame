@@ -1,15 +1,20 @@
 module CloudSearch
   module Query
     module Node
-      class QueryParser
+      class QueryParser < Abstract
 
-        attr_accessor :type
+        TYPES = %w(simple structured lucene dismax)
 
-        TYPES = [:simple, :structured, :lucene, :dismax]
-        TYPES.each { |type| define_method(type) { self.type = type; self } }
+        attr_writer :type
 
-        def initialize(context)
-          @type = context[:query_parser] || :simple
+        TYPES.each do |type|
+          define_method type do
+            self.type = type; self
+          end
+        end
+
+        def type
+          @type ||= (context[:query_parser] || :simple)
         end
 
         def compile

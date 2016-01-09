@@ -2,7 +2,7 @@ require "spec_helper"
 
 module CloudSearch
   module Query
-    module Node
+    module AST
       describe Literal do
 
         describe '.parse' do

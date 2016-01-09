@@ -5,7 +5,7 @@
 module CloudSearch
   module Query
     module Node
-      class QueryOptions < Base
+      class QueryOptions < Abstract
 
         def compile
           {}

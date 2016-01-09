@@ -1,21 +1,18 @@
 module CloudSearch
 	module Query
 		module Node
-			class Query < Base
+			class Query < Abstract
 
-				attr_accessor :terms
-
-				def initialize(context)
-					@terms = (context[:query] || "").split(' ')
-					super
+				def terms
+					@terms ||= (q = context[:query]) ? q.split(' ') : []
 				end
 
 				def query
 					terms.map!(&:strip).join(' ')
 				end
 
-				def empty?
-					terms.empty?
+				def query=(string = '')
+					@terms = string.split(' ')
 				end
 
 				def compile

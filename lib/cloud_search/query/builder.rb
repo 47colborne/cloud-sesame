@@ -2,24 +2,40 @@ module CloudSearch
 	module Query
 		class Builder
 
-			def initialize(context, searchable_class)
-				@context = context
+			attr_accessor :context, :searchable_class
+
+			def initialize(default_context, searchable_class)
+				@context = default_context
 				@searchable_class = searchable_class
 			end
 
 			def request
-				@request ||= Node::Request.new @context
+				@request ||= Node::Request.new context.dup
 			end
 
 			def reset
 				@request = nil
 			end
 
+			def inspect
+				"#<CloudSearch::Query::Builder:#{ object_id } #{ request.compile }>"
+			end
+
 			# CHAINABLE METHODS
 			# =========================================
 
-			def text(text)
-				request.query.terms << text
+			def query(string)
+				request.query.query = string
+				return self
+			end
+
+			def terms(*terms)
+				request.query.terms.concat terms
+				return self
+			end
+
+			def exclude_term(*terms)
+				request.query.terms.concat terms.map { |t| "-#{ t }" }
 				return self
 			end
 
@@ -38,8 +54,13 @@ module CloudSearch
 				return self
 			end
 
-			def where(&block)
-				request.filter_query.instance_eval &block
+			def and(&block)
+				request.filter_query.root.and &block
+				return self
+			end
+
+			def or(&block)
+				request.filter_query.root.or &block
 				return self
 			end
 
@@ -47,7 +68,9 @@ module CloudSearch
 			# =========================================
 
 			def search
-				result = searchable_class.cloudsearch.client.search request.compile
+				compiled = request.compile
+				raise Error::MissingQuery.new("Query can not be empty!") unless compiled[:query] && !compiled[:query].empty?
+				result = searchable_class.cloudsearch.client.search compiled
 				reset
 				result
 			end
