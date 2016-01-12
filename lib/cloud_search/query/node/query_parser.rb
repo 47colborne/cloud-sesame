@@ -14,7 +14,7 @@ module CloudSearch
         end
 
         def type
-          @type ||= (context[:query_parser] || :simple)
+          @type ||= (context[:query_parser] || :simple).to_s
         end
 
         def compile

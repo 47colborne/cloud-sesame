@@ -3,16 +3,19 @@ module CloudSearch
     module AST
       class Operator < MultiBranch
 
-        def self.operator_symbol(symbol)
+        # Operator Symbol Writer
+        def self.symbol=(symbol)
           @symbol = symbol
         end
 
+        # Operator Symbol Getter
         def self.symbol
           @symbol
         end
 
         def compile
-          "(#{ self.class.symbol  } #{ serialize_children })" unless children.empty?
+          raise Error::MissingOperatorSymbol if self.class.symbol.nil?
+          "(#{ self.class.symbol  } #{ compile_children })" unless children.empty?
         end
 
       end

@@ -7,7 +7,7 @@ module CloudSearch
           if children.size > 1
             inject_default_operator(children).compile
           else
-            serialize_children
+            compile_children
           end
         end
 

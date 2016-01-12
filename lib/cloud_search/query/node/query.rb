@@ -3,6 +3,10 @@ module CloudSearch
 		module Node
 			class Query < Abstract
 
+				def terms=(array)
+					@terms = array
+				end
+
 				def terms
 					@terms ||= (q = context[:query]) ? q.split(' ') : []
 				end

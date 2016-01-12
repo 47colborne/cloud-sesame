@@ -64,8 +64,8 @@ module CloudSearch
             end
           end
           context 'with empty sorting attributes' do
-            it 'should return a hash with empty sort' do
-              expect(node.compile).to eq({ sort: "" })
+            it 'should return an empty hash' do
+              expect(node.compile).to eq({})
             end
           end
         end

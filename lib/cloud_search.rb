@@ -7,6 +7,7 @@ require 'aws-sdk'
 require 'abstract_object'
 require 'cloud_search/config/credential'
 
+require 'cloud_search/query/error/missing_operator_symbol'
 require 'cloud_search/query/error/missing_query'
 
 require 'cloud_search/query/builder'
@@ -26,8 +27,10 @@ require 'cloud_search/query/node/abstract'
 require 'cloud_search/query/node/request'
 require 'cloud_search/query/node/query'
 require 'cloud_search/query/node/query_options'
+require 'cloud_search/query/node/query_options_field'
 require 'cloud_search/query/node/query_parser'
 require 'cloud_search/query/node/filter_query'
+require 'cloud_search/query/node/facet'
 require 'cloud_search/query/node/page'
 require 'cloud_search/query/node/sort'
 

@@ -57,10 +57,10 @@ module CloudSearch
 				private
 
 				def convert_to_structured_query(compiled)
-					swap(compiled, :query, :filter_query).merge!(query_parser.structured.compile)
+					replace(compiled, :query, :filter_query).merge!(query_parser.structured.compile)
 				end
 
-				def swap(hash, key1, key2)
+				def replace(hash, key1, key2)
 					hash[key1] = hash.delete key2
 					hash
 				end

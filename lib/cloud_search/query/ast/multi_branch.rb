@@ -12,10 +12,10 @@ module CloudSearch
         end
 
         def children
-          @children ||= []
+          @children ||= Array.new
         end
 
-        def serialize_children
+        def compile_children
           children.map(&:compile).join(' ')
         end
 

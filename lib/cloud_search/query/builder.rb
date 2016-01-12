@@ -34,7 +34,7 @@ module CloudSearch
 				return self
 			end
 
-			def exclude_term(*terms)
+			def exclude_terms(*terms)
 				request.query.terms.concat terms.map { |t| "-#{ t }" }
 				return self
 			end

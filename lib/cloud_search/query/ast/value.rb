@@ -3,32 +3,33 @@ module CloudSearch
     module AST
       class Value < Leaf
 
-        attr_accessor :value
+        attr_accessor :data
 
-        def initialize(value)
-          @value = value
+        def initialize(data)
+          @data = data
         end
 
         def compile
-          format(value)
+          format(data)
         end
 
         private
 
-        def format(value)
-          range?(value) || digits?(value) ? value : escape(value)
+        def format(data)
+          range?(data) || digits?(data) ? data : escape(data)
         end
 
-        def range?(value)
-          value =~ /^[\[\{].*[\]\}]$/
+        def range?(data)
+          data =~ /^[\[\{].*[\]\}]$/
         end
 
-        def digits?(value)
-          value =~ /^\d+$/
+        def digits?(data)
+          data.to_s =~ /^\d+(.\d+)?$/
         end
 
-        def escape(value = "")
-          "'#{ value.gsub(/\'/) { "\\'" } }'"
+        # "hello" => "'hello'"
+        def escape(data = "")
+          "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
         end
 
       end

@@ -34,13 +34,34 @@ module CloudSearch
 				context[:page, true][:size] = value
 			end
 
-			def fields(*names)
-				options = names[-1].is_a?(Hash) ? names.pop : {}
-				names.each { |name| field name, options }
+			def field(name, options = {})
+				# define filter query fields
+				context[:filter_query, true][:fields, true][name.to_sym] = {}
+
+				# define query options fields
+				define_query_options(name, options[:query]) if options[:query]
+
+				# define facet options
+				define_facet_options(name, options[:facet]) if options[:facet]
 			end
 
-			def field(name, options = {})
-				context[:filter_query, true][:fields, true][name.to_sym] = options
+			def define_query_options(name, query_options)
+				context[:query_options, true][:fields, true][name.to_sym] = format_options(query_options)
+			end
+
+			def define_facet_options(name, facet_options)
+				context[:facet, true][name.to_sym] = format_options(facet_options)
+			end
+
+			def scope(name, proc = nil, &block)
+				proc = block if block_given?
+				context[:filter_query, true][:scope, true][name.to_sym] = proc
+			end
+
+			private
+
+			def format_options(options)
+				options.is_a?(Hash) ? options : {}
 			end
 
 		end
