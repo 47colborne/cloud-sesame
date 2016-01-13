@@ -20,7 +20,7 @@ module CloudSesame
 			private
 
 			def aws_client
-				@aws_client ||= ::Aws::CloudSesameDomain::Client.new config.to_hash
+				@aws_client ||= ::Aws::CloudSearchDomain::Client.new config.to_hash
 			end
 
 		end

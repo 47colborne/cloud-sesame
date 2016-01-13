@@ -4,8 +4,14 @@ module CloudSesame
       class CompoundArray < Array
         # include Range
 
-        attr_accessor :field, :scope,
-                      :parent, :literal
+        attr_accessor :scope, :parent, :literal
+        attr_reader :field
+
+        def field=(field)
+          self.parent = nil
+          self.literal = nil
+          @field = field
+        end
 
         def set_scope(scope)
           self.scope = scope

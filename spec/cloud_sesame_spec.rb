@@ -47,12 +47,12 @@ describe CloudSesame, focus: true do
 
 	# result = Product.cloudsearch.query("shoes")
 	# .page(3)
-	# .and {
+	# .or {
 	# 	price 100
-	# 	# price.not(100)
 	# 	tags.not.start_with 'home', 'outdoor'
 	# }
-	# result.included?(price: 100)
-	# # binding.pry
+
+	# # result.included?(price: 100)
+	# binding.pry
 
 end
