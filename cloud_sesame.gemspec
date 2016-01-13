@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.authors = ['Scott Chu', 'Emily Fan', 'Greg Ward', 'David McHoull',
     'Alishan Ladhani', 'Justine Jones', 'Gillian Chesnais', 'Jeff Li']
   s.email = 'dev@retailcommon.com'
-  s.homepage = 'https://github.com/47colborne/cloud_sesame'
+  s.homepage = 'https://github.com/47colborne/cloud-sesame'
   s.platform = Gem::Platform::RUBY
   s.license = 'MIT'
 
