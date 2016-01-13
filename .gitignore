@@ -2,3 +2,4 @@
 .DS_Store
 
 aws.yml
+*.gem
