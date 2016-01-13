@@ -28,7 +28,7 @@ module CloudSesame
 				def method_missing(field, *values, &block)
 				  if fields && (options = fields[field])
 				  	method_scope.children.field = field
-				  	insert_children(values)
+				  	method_scope.children.insert_children(values)
 				  	method_scope.children
 				  else
 				    super

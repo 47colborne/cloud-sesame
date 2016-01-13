@@ -50,12 +50,6 @@ module CloudSesame
 
         # alias_method :start_with, :prefix
 
-        private
-
-        def options
-          scope.context[:fields][field]
-        end
-
         def insert_children(values = [])
           values.each do |value|
             if parent
@@ -65,6 +59,12 @@ module CloudSesame
               self << literal.new(field, value, options)
             end
           end
+        end
+
+        private
+
+        def options
+          scope.context[:fields][field]
         end
 
       end

@@ -61,14 +61,14 @@ module CloudSesame
 
           context 'when field is define in context' do
             before { subject.context[:fields] = { description: {} } }
-            it 'should be triggered by calling the field name as a method' do
-              expect(subject).to receive(:literal).with(:description, '123', {})
-              subject.description "123"
-            end
-            it 'should accept multiple values' do
-              expect(subject).to receive(:literal).exactly(3).times
-              subject.description "123", "456", "789"
-            end
+            # it 'should be triggered by calling the field name as a method' do
+            #   expect(subject).to receive(:literal).with(:description, '123', {})
+            #   subject.description "123"
+            # end
+            # it 'should accept multiple values' do
+            #   expect(subject).to receive(:literal).exactly(3).times
+            #   subject.description "123", "456", "789"
+            # end
 
             it 'should return literal nodes in an array' do
               result = subject.description("123", "456", "789")
