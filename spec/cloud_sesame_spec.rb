@@ -48,8 +48,8 @@ describe CloudSesame, focus: true do
 	# result = Product.cloudsearch.query("shoes")
 	# .page(3)
 	# .or {
-	# 	price 100
 	# 	tags.not.start_with 'home', 'outdoor'
+	# 	price.start_with(100)
 	# }
 
 	# # result.included?(price: 100)

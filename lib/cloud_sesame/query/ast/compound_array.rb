@@ -9,7 +9,7 @@ module CloudSesame
 
         def field=(field)
           self.parent = nil
-          self.literal = nil
+          self.literal = AST::Literal
           @field = field
         end
 
