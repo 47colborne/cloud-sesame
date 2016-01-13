@@ -3,7 +3,7 @@ require 'bundler/setup'
 Bundler.setup
 
 require 'pry'
-require 'cloud_search'
+require 'cloud_sesame'
 
 RSpec.configure do |config|
   # For running just wanted tests in guard
