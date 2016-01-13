@@ -49,7 +49,11 @@ module CloudSesame
 						compiled.merge!(node.compile || {})
 					end
 
-					convert_to_structured_query(compiled) if compiled[:query].empty?
+					if compiled[:filter_query].empty?
+						compiled.delete(:filter_query)
+					elsif compiled[:query].empty?
+						convert_to_structured_query(compiled)
+					end
 
 					compiled
 				end

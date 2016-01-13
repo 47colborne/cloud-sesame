@@ -12,14 +12,14 @@ module CloudSesame
             it 'should return an default request' do
               expect(request.compile).to include(
                 query: "",
-                query_parser: "structured",
+                query_parser: "simple",
                 start: 0,
                 size: 10
               )
               expect(request.compile).to_not include(:query_options, :filter_query, :sort)
             end
-            it 'should set query_parser to structured' do
-              expect(request.compile).to include(query_parser: 'structured')
+            it 'should set query_parser to simple' do
+              expect(request.compile).to include(query_parser: 'simple')
             end
           end
           context 'when theres query' do

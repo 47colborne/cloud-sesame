@@ -4,7 +4,7 @@ module CloudSesame
       class FilterQuery < Abstract
 
         def compile
-          { filter_query: compiled } unless (compiled = root.compile).empty?
+          { filter_query: root.compile }
         end
 
         def root
