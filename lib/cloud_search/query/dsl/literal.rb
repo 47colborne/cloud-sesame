@@ -11,6 +11,14 @@ module CloudSearch
 				  node
 				end
 
+				def date(date_object)
+					strip date_object.strftime('%FT%TZ')
+				end
+
+				def strip(string)
+					string.gsub(/ /, '')
+				end
+
 				private
 
 				def fields
@@ -29,6 +37,7 @@ module CloudSearch
 				end
 
 				class LiteralArray < Array
+					include Range
 
 					attr_accessor :field, :options, :scope
 

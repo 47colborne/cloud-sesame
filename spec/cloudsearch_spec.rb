@@ -52,6 +52,7 @@ describe CloudSearch, focus: true do
 			field :manufacturer_name, 	facet: { size: 50 }
 			field :price, 							facet: { buckets: %w([0,25] [25,50] [50,100] [100,200] [200,}), method: 'interval' }
 			field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
+			field :created_at
 
 			scope :men_tag, -> { tags "men" }
 			scope :and_mens, -> { and! { tags "men"} }
@@ -66,6 +67,7 @@ describe CloudSearch, focus: true do
 	.and {
 		price(100, 200).not(300, 400).start_with(1000, 2000)
 		tags.start_with 'men'
+		created_at > (date Date.today) <= 3
 		# or! {
 		# 	tags 'women'
 		# 	tags 'men'
