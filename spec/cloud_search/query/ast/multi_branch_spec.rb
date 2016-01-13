@@ -21,7 +21,7 @@ module CloudSearch
 
         describe '#children' do
           it 'should instantiate an empty array' do
-            expect(Array).to receive(:new)
+            expect(CompoundArray).to receive(:new).and_call_original
             node.children
           end
           it 'should return the array' do

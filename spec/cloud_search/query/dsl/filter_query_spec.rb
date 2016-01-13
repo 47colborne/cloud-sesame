@@ -6,12 +6,13 @@ module CloudSearch
         class TestClass
           include Base
           include FilterQuery
-
-          def context
-            @context ||= {}
+          def initialize
           end
           def children
-            @children ||= []
+            @children ||= AST::CompoundArray.new.set_scope(self)
+          end
+          def context
+            @context ||= {}
           end
         end
 
@@ -82,17 +83,75 @@ module CloudSearch
           end
         end
 
-        describe 'prefix' do
-          it 'should set the literal prefix option to true' do
-            literals = (1..3).map { |i| AST::Literal.new(:int, i) }
-            subject.prefix(literals)
+        # describe 'prefix' do
+        #   it 'should set the literal prefix option to true' do
+        #     literals = (1..3).map { |i| AST::Literal.new(:int, i) }
+        #     subject.prefix(literals)
 
-            literals.each do |literal|
-              expect(literal.options).to include(prefix: true)
+        #     literals.each do |literal|
+        #       expect(literal.options).to include(prefix: true)
+        #     end
+
+        #   end
+        # end
+
+        describe 'included?' do
+          before { subject.context[:fields] = { tags: {}, description: {} } }
+          context 'when there is a field and no value' do
+            it 'should return true if the request contains the field in the filter query' do
+              subject.and{tags('women')}
+              expect(subject.included?(:tags)).to be_truthy
+            end
+
+            it 'should return false if the request does not contain the field in the filter query' do
+              subject.and{tags.not('women')}
+              expect(subject.included?(:tags)).to be_falsey
             end
 
           end
+          context 'when there is a field and a value' do
+            it 'should return true if the request contains the field and the value in the filter query' do
+              subject.and{tags('women')}
+              expect(subject.included?(:tags, 'women')).to be_truthy
+            end
+
+            it 'should return false if the request does not contain the field or the value in the filter query' do
+              subject.and{tags('women')}
+              expect(subject.included?(:tags, 'men')).to be_falsey
+              expect(subject.included?(:description, 'women')).to be_falsey
+            end
+          end
         end
+
+
+        describe 'excluded?' do
+          before { subject.context[:fields] = { tags: {}, description: {} } }
+          context 'when there is a field and no value' do
+            it 'should return true if the request excludes the field in the filter query' do
+              subject.and{tags('women')}
+              expect(subject.excluded?(:tags)).to be_falsey
+            end
+
+            it 'should return false if the request does not exclude the field in the filter query' do
+              subject.and{tags.not('women')}
+              expect(subject.excluded?(:tags)).to be_truthy
+            end
+          end
+
+          context 'when there is a field and a value' do
+            it 'should return true if the request excludes the field and the value in the filter query' do
+              subject.and{tags.not('women')}
+              expect(subject.excluded?(:tags, 'women')).to be_truthy
+            end
+
+            it 'should return false if the request does not exclude the field or the value in the filter query' do
+              subject.and{tags('women')}
+              expect(subject.excluded?(:tags, 'men')).to be_falsey
+              expect(subject.excluded?(:tags, 'women')).to be_falsey
+            end
+          end
+        end
+
       end
     end
   end

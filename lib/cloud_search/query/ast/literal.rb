@@ -6,10 +6,11 @@ module CloudSearch
         attr_accessor :field
         attr_reader :value, :options
 
-        def initialize(field, value = nil, options = {})
+        def initialize(field, value, options = {})
           @field = field
-          @value = Value.new(value) if value
+          @value = Value.new(value)
           @options = options
+          (options[:included] ||= []) << value
         end
 
         def value=(value)

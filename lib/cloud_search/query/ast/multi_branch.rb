@@ -14,7 +14,7 @@ module CloudSearch
         end
 
         def children
-          @children ||= Array.new
+          @children ||= CompoundArray.new.set_scope self
         end
 
         def compile_children

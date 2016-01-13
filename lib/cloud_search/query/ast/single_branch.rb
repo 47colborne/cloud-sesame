@@ -11,6 +11,13 @@ module CloudSearch
       	  instance_eval &block if block_given?
       	end
 
+        def child=(object)
+          if object.kind_of? Literal
+            (object.options[:excluded] ||= []) << object.options[:included].delete(object.value.data)
+          end
+          @child = object
+        end
+
       end
     end
   end

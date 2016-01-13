@@ -9,7 +9,8 @@ module CloudSearch
 
 			def_delegators 	:builder, :query, :terms,
 																:page, :size,
-																:sort, :and, :or
+																:sort, :and, :or,
+																:included?, :excluded?
 
 			def initialize(searchable_class)
 				@searchable_class = searchable_class

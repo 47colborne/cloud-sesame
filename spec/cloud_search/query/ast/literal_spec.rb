@@ -29,12 +29,6 @@ module CloudSearch
               expect(literal.compile).to eq("description:'Shoes'")
             end
           end
-          context 'when prefix option is true' do
-            before { literal.options[:prefix] = true }
-            it 'should compile with prefix format' do
-              expect(literal.compile).to eq("(prefix field='description' 'Shoes')")
-            end
-          end
         end
 
       end

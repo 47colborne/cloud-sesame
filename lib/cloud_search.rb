@@ -32,6 +32,7 @@ require 'cloud_search/query/ast/and'
 require 'cloud_search/query/ast/or'
 require 'cloud_search/query/ast/not'
 require 'cloud_search/query/ast/literal'
+require 'cloud_search/query/ast/compound_array'
 require 'cloud_search/query/ast/prefix_literal'
 require 'cloud_search/query/ast/value'
 

@@ -1,21 +1,5 @@
 require 'spec_helper'
-# Product.cloudsearch.where {
-	# 	or(tag: ['a', 'b'],
-	# 		and(name: 'val', tag: 'a'))
 
-	# 	or {
-	# 		tag = 'a' => object = value
-	# 		tag 'a'		=> object(value)
-	# 		tag = 'b'
-	# 		and {
-	# 			name = 'val'
-	# 			tag = 'a'
-	# 		}
-	# 	}
-	# }
-
-	# date(between(a, b))
-	# date greater_than a, :inclusive
 describe CloudSearch, focus: true do
 
 	# AWS initializer
@@ -40,7 +24,7 @@ describe CloudSearch, focus: true do
 			config.endpoint = ENV['AWS_ENDPOINT']
 			config.region 	= ENV['AWS_REGION']
 
-			default_size 20
+			default_size 100
 
 			field :searchable_text, 		query: { weight: 2 }
 			field :description, 				query: true
@@ -57,7 +41,6 @@ describe CloudSearch, focus: true do
 			scope :men_tag, -> { tags "men" }
 			scope :and_mens, -> { and! { tags "men"} }
 
-
 		end
 
 	end
@@ -65,22 +48,12 @@ describe CloudSearch, focus: true do
 	result = Product.cloudsearch.query("shoes")
 	.page(3)
 	.and {
-		price(100, 200).not(300, 400).start_with(1000, 2000)
-		tags.start_with 'men'
-		created_at > (date Date.today) <= 3
-		# or! {
-		# 	tags 'women'
-		# 	tags 'men'
-		# }
+		price 100
+		# price.not(100)
+		tags.not.start_with 'home', 'outdoor'
 	}
-	# 	category_string 'men' #=> "category_string:'men' category_string:'women'"
-	# 	# prefix(category_string('men', 'women')) #=> "(prefix field=category_string 'men') (prefix field=category_string 'women')"
-	# }.and {
-	# 	and! { tags "flash_deal"; tags "sales" }
-	# }
-
-
-	binding.pry
+	result.included?(price: 100)
+	# binding.pry
 
 
 end
