@@ -56,16 +56,6 @@ module CloudSearch
 				return self
 			end
 
-			# def and(&block)
-			# 	request.filter_query.root.and &block
-			# 	return self
-			# end
-
-			# def or(&block)
-			# 	request.filter_query.root.or &block
-			# 	return self
-			# end
-
 			# ENDING METHODS
 			# =========================================
 

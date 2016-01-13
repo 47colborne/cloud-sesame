@@ -17,21 +17,7 @@ module CloudSearch
         end
 
         def compile
-          options[:prefix] ? prefix_format : default_format
-        end
-
-        private
-
-        def default_format
           "#{ field }:#{ value.compile }"
-        end
-
-        def prefix_format
-          "(prefix field=#{ escape(field) } #{ value.compile })"
-        end
-
-        def escape(data = "")
-          "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
         end
 
       end

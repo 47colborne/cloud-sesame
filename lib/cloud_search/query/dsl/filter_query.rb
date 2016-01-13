@@ -6,7 +6,6 @@ module CloudSearch
 				include Or
 				include Scope
 				include Literal
-
 			end
 		end
 	end

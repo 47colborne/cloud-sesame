@@ -64,14 +64,12 @@ describe CloudSearch, focus: true do
 	result = Product.cloudsearch.query("shoes")
 	.page(3)
 	.and {
-		or! {
-			price 100
-			price 200
-		}
-		or! {
-			tags 'women'
-			tags 'men'
-		}
+		price(100, 200).not(300, 400).start_with(1000, 2000)
+		tags.start_with 'men'
+		# or! {
+		# 	tags 'women'
+		# 	tags 'men'
+		# }
 	}
 	# 	category_string 'men' #=> "category_string:'men' category_string:'women'"
 	# 	# prefix(category_string('men', 'women')) #=> "(prefix field=category_string 'men') (prefix field=category_string 'women')"

@@ -11,11 +11,6 @@ module CloudSearch
 				  node
 				end
 
-				def prefix(literals)
-				  literals.each { |literal| literal.options[:prefix] = true }
-				  method_return
-				end
-
 				private
 
 				def fields
@@ -24,10 +19,42 @@ module CloudSearch
 
 				def method_missing(field, *values, &block)
 				  if fields && (options = fields[field])
-				    values.map { |value| literal(field, value, options) }
+				  	literal_array = LiteralArray.new
+				  	literal_array.setup method_scope, field, options
+				  	literal_array.concat values.map { |value| literal(field, value, options) }
+						literal_array
 				  else
 				    super
 				  end
+				end
+
+				class LiteralArray < Array
+
+					attr_accessor :field, :options, :scope
+
+					def setup(scope, field, options = {})
+						self.scope = scope
+						self.field = field
+						self.options = options
+					end
+
+					def not(*values)
+						values.each do |value|
+							self << (node = AST::Not.new scope.context)
+							scope.children << node
+							node.child = AST::Literal.new field, value, options.merge(not: true)
+						end
+						self
+					end
+
+					def start_with(*values)
+						values.each do |value|
+							self << (node = AST::PrefixLiteral.new field, value, options)
+							scope.children << node
+						end
+						self
+					end
+
 				end
 
 			end
