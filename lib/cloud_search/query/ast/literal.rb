@@ -3,12 +3,17 @@ module CloudSearch
     module AST
       class Literal < SingleBranch
 
-        attr_accessor :field, :value, :options
+        attr_accessor :field
+        attr_reader :value, :options
 
-        def initialize(field, value, options = {})
+        def initialize(field, value = nil, options = {})
           @field = field
-          @value = Value.new(value)
+          @value = Value.new(value) if value
           @options = options
+        end
+
+        def value=(value)
+          @value = Value.new(value)
         end
 
         def compile

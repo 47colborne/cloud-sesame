@@ -54,8 +54,8 @@ module CloudSearch
 			end
 
 			def scope(name, proc = nil, &block)
-				proc = block if block_given?
-				context[:filter_query, true][:scope, true][name.to_sym] = proc
+				block = proc unless block_given?
+				context[:filter_query, true][:scopes, true][name.to_sym] = block
 			end
 
 			private

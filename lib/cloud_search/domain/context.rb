@@ -9,7 +9,7 @@ module CloudSearch
       end
 
       def [](key, find_or_create = false)
-        find_or_create ? table[key] ||= Context.new : table[key]
+        table[key] ||= default_value(find_or_create)
       end
 
       def []=(key, value)
@@ -22,6 +22,12 @@ module CloudSearch
 
       def map(&block)
         table.map &block
+      end
+
+      private
+
+      def default_value(data)
+        data != true ? data : Context.new if data
       end
 
     end

@@ -2,7 +2,9 @@ module CloudSearch
   module Query
     module AST
       class MultiBranch
-        include ::CloudSearch::Query::DSL
+        include DSL::Base
+        include DSL::FilterQuery
+        include DSL::Scope
 
         attr_reader :context
 

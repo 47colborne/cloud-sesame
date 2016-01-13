@@ -10,8 +10,17 @@ require 'cloud_search/config/credential'
 require 'cloud_search/query/error/missing_operator_symbol'
 require 'cloud_search/query/error/missing_query'
 
-require 'cloud_search/query/builder'
+
+require 'cloud_search/query/dsl/base'
+require 'cloud_search/query/dsl/and'
+require 'cloud_search/query/dsl/or'
+require 'cloud_search/query/dsl/literal'
+require 'cloud_search/query/dsl/scope'
+require 'cloud_search/query/dsl/filter_query'
+
+
 require 'cloud_search/query/dsl'
+require 'cloud_search/query/builder'
 
 require 'cloud_search/query/ast/multi_branch'
 require 'cloud_search/query/ast/single_branch'

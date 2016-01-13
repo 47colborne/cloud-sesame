@@ -5,20 +5,16 @@ module CloudSearch
 
         def compile
           if children.size > 1
-            inject_default_operator(children).compile
+            join_by_default_operator.compile
           else
             compile_children
           end
         end
 
-        def default
-          @default ||= And.new context
-        end
-
         private
 
-        def inject_default_operator(children)
-          default.children.concat children
+        def join_by_default_operator
+          (default = And.new context).children.concat children
           default
         end
 

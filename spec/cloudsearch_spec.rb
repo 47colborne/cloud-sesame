@@ -16,7 +16,7 @@ require 'spec_helper'
 
 	# date(between(a, b))
 	# date greater_than a, :inclusive
-describe CloudSearch do
+describe CloudSearch, focus: true do
 
 	# AWS initializer
 	require 'yaml'
@@ -53,8 +53,9 @@ describe CloudSearch do
 			field :price, 							facet: { buckets: %w([0,25] [25,50] [50,100] [100,200] [200,}), method: 'interval' }
 			field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
 
-			# scope :newest -> { and! { tags "men" } }
-			scope :test_scope, -> { binding.pry }
+			scope :men_tag, -> { tags "men" }
+			scope :and_mens, -> { and! { tags "men"} }
+
 
 		end
 
@@ -62,13 +63,21 @@ describe CloudSearch do
 
 	result = Product.cloudsearch.query("shoes")
 	.page(3)
-	.or {
-		test_scope
-		not category_string 'men' #=> "category_string:'men' category_string:'women'"
-		# prefix(category_string('men', 'women')) #=> "(prefix field=category_string 'men') (prefix field=category_string 'women')"
-	}.and {
-		and! { tags "flash_deal"; tags "sales" }
+	.and {
+		or! {
+			price 100
+			price 200
+		}
+		or! {
+			tags 'women'
+			tags 'men'
+		}
 	}
+	# 	category_string 'men' #=> "category_string:'men' category_string:'women'"
+	# 	# prefix(category_string('men', 'women')) #=> "(prefix field=category_string 'men') (prefix field=category_string 'women')"
+	# }.and {
+	# 	and! { tags "flash_deal"; tags "sales" }
+	# }
 
 
 	binding.pry

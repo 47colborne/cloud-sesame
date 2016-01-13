@@ -1,6 +1,8 @@
 module CloudSearch
 	module Query
 		class Builder
+			include DSL::Base
+			include DSL::FilterQuery
 
 			attr_accessor :context, :searchable_class
 
@@ -54,15 +56,15 @@ module CloudSearch
 				return self
 			end
 
-			def and(&block)
-				request.filter_query.root.and &block
-				return self
-			end
+			# def and(&block)
+			# 	request.filter_query.root.and &block
+			# 	return self
+			# end
 
-			def or(&block)
-				request.filter_query.root.or &block
-				return self
-			end
+			# def or(&block)
+			# 	request.filter_query.root.or &block
+			# 	return self
+			# end
 
 			# ENDING METHODS
 			# =========================================
@@ -73,6 +75,12 @@ module CloudSearch
 				result = searchable_class.cloudsearch.client.search compiled
 				reset
 				result
+			end
+
+			private
+
+			def method_scope
+				request.filter_query.root
 			end
 
 		end
