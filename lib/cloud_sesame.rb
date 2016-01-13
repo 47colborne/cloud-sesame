@@ -1,6 +1,7 @@
 # External Libraries
 # ===============================================
 require 'aws-sdk'
+require 'forwardable'
 
 # Internal Libraries
 # ===============================================
