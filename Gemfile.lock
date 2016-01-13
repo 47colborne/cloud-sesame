@@ -1,12 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    aws-sdk (2.2.9)
-      aws-sdk-resources (= 2.2.9)
-    aws-sdk-core (2.2.9)
+    aws-sdk (2.2.10)
+      aws-sdk-resources (= 2.2.10)
+    aws-sdk-core (2.2.10)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.2.9)
-      aws-sdk-core (= 2.2.9)
+    aws-sdk-resources (2.2.10)
+      aws-sdk-core (= 2.2.10)
     coderay (1.1.0)
     diff-lcs (1.2.5)
     ffi (1.9.10)
@@ -51,7 +51,7 @@ GEM
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
-    rspec-mocks (3.4.0)
+    rspec-mocks (3.4.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
@@ -68,6 +68,3 @@ DEPENDENCIES
   guard-rspec
   pry
   rspec
-
-BUNDLED WITH
-   1.11.2
