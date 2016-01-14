@@ -16,6 +16,10 @@ module CloudSesame
         table[key] = value
       end
 
+      def delete(key)
+        table.delete key
+      end
+
       def each(&block)
         table.each &block
       end

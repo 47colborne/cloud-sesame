@@ -26,15 +26,19 @@ module CloudSesame
           options[:detailed] ? long_format : short_format
         end
 
+        def as_field
+          options[:as] || field
+        end
+
         private
 
         def short_format
-          "#{ field }:#{ value.compile }"
+          "#{ as_field }:#{ value.compile }"
         end
 
 
         def long_format
-          "field=#{ escape field } #{ value.compile }"
+          "field=#{ escape as_field } #{ value.compile }"
         end
 
         def escape(data = "")

@@ -47,8 +47,7 @@ describe CloudSesame do
 		load_definition_from Product
 
 		define_cloudsearch do
-			field :text1, as: :name
-
+			field :searchable_text, 		query: { weight: 4 }
 		end
 	end
 
@@ -58,7 +57,6 @@ describe CloudSesame do
 	# .or {
 	# 	tags.not.near "men", "women"
 	# }
-	# NewProduct.cloudsearch.builder.request
 
 	binding.pry
 

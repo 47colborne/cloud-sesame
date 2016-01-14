@@ -37,8 +37,9 @@ module CloudSesame
 			end
 
 			def field(name, options = {})
-				define_query_options(name, options.delete(:query)) if options[:query]
-				define_facet_options(name, options.delete(:facet)) if options[:facet]
+				field_name = options[:as] || name
+				define_query_options(field_name, options.delete(:query)) if options[:query]
+				define_facet_options(field_name, options.delete(:facet)) if options[:facet]
 				define_filter_query_field(name, options)
 			end
 
@@ -58,6 +59,9 @@ module CloudSesame
 			end
 
 			def define_filter_query_field(name, options)
+				if (as = options[:as]) && (existing_options = context[:filter_query, true][:fields, true].delete(as))
+					options.merge!(existing_options)
+				end
 				context[:filter_query, true][:fields, true][name.to_sym] = options
 			end
 
