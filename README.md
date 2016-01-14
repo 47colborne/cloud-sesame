@@ -5,8 +5,8 @@ Lightweight CloudSearch interface gem
 1. `gem install CloudSesame`
 
 2. Initalize the gem 
-- Inside the Rails `config/initializers` folder, create a file called `cloud_sesame.rb`
-- In the file, enter in your AWS credentials
+* Inside the Rails `config/initializers` folder, create a file called `cloud_sesame.rb`
+* In the file, enter in your AWS credentials
 
 ```
 require 'cloud_sesame'
@@ -18,8 +18,8 @@ end
 
 3. Setup your searchable model
 
-- `include CloudSesame`
-- call `define_cloudsearch` to setup your CloudSearch config, default size (optional), fields, and scopes (optional).
+* `include CloudSesame`
+* call `define_cloudsearch` to setup your CloudSearch config, default size (optional), fields, and scopes (optional).
 
 ```
 class Product
@@ -47,6 +47,6 @@ end
 ```
 
 4. How to define search fields 
-- to add a field to query_options, set `query: true` 
-- to add a field to query_options with a weight, set `query: { weight: <any integer> }`
-- to add a field to filter_query, set `facet : true`
+* to add a field to query_options, set `query: true` 
+* to add a field to query_options with a weight, set `query: { weight: <any integer> }`
+* to add a field to filter_query, set `facet : true`
