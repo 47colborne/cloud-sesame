@@ -1,5 +1,9 @@
-# CloudSesame
-Lightweight CloudSearch interface gem
+#CloudSesame
+Light and Flexible CloudSearch Query Interface
+
+#Install
+in terminal => `gem install CloudSesame'
+in Gemfile	=> `gem 'CloudSesame'
 
 #Setup 
 1. `gem install CloudSesame`
