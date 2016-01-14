@@ -8,7 +8,7 @@ module CloudSesame
         attr_reader :field
 
         def field=(field)
-          self.parent = []
+          self.parent = nil
           @field = field
         end
 
@@ -19,6 +19,9 @@ module CloudSesame
 
         # SINGLE BRANCH OPERATOR
         # =======================================
+
+        # NOT
+        # =======================================
         def not(*values)
           self.parent = AST::Not
           insert_and_return_children(values)
@@ -26,7 +29,7 @@ module CloudSesame
 
         alias_method :is_not, :not
 
-        # NEAR LITERAL
+        # NEAR
         # =======================================
         def near(*values)
           self.parent = AST::Near

@@ -3,6 +3,7 @@ module CloudSesame
 		class Base
 			extend Forwardable
 
+			attr_accessor :definition
 			attr_reader :searchable
 
 			def_delegator :client, :config

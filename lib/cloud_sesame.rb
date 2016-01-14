@@ -83,7 +83,17 @@ module CloudSesame
     end
 
     def define_cloudsearch(&block)
-      cloudsearch.instance_eval &block if block_given?
+      if block_given?
+        cloudsearch.definition = block
+        cloudsearch.instance_eval &block
+      end
+    end
+
+    def load_definition_from(klass)
+      if klass.respond_to?(:cloudsearch) &&
+        klass.cloudsearch.definition
+        cloudsearch.instance_eval &klass.cloudsearch.definition
+      end
     end
 
   end
