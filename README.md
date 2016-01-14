@@ -3,9 +3,9 @@ Light and Flexible CloudSearch Query Interface
 
 #Install
 In terminal
-	`gem install CloudSesame`
+	```gem install CloudSesame```
 In Gemfile
-	`gem 'CloudSesame`
+	```gem 'CloudSesame```
 
 #Setup 
 
