@@ -9,7 +9,7 @@ module CloudSesame
 
       describe '#initalize' do
         it 'should set searchable class' do
-          expect(subject.searchable_class).to eq "Test"
+          expect(subject.searchable).to eq "Test"
         end
       end
 

@@ -7,12 +7,11 @@ module CloudSesame
 			include DSL::Query
 			include DSL::Sort
 
-			attr_accessor :context, :searchable_class
-			attr_reader 	:result
+			attr_reader :context, :searchable, :result
 
-			def initialize(default_context, searchable_class)
+			def initialize(default_context, searchable)
 				@context = default_context
-				@searchable_class = searchable_class
+				@searchable = searchable
 			end
 
 			def request
@@ -38,7 +37,7 @@ module CloudSesame
 				compiled = request.compile
 				raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
 				clear_request
-				@result = searchable_class.cloudsearch.client.search compiled
+				@result = searchable.cloudsearch.client.search compiled
 			end
 
 			private

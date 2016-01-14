@@ -45,8 +45,7 @@ describe CloudSesame do
 
 	end
 
-
-
+	# Example Query
 	result = Product.cloudsearch.query("shoes")
 	.page(3)
 	.or {
@@ -54,6 +53,6 @@ describe CloudSesame do
 		price 100
 	}
 
-	# binding.pry
+	binding.pry
 
 end

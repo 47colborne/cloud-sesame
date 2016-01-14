@@ -3,17 +3,15 @@ module CloudSesame
 		class Base
 			extend Forwardable
 
-			attr_reader :searchable_class
+			attr_reader :searchable
 
 			def_delegator :client, :config
 
-			def_delegators 	:builder, :query, :terms,
-																:page, :size,
-																:sort, :and, :or,
-																:included?, :excluded?
+			def_delegators 	:builder, :query, :page, :size, :sort,
+																:and, :or, :included?, :excluded?
 
-			def initialize(searchable_class)
-				@searchable_class = searchable_class
+			def initialize(searchable)
+				@searchable = searchable
 			end
 
 			def client
@@ -21,7 +19,7 @@ module CloudSesame
 			end
 
 			def builder
-				@builder ||= CloudSesame::Query::Builder.new context, searchable_class
+				@builder ||= CloudSesame::Query::Builder.new context, searchable
 			end
 
 			# DEFAULT CONTEXT METHODS
@@ -36,9 +34,9 @@ module CloudSesame
 			end
 
 			def field(name, options = {})
-				define_filter_query_field(name)
-				define_query_options(name, options[:query]) if options[:query]
-				define_facet_options(name, options[:facet]) if options[:facet]
+				define_query_options(name, options.delete(:query) || {})
+				define_facet_options(name, options.delete(:facet) || {})
+				define_filter_query_field(name, options)
 			end
 
 			def scope(name, proc = nil, &block)
@@ -52,16 +50,16 @@ module CloudSesame
 				options.is_a?(Hash) ? options : {}
 			end
 
-			def define_filter_query_field(name, options = {})
+			def define_filter_query_field(name, options)
 				context[:filter_query, true][:fields, true][name.to_sym] = options
 			end
 
-			def define_query_options(name, query_options)
-				context[:query_options, true][:fields, true][name.to_sym] = format_options(query_options)
+			def define_query_options(name, options)
+				context[:query_options, true][:fields, true][name.to_sym] = format_options(options)
 			end
 
-			def define_facet_options(name, facet_options)
-				context[:facet, true][name.to_sym] = format_options(facet_options)
+			def define_facet_options(name, options)
+				context[:facet, true][name.to_sym] = format_options(options)
 			end
 
 		end
