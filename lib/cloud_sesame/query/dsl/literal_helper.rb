@@ -3,12 +3,12 @@ module CloudSesame
 		module DSL
 			module LiteralHelper
 
-				def d(date_object)
-					strip date_object.strftime('%FT%TZ')
+				def d(date)
+					AST::DateValue.new date
 				end
 
-				def strip(string)
-					string.gsub(/ /, '')
+				def r
+					AST::RangeValue.new
 				end
 
 			end

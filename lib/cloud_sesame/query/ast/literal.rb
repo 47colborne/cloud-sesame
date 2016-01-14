@@ -7,8 +7,9 @@ module CloudSesame
         attr_reader :value, :options
 
         def initialize(field, value, options = {})
-          @field = field
-          @value = Value.new(value)
+          self.field = field
+          self.value = value
+
           @options = options
           (options[:included] ||= []) << value
         end
@@ -19,7 +20,7 @@ module CloudSesame
         end
 
         def value=(value)
-          @value = Value.new(value)
+          @value = value.kind_of?(Value) ? value : Value.new(value)
         end
 
         def compile

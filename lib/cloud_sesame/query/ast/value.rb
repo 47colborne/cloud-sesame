@@ -27,9 +27,12 @@ module CloudSesame
           data.to_s =~ /^\d+(.\d+)?$/
         end
 
-        # "hello" => "'hello'"
         def escape(data = "")
           "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
+        end
+
+        def strip(string)
+          string.gsub(/ /, '')
         end
 
       end

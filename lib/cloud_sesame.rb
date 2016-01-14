@@ -43,6 +43,8 @@ require 'cloud_sesame/query/ast/prefix'
 require 'cloud_sesame/query/ast/compound_array'
 require 'cloud_sesame/query/ast/literal'
 require 'cloud_sesame/query/ast/value'
+require 'cloud_sesame/query/ast/date_value'
+require 'cloud_sesame/query/ast/range_value'
 
 # Query Request Nodes
 # ===============================================

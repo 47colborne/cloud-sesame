@@ -50,14 +50,12 @@ describe CloudSesame do
 	# 		field :searchable_text, 		query: { weight: 4 }
 	# 	end
 	# end
-
 	# # Example Query
-	# # result = Product.cloudsearch.query("shoes")
-	# # .page(3)
-	# # .or {
-	# # 	tags.not.near "men", "women"
-	# # }
-
+	# result = Product.cloudsearch.query("shoes")
+	# .or {
+	# 	created_at "[#{ d(Date.today - 3) },}"
+	# 	created_at r.gte(d(Date.today - 3))
+	# }
 	# binding.pry
 
 end
