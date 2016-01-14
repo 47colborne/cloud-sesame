@@ -36,22 +36,9 @@ module CloudSesame
 			end
 
 			def field(name, options = {})
-				# define filter query fields
-				context[:filter_query, true][:fields, true][name.to_sym] = {}
-
-				# define query options fields
+				define_filter_query_field(name)
 				define_query_options(name, options[:query]) if options[:query]
-
-				# define facet options
 				define_facet_options(name, options[:facet]) if options[:facet]
-			end
-
-			def define_query_options(name, query_options)
-				context[:query_options, true][:fields, true][name.to_sym] = format_options(query_options)
-			end
-
-			def define_facet_options(name, facet_options)
-				context[:facet, true][name.to_sym] = format_options(facet_options)
 			end
 
 			def scope(name, proc = nil, &block)
@@ -63,6 +50,18 @@ module CloudSesame
 
 			def format_options(options)
 				options.is_a?(Hash) ? options : {}
+			end
+
+			def define_filter_query_field(name, options = {})
+				context[:filter_query, true][:fields, true][name.to_sym] = options
+			end
+
+			def define_query_options(name, query_options)
+				context[:query_options, true][:fields, true][name.to_sym] = format_options(query_options)
+			end
+
+			def define_facet_options(name, facet_options)
+				context[:facet, true][name.to_sym] = format_options(facet_options)
 			end
 
 		end

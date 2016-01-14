@@ -9,7 +9,6 @@ module CloudSesame
 
         def field=(field)
           self.parent = nil
-          self.literal = AST::Literal
           @field = field
         end
 
@@ -22,7 +21,6 @@ module CloudSesame
         # =======================================
         def not(*values)
           self.parent = AST::Not
-          self.literal = AST::Literal
           insert_children(values)
           return self
         end
@@ -32,7 +30,7 @@ module CloudSesame
         # PREFIX LITERAL
         # =======================================
         def prefix(*values)
-          self.literal = AST::PrefixLiteral
+          self.parent = AST::Prefix
           insert_children(values)
           return self
         end
@@ -54,9 +52,9 @@ module CloudSesame
           values.each do |value|
             if parent
               self << (node = parent.new scope.context)
-              node.child = literal.new(field, value, options)
+              node.child = AST::Literal.new(field, value, options)
             else
-              self << literal.new(field, value, options)
+              self << AST::Literal.new(field, value, options)
             end
           end
         end

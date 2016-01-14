@@ -13,12 +13,32 @@ module CloudSesame
           (options[:included] ||= []) << value
         end
 
+        def detailed
+          options[:detailed] = true
+          return self
+        end
+
         def value=(value)
           @value = Value.new(value)
         end
 
         def compile
+          options[:detailed] ? long_format : short_format
+        end
+
+        private
+
+        def short_format
           "#{ field }:#{ value.compile }"
+        end
+
+
+        def long_format
+          "field=#{ escape field } #{ value.compile }"
+        end
+
+        def escape(data = "")
+          "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
         end
 
       end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CloudSesame, focus: true do
+describe CloudSesame do
 
 	# AWS initializer
 	require 'yaml'
@@ -45,14 +45,15 @@ describe CloudSesame, focus: true do
 
 	end
 
+
+
 	result = Product.cloudsearch.query("shoes")
 	.page(3)
 	.or {
 		tags.not.start_with 'home', 'outdoor'
-		price.start_with(100)
+		price 100
 	}
 
-	# result.included?(price: 100)
 	# binding.pry
 
 end

@@ -1,12 +1,8 @@
 module CloudSesame
   module Query
     module AST
-      class Not < SingleBranch
-
-      	def compile
-				"(not #{ child.compile })"
-      	end
-
+      class Not < SingleExpressionOperator
+				self.symbol = :not
       end
     end
   end

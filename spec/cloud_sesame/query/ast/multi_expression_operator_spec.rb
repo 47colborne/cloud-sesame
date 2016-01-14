@@ -3,14 +3,14 @@ require "spec_helper"
 module CloudSesame
   module Query
     module AST
-      describe Operator do
+      describe MultiExpressionOperator do
         let(:proc) { Proc.new {} }
-        let(:operator) { Operator.new({}, &proc )}
-        before { Operator.symbol = :symbol }
+        let(:operator) { MultiExpressionOperator.new({}, &proc )}
+        before { MultiExpressionOperator.symbol = :symbol }
 
         describe '#compile' do
           it 'should raise an error if operator symbol has not being set' do
-            Operator.symbol = nil
+            MultiExpressionOperator.symbol = nil
             expect{ operator.compile }.to raise_error(Error::MissingOperatorSymbol)
           end
 

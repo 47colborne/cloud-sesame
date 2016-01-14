@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Operator < MultiBranch
+      class SingleExpressionOperator < SingleBranch
 
         # Operator Symbol Writer
         def self.symbol=(symbol)
@@ -15,7 +15,7 @@ module CloudSesame
 
         def compile
           raise Error::MissingOperatorSymbol if self.class.symbol.nil?
-          "(#{ self.class.symbol  } #{ compile_children })" unless children.empty?
+          "(#{ self.class.symbol  } #{ child.compile })" if child
         end
 
       end

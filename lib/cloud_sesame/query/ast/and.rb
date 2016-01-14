@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class And < Operator
+      class And < MultiExpressionOperator
         self.symbol = :and
       end
     end
