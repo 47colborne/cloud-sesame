@@ -6,6 +6,7 @@ module CloudSesame
 				include And
 				include Or
 				include Literal
+				include LiteralHelper
 
 				# { fields: { tags: { excluded: [100] } } }
 				def included?(field, value = nil)

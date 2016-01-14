@@ -11,14 +11,6 @@ module CloudSesame
 				  node
 				end
 
-				def date(date_object)
-					strip date_object.strftime('%FT%TZ')
-				end
-
-				def strip(string)
-					string.gsub(/ /, '')
-				end
-
 				private
 
 				def fields
@@ -28,8 +20,7 @@ module CloudSesame
 				def method_missing(field, *values, &block)
 				  if fields && (options = fields[field])
 				  	method_scope.children.field = field
-				  	method_scope.children.insert_children(values)
-				  	method_scope.children
+				  	method_scope.children.insert_and_return_children(values)
 				  else
 				    super
 				  end

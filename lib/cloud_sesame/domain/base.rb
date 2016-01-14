@@ -34,8 +34,8 @@ module CloudSesame
 			end
 
 			def field(name, options = {})
-				define_query_options(name, options.delete(:query) || {})
-				define_facet_options(name, options.delete(:facet) || {})
+				define_query_options(name, options.delete(:query)) if options[:query]
+				define_facet_options(name, options.delete(:facet)) if options[:facet]
 				define_filter_query_field(name, options)
 			end
 
