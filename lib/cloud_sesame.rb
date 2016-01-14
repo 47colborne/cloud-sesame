@@ -90,8 +90,7 @@ module CloudSesame
     end
 
     def load_definition_from(klass)
-      if klass.respond_to?(:cloudsearch) &&
-        klass.cloudsearch.definition
+      if klass.respond_to?(:cloudsearch) && klass.cloudsearch.definition
         cloudsearch.instance_eval &klass.cloudsearch.definition
       end
     end

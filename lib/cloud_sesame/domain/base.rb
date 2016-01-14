@@ -2,6 +2,7 @@ module CloudSesame
 	module Domain
 		class Base
 			extend Forwardable
+			include Query::DSL::Scope
 
 			attr_accessor :definition
 			attr_reader :searchable
@@ -9,7 +10,8 @@ module CloudSesame
 			def_delegator :client, :config
 
 			def_delegators 	:builder, :query, :page, :size, :sort,
-																:and, :or, :included?, :excluded?
+																:and, :or, :included?, :excluded?,
+																:method_context, :method_return, :method_scope
 
 			def initialize(searchable)
 				@searchable = searchable
@@ -38,6 +40,10 @@ module CloudSesame
 				define_query_options(name, options.delete(:query)) if options[:query]
 				define_facet_options(name, options.delete(:facet)) if options[:facet]
 				define_filter_query_field(name, options)
+			end
+
+			def default_scope(proc, &block)
+				scope :default, proc, &block
 			end
 
 			def scope(name, proc = nil, &block)

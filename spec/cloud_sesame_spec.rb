@@ -24,7 +24,6 @@ describe CloudSesame do
 			config.region 	= ENV['AWS_REGION']
 
 			default_size 100
-
 			field :searchable_text, 		query: { weight: 2 }
 			field :description, 				query: true
 			field :tags
@@ -46,6 +45,11 @@ describe CloudSesame do
 
 	class NewProduct < Product
 		load_definition_from Product
+
+		define_cloudsearch do
+			field :text1, as: :name
+
+		end
 	end
 
 	# Example Query
@@ -54,6 +58,7 @@ describe CloudSesame do
 	# .or {
 	# 	tags.not.near "men", "women"
 	# }
+	# NewProduct.cloudsearch.builder.request
 
 	binding.pry
 
