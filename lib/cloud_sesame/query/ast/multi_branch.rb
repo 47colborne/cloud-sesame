@@ -14,7 +14,7 @@ module CloudSesame
         end
 
         def children
-          @children ||= CompoundArray.new.set_scope self
+          @children ||= CompoundArray.new.scope_to self
         end
 
         def compile_children

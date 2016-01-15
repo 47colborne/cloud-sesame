@@ -4,11 +4,7 @@ module CloudSesame
       class Root < MultiBranch
 
         def compile
-          if children.size > 1
-            join_by_default_operator.compile
-          else
-            compile_children
-          end
+          children.size > 1 ? join_by_default_operator.compile : compile_children
         end
 
         private

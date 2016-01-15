@@ -3,12 +3,10 @@ module CloudSesame
     module AST
       class MultiExpressionOperator < MultiBranch
 
-        # Operator Symbol Writer
         def self.symbol=(symbol)
           @symbol = symbol
         end
 
-        # Operator Symbol Getter
         def self.symbol
           @symbol
         end

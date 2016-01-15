@@ -2,18 +2,17 @@ module CloudSesame
   module Query
     module AST
       class CompoundArray < Array
-        # include Range
 
-        attr_accessor :scope, :parent, :literal
-        attr_reader :field
+        attr_accessor :parent
+        attr_reader :scope, :field
 
         def field=(field)
           self.parent = nil
           @field = field
         end
 
-        def set_scope(scope)
-          self.scope = scope
+        def scope_to(scope)
+          @scope = scope
           return self
         end
 
@@ -48,15 +47,7 @@ module CloudSesame
         alias_method :start_with, :prefix
         alias_method :begin_with, :prefix
 
-        # RANGE LITERAL
-        # =======================================
-        # def range
-        #   self.literal = AST::PrefixLiteral
-        #   insert_and_return_children(values)
-        #   return self
-        # end
-
-        # alias_method :start_with, :prefix
+        private
 
         def insert_and_return_children(values = [])
           values.each do |value|
@@ -69,8 +60,6 @@ module CloudSesame
           end
           return self
         end
-
-        private
 
         def options
           scope.context[:fields][field]

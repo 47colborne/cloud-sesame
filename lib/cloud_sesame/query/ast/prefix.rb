@@ -8,7 +8,6 @@ module CloudSesame
 					child.detailed
 					super
 				end
-
       end
     end
   end

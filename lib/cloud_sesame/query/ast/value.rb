@@ -3,18 +3,22 @@ module CloudSesame
     module AST
       class Value < Leaf
 
-        attr_accessor :data
+        attr_reader :data
 
         def initialize(data)
           @data = data
         end
 
         def compile
-          format(data)
+          format data
         end
 
         def ==(value)
-          @data == value || compile == value
+          data == value || compile == value
+        end
+
+        def to_s
+          compile
         end
 
         private
