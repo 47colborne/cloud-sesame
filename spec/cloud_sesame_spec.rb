@@ -58,7 +58,7 @@ describe CloudSesame do
 		price 100..500
 		tags "flash_deal"
 	}.or {
-		currency "USD", "CAD"
+		searchable_text term "women"
 	}
 
 	p result.request.compile

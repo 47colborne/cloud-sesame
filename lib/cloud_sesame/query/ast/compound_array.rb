@@ -5,7 +5,7 @@ module CloudSesame
 
         attr_reader :scope, :field
 
-        def field=(field)
+        def for_field(field)
           parents.clear
           @field = field
         end

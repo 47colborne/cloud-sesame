@@ -6,12 +6,12 @@ module CloudSesame
         attr_accessor :field
         attr_reader :value, :options
 
-        def initialize(field, value, options = {})
+        def initialize(field = nil, value = nil, options = {})
           @field = field
           @value = to_value value
-          @boost = options[:boost]
-
-          ((@options = options)[:included] ||= []) << @value
+          @options = options || {}
+          @boost = @options[:boost]
+          (@options[:included] ||= []) << @value
         end
 
         def as_field

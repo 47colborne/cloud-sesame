@@ -28,6 +28,12 @@ module CloudSesame
 					create_literal_with_operator AST::Phrase, value
 				end
 
+				# TERM: creates a single TERM node
+				# =======================================
+				def term(value)
+					create_literal_with_operator AST::Term, value
+				end
+
 				private
 
 				def fields
@@ -35,16 +41,15 @@ module CloudSesame
 				end
 
 				def create_literal_with_operator(klass, value)
-					if (field = method_scope.children.field) && fields[field]
-						literal = AST::Literal.new field, value, fields[field]
-						(node = klass.new method_context) << literal
-						node
-					end
+					field = method_scope.children.field
+					literal = AST::Literal.new field, value, fields[field]
+					(node = klass.new method_context) << literal
+					node
 				end
 
 				def method_missing(field, *values, &block)
 				  if fields && (options = fields[field])
-				  	method_scope.children.field = field
+				  	method_scope.children.for_field field
 				  	method_scope.children.insert_and_return_children values
 				  else
 				    super
