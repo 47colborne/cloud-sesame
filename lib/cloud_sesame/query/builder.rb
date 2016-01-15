@@ -5,7 +5,6 @@ module CloudSesame
 			include DSL::FilterQuery
 			include DSL::Page
 			include DSL::Query
-			include DSL::Scope
 			include DSL::Sort
 			include DSL::Return
 
@@ -20,12 +19,16 @@ module CloudSesame
 				@request ||= (clear_result; Node::Request.new context.dup)
 			end
 
+			def response
+				@response ||= search
+			end
+
 			def clear_request
 				@request = nil
 			end
 
 			def clear_result
-				@result = nil
+				@response = nil
 			end
 
 			def compile
@@ -39,11 +42,27 @@ module CloudSesame
 			# ENDING METHODS
 			# =========================================
 
+			def found
+				response.hits.found
+			end
+
+			def results
+				response.hits.hit
+			end
+
+			def each(&block)
+				results.each &block
+			end
+
+			def map(&block)
+				results.map &block
+			end
+
 			def search
 				compiled = request.compile
 				raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
 				clear_request
-				@result = client.search compiled
+				@response = client.search compiled
 			end
 
 			private

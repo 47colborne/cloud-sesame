@@ -2,12 +2,10 @@ module CloudSesame
 	module Query
 		module DSL
 			module FilterQuery
-
-				# FilterQuery DSL
-				include Scope
 				include And
-				include Or
 				include Literal
+				include Or
+				include Scope
 				include Value
 
 				def included?(field, value = nil)
