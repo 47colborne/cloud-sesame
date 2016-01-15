@@ -34,6 +34,10 @@ module CloudSesame
 					@sort ||= Sort.new(context[:sort, true])
 				end
 
+				def return_field
+					@return ||= Return.new(context[:return, true])
+				end
+
 				# EVALUATION
 				# =========================================
 
@@ -44,7 +48,8 @@ module CloudSesame
 						query_parser,
 						filter_query,
 						page,
-						sort
+						sort,
+						return_field
 					].each_with_object({}) do |node, compiled|
 						compiled.merge!(node.compile || {})
 					end

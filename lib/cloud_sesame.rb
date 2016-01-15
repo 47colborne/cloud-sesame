@@ -60,6 +60,7 @@ require 'cloud_sesame/query/node/filter_query'
 require 'cloud_sesame/query/node/facet'
 require 'cloud_sesame/query/node/page'
 require 'cloud_sesame/query/node/sort'
+require 'cloud_sesame/query/node/return'
 
 # Query Builder Interface
 # ===============================================
