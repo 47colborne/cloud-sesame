@@ -58,8 +58,9 @@ describe CloudSesame do
 		price 100..500
 		tags "flash_deal"
 	}.or {
-		searchable_text term "women"
-		binding.pry
+		searchable_text term("women"), phrase("star war")
+		searchable_text start_with "flash_deal"
+		description near "blue"
 	}
 
 	p result.request.compile

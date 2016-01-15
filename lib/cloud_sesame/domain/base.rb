@@ -2,17 +2,12 @@ module CloudSesame
 	module Domain
 		class Base
 			extend Forwardable
-			include Query::DSL::Scope
+			include Query::Builder
 
 			attr_accessor :definition
-			attr_reader :searchable
+			attr_reader :searchable, :result
 
 			def_delegator :client, :config
-
-			def_delegators 	:builder, :query, :page, :size, :sort,
-																:and, :or, :included?, :excluded?,
-																:all_fields, :no_fields, :score,
-																:method_context, :method_return, :method_scope
 
 			def initialize(searchable)
 				@searchable = searchable
@@ -22,16 +17,12 @@ module CloudSesame
 				@client ||= Client.new
 			end
 
-			def builder
-				@builder ||= CloudSesame::Query::Builder.new context, searchable
+			def context
+				@context ||= Context.new
 			end
 
 			# DEFAULT CONTEXT METHODS
 			# =========================================
-
-			def context
-				@context ||= Context.new
-			end
 
 			def default_size(value)
 				context[:page, true][:size] = value

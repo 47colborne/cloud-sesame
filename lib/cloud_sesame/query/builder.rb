@@ -1,14 +1,15 @@
 module CloudSesame
 	module Query
-		class Builder
+		module Builder
 			include DSL::Base
 			include DSL::FilterQuery
 			include DSL::Page
 			include DSL::Query
+			include DSL::Scope
 			include DSL::Sort
 			include DSL::Return
 
-			attr_reader :context, :searchable, :result
+			attr_reader :result
 
 			def initialize(default_context, searchable)
 				@context = default_context
@@ -27,8 +28,12 @@ module CloudSesame
 				@result = nil
 			end
 
+			def compile
+				request.compile
+			end
+
 			def inspect
-				"#<CloudSesame::Query::Builder:#{ object_id } #{ request.compile }>"
+				"#<#{ self.class }:#{ object_id } #{ compile }>"
 			end
 
 			# ENDING METHODS
@@ -38,7 +43,7 @@ module CloudSesame
 				compiled = request.compile
 				raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
 				clear_request
-				@result = searchable.cloudsearch.client.search compiled
+				@result = client.search compiled
 			end
 
 			private
