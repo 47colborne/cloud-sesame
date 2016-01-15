@@ -1,8 +1,13 @@
-# CloudSesame
-Lightweight CloudSearch interface gem
+#CloudSesame
+Light and Flexible CloudSearch Query Interface
+
+#Install
+* In terminal
+	```gem install CloudSesame```
+* In Gemfile
+	```gem 'CloudSesame```
 
 #Setup 
-1. `gem install CloudSesame`
 
 2. Initalize the gem 
 * Inside the Rails `config/initializers` folder, create a file called `cloud_sesame.rb`
