@@ -55,7 +55,7 @@ module CloudSesame
 
         describe 'Query DSL' do
           it 'should be included' do
-            expect(node).to respond_to(:and, :or, :literal)
+            expect(node).to respond_to(:and, :or)
           end
         end
 

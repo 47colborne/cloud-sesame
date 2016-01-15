@@ -4,7 +4,7 @@ module CloudSesame
   module Query
     module Node
       describe Request do
-        let(:context) { Domain::Context.new }
+        let(:context) { Domain::Context.new(filter_query: { fields: { tags: {} } }) }
         let(:request) { Request.new(context) }
 
         describe '#compile' do
@@ -38,7 +38,7 @@ module CloudSesame
             end
           end
           context 'when theres filter query' do
-            before { request.filter_query.root.and{ literal(:tags, "sale") } }
+            before { request.filter_query.root.and { tags "sale" } }
             let(:compiled) { request.filter_query.compile }
             context 'with query' do
               before { request.query.query = "hello" }

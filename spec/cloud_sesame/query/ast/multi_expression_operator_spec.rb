@@ -9,10 +9,6 @@ module CloudSesame
         before { MultiExpressionOperator.symbol = :symbol }
 
         describe '#compile' do
-          it 'should raise an error if operator symbol has not being set' do
-            MultiExpressionOperator.symbol = nil
-            expect{ operator.compile }.to raise_error(Error::MissingOperatorSymbol)
-          end
 
           it 'should return nil if children are empty' do
             expect(operator.compile).to eq(nil)

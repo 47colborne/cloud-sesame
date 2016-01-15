@@ -3,12 +3,15 @@ module CloudSesame
     module AST
       class CompoundArray < Array
 
-        attr_accessor :parent
         attr_reader :scope, :field
 
         def field=(field)
-          self.parent = nil
+          parents.clear
           @field = field
+        end
+
+        def parents
+          @parents ||= []
         end
 
         def scope_to(scope)
@@ -19,47 +22,50 @@ module CloudSesame
         # SINGLE BRANCH OPERATOR
         # =======================================
 
-        # NOT
-        # =======================================
-        def not(*values)
-          self.parent = AST::Not
-          insert_and_return_children(values)
-        end
-
-        alias_method :is_not, :not
-
         # NEAR
         # =======================================
         def near(*values)
-          self.parent = AST::Near
-          insert_and_return_children(values)
+          parents[1] = AST::Near
+          insert_and_return_children values
         end
 
         alias_method :sloppy, :near
 
-        # PREFIX LITERAL
+        # NOT
+        # =======================================
+        def not(*values)
+          parents[0] = AST::Not
+          insert_and_return_children values
+        end
+
+        alias_method :is_not, :not
+
+        # PREFIX
         # =======================================
         def prefix(*values)
-          self.parent = AST::Prefix
-          insert_and_return_children(values)
+          parents[1] = AST::Prefix
+          insert_and_return_children values
         end
 
         alias_method :start_with, :prefix
         alias_method :begin_with, :prefix
 
-        private
-
         def insert_and_return_children(values = [])
           values.each do |value|
-            if parent
-              self << (node = parent.new scope.context)
-              node.child = AST::Literal.new(field, value, options)
-            else
-              self << AST::Literal.new(field, value, options)
+            value.child.field = field if value.kind_of?(AST::SingleExpressionOperator)
+            child = value.kind_of?(AST::SingleExpressionOperator) || value.kind_of?(AST::Literal) ? value : AST::Literal.new(field, value, options)
+
+            current_scope = self
+            parents.compact.each do |parent|
+              current_scope << (node = parent.new scope.context)
+              current_scope = node
             end
+            current_scope << child
           end
           return self
         end
+
+        private
 
         def options
           scope.context[:fields][field]

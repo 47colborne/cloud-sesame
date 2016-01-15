@@ -25,6 +25,7 @@ require 'cloud_sesame/query/dsl/literal'
 require 'cloud_sesame/query/dsl/value'
 require 'cloud_sesame/query/dsl/scope'
 require 'cloud_sesame/query/dsl/filter_query'
+require 'cloud_sesame/query/dsl/boost'
 
 # Query Query Filter Query AST Tree
 # ===============================================
@@ -38,6 +39,7 @@ require 'cloud_sesame/query/ast/or'
 require 'cloud_sesame/query/ast/single_expression_operator'
 require 'cloud_sesame/query/ast/not'
 require 'cloud_sesame/query/ast/near'
+require 'cloud_sesame/query/ast/phrase'
 require 'cloud_sesame/query/ast/prefix'
 require 'cloud_sesame/query/ast/compound_array'
 require 'cloud_sesame/query/ast/literal'

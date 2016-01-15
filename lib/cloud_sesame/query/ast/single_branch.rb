@@ -2,7 +2,6 @@ module CloudSesame
   module Query
     module AST
       class SingleBranch
-
         attr_accessor :child
       	attr_reader :context
 
@@ -16,6 +15,10 @@ module CloudSesame
             (object.options[:excluded] ||= []) << object.options[:included].delete(object.value)
           end
           @child = object
+        end
+
+        def <<(object)
+          self.child= object
         end
 
       end

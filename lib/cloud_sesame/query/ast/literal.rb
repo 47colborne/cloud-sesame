@@ -9,6 +9,7 @@ module CloudSesame
         def initialize(field, value, options = {})
           @field = field
           @value = to_value value
+          @boost = options[:boost]
 
           ((@options = options)[:included] ||= []) << @value
         end

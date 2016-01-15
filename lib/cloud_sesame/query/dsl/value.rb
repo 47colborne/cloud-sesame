@@ -3,13 +3,24 @@ module CloudSesame
 		module DSL
 			module Value
 
-				def d(date)
+				# VALUE DSL
+        # =======================================
+
+				# DATE
+        # =======================================
+				def date(date)
 					AST::DateValue.new date
 				end
 
-				def r(range = nil)
+				alias_method :d, :date
+
+        # RANGE
+        # =======================================
+				def range(range = nil)
 					AST::RangeValue.new range
 				end
+
+				alias_method :r, :range
 
 			end
 		end

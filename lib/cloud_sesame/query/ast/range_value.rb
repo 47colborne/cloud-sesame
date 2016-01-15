@@ -4,7 +4,7 @@ module CloudSesame
       class RangeValue < Value
 
         def initialize(range = nil)
-          @data = range ? [true, to_value range.begin, to_value range.end, !range.exclude_end?] : [false, nil, nil, false]
+          @data = range ? [true, to_value(range.begin), to_value(range.end), !range.exclude_end?] : [false, nil, nil, false]
         end
 
         def compile
@@ -12,22 +12,22 @@ module CloudSesame
         end
 
         def gt(value)
-          data[0, 1] = false, value
+          data[0], data[1] = false, to_value(value)
           return self
         end
 
         def gte(value)
-          data[0, 1] = true, value
+          data[0], data[1] = true, to_value(value)
           return self
         end
 
         def lt(value)
-          data[2], data[3] = value, false
+          data[2], data[3] = to_value(value), false
           return self
         end
 
         def lte(value)
-          data[2], data[3] = value, true
+          data[2], data[3] = to_value(value), true
           return self
         end
 
