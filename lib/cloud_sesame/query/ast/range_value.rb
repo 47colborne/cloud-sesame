@@ -34,7 +34,9 @@ module CloudSesame
         private
 
         def to_value(value)
-          value.kind_of?(Value) ? value : value.kind_of?(Date) || value.kind_of?(Time) ? DateValue.new(value) : Value.new(value)
+          return value if value.kind_of? Value
+          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
+          Value.new value
         end
 
         def lb
