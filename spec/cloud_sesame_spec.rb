@@ -54,9 +54,11 @@ describe CloudSesame do
 	end
 	# Example Query
 	result = Product.cloudsearch
-	.or {
-		created_at r.gt(Date.today - 30).lte(Date.today)
-		searchable_text.not near("2015")
+	.and {
+		price 100..500
+		tags "flash_deal"
+	}.or {
+		currency "USD", "CAD"
 	}
 
 	p result.request.compile

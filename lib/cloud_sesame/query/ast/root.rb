@@ -1,17 +1,11 @@
 module CloudSesame
   module Query
     module AST
-      class Root < MultiBranch
+      class Root < And
+        self.symbol = :and
 
         def compile
-          children.size > 1 ? join_by_default_operator.compile : compile_children
-        end
-
-        private
-
-        def join_by_default_operator
-          (default = And.new context).children.concat children
-          default
+          children.size > 1 ? super : compile_children
         end
 
       end
