@@ -13,7 +13,7 @@ module CloudSesame
 
         def child=(object)
           if object.kind_of? Literal
-            (object.options[:excluded] ||= []) << object.options[:included].delete(object.value.data)
+            (object.options[:excluded] ||= []) << object.options[:included].delete(object.value)
           end
           @child = object
         end

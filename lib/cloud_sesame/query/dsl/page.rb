@@ -3,6 +3,8 @@ module CloudSesame
 		module DSL
 			module Page
 
+				# CLAUSE: PAGE and SIZE
+				# =========================================
 				def page(input = nil)
 					if input
 						request.page.page = input.to_i
@@ -20,6 +22,8 @@ module CloudSesame
 						request.page.size
 					end
 				end
+
+				alias_method :limit,  :size
 
 			end
 		end

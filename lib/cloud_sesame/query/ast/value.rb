@@ -13,6 +13,10 @@ module CloudSesame
           format(data)
         end
 
+        def ==(value)
+          @data == value || compile == value
+        end
+
         private
 
         def format(data)

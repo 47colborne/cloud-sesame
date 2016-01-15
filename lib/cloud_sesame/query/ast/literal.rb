@@ -7,11 +7,18 @@ module CloudSesame
         attr_reader :value, :options
 
         def initialize(field, value, options = {})
-          self.field = field
-          self.value = value
+          @field = field
+          @value = to_value value
 
-          @options = options
-          (options[:included] ||= []) << value
+          ((@options = options)[:included] ||= []) << @value
+        end
+
+        def as_field
+          options[:as] || field
+        end
+
+        def compile
+          options[:detailed] ? detailed_format : standard_format
         end
 
         def detailed
@@ -19,26 +26,20 @@ module CloudSesame
           return self
         end
 
-        def value=(value)
-          @value = value.kind_of?(Value) ? value : Value.new(value)
-        end
-
-        def compile
-          options[:detailed] ? long_format : short_format
-        end
-
-        def as_field
-          options[:as] || field
-        end
-
         private
 
-        def short_format
+        def to_value(value)
+          return value if value.kind_of? Value
+          return RangeValue.new value if value.kind_of? Range
+          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
+          Value.new value
+        end
+
+        def standard_format
           "#{ as_field }:#{ value.compile }"
         end
 
-
-        def long_format
+        def detailed_format
           "field=#{ escape as_field } #{ value.compile }"
         end
 

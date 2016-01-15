@@ -99,20 +99,20 @@ module CloudSesame
           before { subject.context[:fields] = { tags: {}, description: {} } }
           context 'when there is a field and no value' do
             it 'should return true if the request contains the field in the filter query' do
-              subject.and{tags('women')}
+              subject.and { tags 'women' }
               expect(subject.included?(:tags)).to be_truthy
             end
 
             it 'should return false if the request does not contain the field in the filter query' do
-              subject.and{tags.not('women')}
+              subject.and { tags.not 'women' }
               expect(subject.included?(:tags)).to be_falsey
             end
 
           end
           context 'when there is a field and a value' do
             it 'should return true if the request contains the field and the value in the filter query' do
-              subject.and{tags('women')}
-              expect(subject.included?(:tags, 'women')).to be_truthy
+              subject.and { tags("women") }
+              expect(subject.included?(:tags, "women")).to be_truthy
             end
 
             it 'should return false if the request does not contain the field or the value in the filter query' do
@@ -128,7 +128,7 @@ module CloudSesame
           before { subject.context[:fields] = { tags: {}, description: {} } }
           context 'when there is a field and no value' do
             it 'should return true if the request excludes the field in the filter query' do
-              subject.and{tags('women')}
+              subject.and { tags 'women' }
               expect(subject.excluded?(:tags)).to be_falsey
             end
 

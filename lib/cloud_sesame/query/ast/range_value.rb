@@ -3,73 +3,50 @@ module CloudSesame
     module AST
       class RangeValue < Value
 
-        attr_accessor :lower_bound_included,
-                      :upper_bound_included
-
-        def initialize
-          @data = [nil, nil]
+        def initialize(range = nil)
+          if range
+            @data = [true, to_value(range.begin), to_value(range.end), !range.exclude_end?]
+          else
+            @data = [false, nil, nil, false]
+          end
         end
 
         def compile
-          strip "#{ lower_bound }#{ lower.compile if lower },#{ upper.compile if upper }#{ upper_bound }"
-        end
-
-        def to_s
-          compile
+          "#{ lbound }#{ data[1].to_s },#{ data[2].to_s }#{ ubound }"
         end
 
         def gt(value)
-          self.lower = value
-          self.lower_bound_included = false
+          data[0, 1] = false, value
           return self
         end
 
         def gte(value)
-          self.lower = value
-          self.lower_bound_included = true
+          data[0, 1] = true, value
           return self
         end
 
         def lt(value)
-          self.upper = value
-          self.upper_bound_included = false
+          data[2], data[3] = value, false
           return self
         end
 
         def lte(value)
-          self.upper = value
-          self.upper_bound_included = true
+          data[2], data[3] = value, true
           return self
         end
 
-        def lower
-          data[0]
+        def lbound
+          data[1] && data[0] ? '[' : '{'
         end
 
-        def lower=(value)
-          data[0] = to_value(value)
-        end
-
-        def upper
-          data[1]
-        end
-
-        def upper=(value)
-          data[1] = to_value(value)
-        end
-
-        def lower_bound
-          lower && lower_bound_included ? '[' : '{'
-        end
-
-        def upper_bound
-          upper && upper_bound_included ? ']' : '}'
+        def ubound
+          data[2] && data[3] ? ']' : '}'
         end
 
         private
 
         def to_value(value)
-          value.kind_of?(Value) ? value : Value.new(value)
+          value.kind_of?(Value) ? value : value.kind_of?(Date) || value.kind_of?(Time) ? DateValue.new(value) : Value.new(value)
         end
 
       end

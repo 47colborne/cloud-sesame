@@ -11,10 +11,6 @@ module CloudSesame
           strip escape @data.strftime('%FT%TZ')
         end
 
-        def to_s
-          compile
-        end
-
       end
     end
   end

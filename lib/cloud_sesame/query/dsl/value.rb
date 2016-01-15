@@ -1,14 +1,14 @@
 module CloudSesame
 	module Query
 		module DSL
-			module LiteralHelper
+			module Value
 
 				def d(date)
 					AST::DateValue.new date
 				end
 
-				def r
-					AST::RangeValue.new
+				def r(range = nil)
+					AST::RangeValue.new range
 				end
 
 			end

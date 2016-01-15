@@ -23,7 +23,7 @@ require 'cloud_sesame/query/dsl/and'
 require 'cloud_sesame/query/dsl/or'
 require 'cloud_sesame/query/dsl/range'
 require 'cloud_sesame/query/dsl/literal'
-require 'cloud_sesame/query/dsl/literal_helper'
+require 'cloud_sesame/query/dsl/value'
 require 'cloud_sesame/query/dsl/scope'
 require 'cloud_sesame/query/dsl/filter_query'
 
