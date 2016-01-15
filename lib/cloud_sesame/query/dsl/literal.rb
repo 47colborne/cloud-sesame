@@ -3,6 +3,16 @@ module CloudSesame
 		module DSL
 			module Literal
 
+				# LITERAL: creates a single LITERAL node
+				# =======================================
+				def literal(value)
+					field = method_scope.children.field
+					AST::Literal.new field, value, fields[field]
+				end
+
+				alias_method :l,			    :literal
+				alias_method :field,  	  :literal
+
 				# NEAR: creates a single NEAR node
 				# =======================================
 				def near(value)

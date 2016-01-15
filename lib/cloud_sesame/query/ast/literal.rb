@@ -4,14 +4,12 @@ module CloudSesame
       class Literal < SingleBranch
 
         attr_accessor :field
-        attr_reader :value, :options
+        attr_reader :options, :value
 
         def initialize(field = nil, value = nil, options = {})
           @field = field
           @value = to_value value
-          @options = options || {}
-          @boost = @options[:boost]
-          (@options[:included] ||= []) << @value
+          ((@options = options || {})[:included] ||= []) << @value
         end
 
         def as_field

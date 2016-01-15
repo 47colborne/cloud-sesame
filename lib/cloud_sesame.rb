@@ -26,6 +26,7 @@ require 'cloud_sesame/query/dsl/value'
 require 'cloud_sesame/query/dsl/scope'
 require 'cloud_sesame/query/dsl/filter_query'
 require 'cloud_sesame/query/dsl/boost'
+require 'cloud_sesame/query/dsl/return'
 
 # Query Query Filter Query AST Tree
 # ===============================================

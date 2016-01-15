@@ -59,6 +59,7 @@ describe CloudSesame do
 		tags "flash_deal"
 	}.or {
 		searchable_text term "women"
+		binding.pry
 	}
 
 	p result.request.compile

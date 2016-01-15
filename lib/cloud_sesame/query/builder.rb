@@ -6,6 +6,7 @@ module CloudSesame
 			include DSL::Page
 			include DSL::Query
 			include DSL::Sort
+			include DSL::Return
 
 			attr_reader :context, :searchable, :result
 

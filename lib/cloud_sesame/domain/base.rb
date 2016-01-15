@@ -11,6 +11,7 @@ module CloudSesame
 
 			def_delegators 	:builder, :query, :page, :size, :sort,
 																:and, :or, :included?, :excluded?,
+																:all_fields, :no_fields, :score,
 																:method_context, :method_return, :method_scope
 
 			def initialize(searchable)
