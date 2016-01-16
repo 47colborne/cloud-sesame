@@ -16,13 +16,8 @@ module CloudSesame
           options[:as] || field
         end
 
-        def compile
-          options[:detailed] ? detailed_format : standard_format
-        end
-
-        def detailed
-          options[:detailed] = true
-          return self
+        def compile(detailed = false)
+          detailed ? detailed_format : standard_format
         end
 
         private

@@ -2,20 +2,19 @@ module CloudSesame
   module Query
     module AST
       class Near < SingleExpressionOperator
-				self.symbol = :near
+        DETAILED = true
+				SYMBOL = :near
 
 				def compile
-					child.detailed if child.kind_of?(Literal)
-          "(#{ self.class.symbol  }#{ compile_boost }#{ compile_distance } #{ child.compile })" if child
+          "(#{ SYMBOL }#{ boost.compile if boost }#{ distance.compile if distance } #{ child.compile DETAILED })" if child
 				end
 
-        def distance(value)
-          @distance = value.to_i
-          return self
+        def distance
+          options[:distance]
         end
 
-        def compile_distance
-          " distance=#{ @distance }" if @distance
+        def distance=(value)
+          options[:distance] = Distance.new value
         end
 
       end

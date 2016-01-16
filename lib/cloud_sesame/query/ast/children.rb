@@ -1,11 +1,11 @@
 module CloudSesame
   module Query
     module AST
-      class CompoundArray < Array
+      class Children < Array
 
-        attr_reader :scope, :field
+        attr_accessor :scope, :field
 
-        def for_field(field)
+        def field=(field)
           parents.clear
           @field = field
         end
@@ -14,13 +14,9 @@ module CloudSesame
           @parents ||= []
         end
 
-        def scope_to(scope)
-          @scope = scope
-          return self
+        def compile
+          map(&:compile).join(' ')
         end
-
-        # SINGLE BRANCH OPERATOR
-        # =======================================
 
         # NEAR
         # =======================================

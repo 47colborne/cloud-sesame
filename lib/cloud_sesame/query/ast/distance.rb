@@ -1,8 +1,8 @@
 module CloudSesame
   module Query
     module AST
-      class Not < SingleExpressionOperator
-				SYMBOL = :not
+      class Distance < Options
+				SYMBOL = :distance
       end
     end
   end

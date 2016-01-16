@@ -2,7 +2,7 @@ module CloudSesame
   module Query
     module AST
       class And < MultiExpressionOperator
-        self.symbol = :and
+        SYMBOL = :and
       end
     end
   end

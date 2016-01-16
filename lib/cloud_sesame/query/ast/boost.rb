@@ -1,7 +1,8 @@
 module CloudSesame
   module Query
     module AST
-      class Leaf
+      class Boost < Options
+				SYMBOL = :boost
       end
     end
   end

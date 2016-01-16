@@ -30,10 +30,13 @@ require 'cloud_sesame/query/dsl/return'
 
 # Query Query Filter Query AST Tree
 # ===============================================
-require 'cloud_sesame/query/ast/multi_branch'
-require 'cloud_sesame/query/ast/single_branch'
+require 'cloud_sesame/query/ast/operator'
+require 'cloud_sesame/query/ast/option'
+require 'cloud_sesame/query/ast/boost'
+require 'cloud_sesame/query/ast/distance'
 require 'cloud_sesame/query/ast/multi_expression_operator'
 require 'cloud_sesame/query/ast/single_expression_operator'
+require 'cloud_sesame/query/ast/children'
 require 'cloud_sesame/query/ast/and'
 require 'cloud_sesame/query/ast/or'
 require 'cloud_sesame/query/ast/not'
@@ -41,13 +44,11 @@ require 'cloud_sesame/query/ast/near'
 require 'cloud_sesame/query/ast/phrase'
 require 'cloud_sesame/query/ast/prefix'
 require 'cloud_sesame/query/ast/term'
-require 'cloud_sesame/query/ast/compound_array'
-require 'cloud_sesame/query/ast/root'
-require 'cloud_sesame/query/ast/leaf'
 require 'cloud_sesame/query/ast/literal'
 require 'cloud_sesame/query/ast/value'
 require 'cloud_sesame/query/ast/date_value'
 require 'cloud_sesame/query/ast/range_value'
+require 'cloud_sesame/query/ast/root'
 
 # Query Request Nodes
 # ===============================================
