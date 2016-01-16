@@ -16,7 +16,7 @@ module CloudSesame
 			end
 
 			def request
-				@request ||= (clear_result; Node::Request.new context.dup)
+				@request ||= (clear_response; Node::Request.new context.dup)
 			end
 
 			def response
@@ -27,7 +27,7 @@ module CloudSesame
 				@request = nil
 			end
 
-			def clear_result
+			def clear_response
 				@response = nil
 			end
 
@@ -67,8 +67,12 @@ module CloudSesame
 
 			private
 
-			def method_scope
+			def scope
 				request.filter_query.root
+			end
+
+			def scope_return(node = nil)
+				self
 			end
 
 		end
