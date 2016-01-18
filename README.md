@@ -200,7 +200,7 @@ Product.cloudsearch.name("shoes").price(100)
 Product.cloudsearch.and { name "shoes"; price 25..100 }
 # OUTPUT: "(and name:'shoes' price:[25,100])"
 ```
-* #not, #prefix (#start_with, #begin_with), #near can be chained after #<field_name>
+* #not, #prefix (#start_with, #begin_with), #near can be chained after #<field_name> and takes multiple values
 ```
 Product.cloudsearch.and { name.not "shoes"; ... }
 # OUTPUT: "(and (not name:'shoes') ...)"
@@ -216,6 +216,11 @@ Product.cloudsearch.and { name.not.start_with "shoes" }
 
 Product.cloudsearch.and { name(start_with("shoes"), near("puma")).not("nike") }
 # OUTPUT: "(and (prefix field='name' 'shoes') (near field='name' 'puma') (not name:'nike'))"
+```
+* #prefix (#start_with, #begin_with), #near can be called directly to generate a single field value
+```
+Product.cloudsearch.and { name.not start_with("shoes"), near("something") } 
+# OUTPUT: "(not (prefix field='name' 'shoes') (not (near field='name' 'something')))"
 ```
 
 ###Date, Time and Rage
@@ -236,3 +241,12 @@ r.gte(100).lt(200)	=> "[100,200}"
 r.gt(Date.today)	=> "{'2016-01-18T00:00:00Z',}"
 ```
 
+###Search Related Methods
+* #search  => send off the request, save and returns the response and clear the request
+* #found   => returns the hits found from the response 
+* #results => returns the hits.hit from the response
+* #each    => Calls the given block once for each result, passing that result as a parameter. Returns the results itself.
+* #map     => Creates a new array containing the results returned by the block.
+
+###Other Methods
+* #
