@@ -221,8 +221,8 @@ Product.cloudsearch.and {
 # OUTPUT: "(and (not (near field='name' 'shoes')))"
 
 Product.cloudsearch.and {
-	name start_with("shoes"), near("puma")				
+	name(start_with("shoes"), near("puma")).not("nike")
 }
-# OUTPUT: "(and (near field='name' 'shoes'))"
+# OUTPUT: "(and (prefix field='name' 'shoes') (near field='name' 'puma') (not name:'nike'))"
 ```
 
