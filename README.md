@@ -187,7 +187,8 @@ Product.cloudsearch.or { and!.not { ...} }
 
 ###Field Methods
 #####field_name(*values)
-calling the field_name with multiple values will generate multiple field expression
+- calling the field_name with multiple values will generate multiple field expression
+- fields can be chained together
 
 ```
 Product.cloudsearch.name("shoes")				
@@ -202,7 +203,10 @@ Product.cloudsearch.name("shoes").price(100)
 Product.cloudsearch.and { name "shoes"; price 25..100 }
 # OUTPUT: "(and name:'shoes' price:[25,100])"
 ```
-* #not, #prefix (#start_with, #begin_with), #near can be chained after #<field_name> and takes multiple values
+
+#####field_name.field_array_method(*values)
+- #not, #prefix (#start_with, #begin_with), #near can be called after the field_name
+- #not can be chained with another operator after, example: `name.not.prefix`
 ```
 Product.cloudsearch.and { name.not "shoes"; ... }
 # OUTPUT: "(and (not name:'shoes') ...)"
