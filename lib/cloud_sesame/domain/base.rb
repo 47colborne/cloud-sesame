@@ -41,7 +41,7 @@ module CloudSesame
 
 			def define_fuzziness(proc = nil, &block)
 				block = proc unless block_given?
-				context[:query, true][:fuzziness] = Query::Fuzziness.new(&block)
+				context[:query, true][:fuzziness] = Query::Node::Fuzziness.new(&block)
 			end
 
 			def default_scope(proc, &block)

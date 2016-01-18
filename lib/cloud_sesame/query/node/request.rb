@@ -57,7 +57,7 @@ module CloudSesame
 
 					if compiled[:filter_query].empty?
 						compiled.delete(:filter_query)
-					elsif compiled[:query].empty?
+					elsif compiled[:query].nil? || compiled[:query].empty?
 						convert_to_structured_query(compiled)
 					end
 
@@ -67,7 +67,7 @@ module CloudSesame
 				private
 
 				def convert_to_structured_query(compiled)
-					replace(compiled, :query, :filter_query).merge!(query_parser.structured.compile)
+					replace(compiled, :query, :filter_query).merge! query_parser.structured.compile
 				end
 
 				def replace(hash, key1, key2)

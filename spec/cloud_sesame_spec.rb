@@ -47,7 +47,7 @@ describe CloudSesame do
 	# 		field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
 	# 		field :created_at
 
-	# 		scope :men_tag, ->(date) { created_at date }
+	# 		scope :shoes_by_brand, ->(brand = nil) { query("shoes").and { manufacturer_name brand }  if brand }
 	# 		scope :and_mens do
 	# 			and! { tags "men"}
 	# 		end
@@ -66,21 +66,25 @@ describe CloudSesame do
 	# end
 
 	# # Example Query
-	# query = Product.cloudsearch.query("children panasonic")
-	# .and {
-	# 	or!(boost: 2) {
-	# 		# tags.not start_with "flash_deal"
-	# 		tags.not.start_with "flash_deal"
-	# 		# tags.near"sales"
-	# 		# tags start_with("flash_deal"), near("sales")
-	# 	}
-	# 	or!.not {
-	# 		currency "CAD", "EUR"
-	# 	}
-	# 	and! {
-	# 		price r.gte(100).lt(200)
-	# 	}
-	# }.created_at(Date.today).description("wasup")
+	# query = Product.cloudsearch.query("shoes").and {
+	# 	searchable_text(start_with("puma")).not("nike")
+	# }
+	# .created_at(Time.now).description("wasup")
+
+	# # .and {
+	# # 	or!(boost: 2) {
+	# # 		# tags.not start_with "flash_deal"
+	# # 		tags.not.start_with "flash_deal"
+	# # 		# tags.near"sales"
+	# # 		# tags start_with("flash_deal"), near("sales")
+	# # 	}
+	# # 	or!.not {
+	# # 		currency "CAD", "EUR"
+	# # 	}
+	# # 	and! {
+	# # 		price r.gte(100).lt(200)
+	# # 	}
+
 
 	# binding.pry
 

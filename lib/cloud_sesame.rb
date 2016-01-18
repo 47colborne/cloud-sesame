@@ -31,6 +31,7 @@ require 'cloud_sesame/query/dsl/operator_methods'
 require 'cloud_sesame/query/dsl/scope_methods'
 require 'cloud_sesame/query/dsl/value_methods'
 
+
 # Query Query Filter Query AST Tree
 # ===============================================
 require 'cloud_sesame/query/ast/operator'
@@ -56,6 +57,7 @@ require 'cloud_sesame/query/ast/root'
 require 'cloud_sesame/query/node/abstract'
 require 'cloud_sesame/query/node/request'
 require 'cloud_sesame/query/node/query'
+require 'cloud_sesame/query/node/fuzziness'
 require 'cloud_sesame/query/node/query_options'
 require 'cloud_sesame/query/node/query_options_field'
 require 'cloud_sesame/query/node/query_parser'
@@ -68,7 +70,6 @@ require 'cloud_sesame/query/node/return'
 # Query Builder Interface
 # ===============================================
 require 'cloud_sesame/query/builder'
-require 'cloud_sesame/query/fuzziness'
 
 # Domain Objects
 # ===============================================

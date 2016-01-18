@@ -36,7 +36,7 @@ module CloudSesame
       end
 
       def fuzziness(word)
-        if word.length >= @min_char_size
+        if word.length >= @min_char_size && !excluding_term?(word)
           fuzziness = (word.length * @fuzzy_percent).round
           fuzziness = [fuzziness, @max_fuzziness].min
           "#{word}~#{fuzziness}"
@@ -47,6 +47,10 @@ module CloudSesame
 
       def join_by_and(*args)
         (args = args.flatten.compact).size > 1 ? "(#{ args.join('+') })" : args[0]
+      end
+
+      def excluding_term?(word)
+        !!word.match(/^\-/)
       end
 
     end

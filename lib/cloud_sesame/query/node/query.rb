@@ -16,11 +16,11 @@ module CloudSesame
 				private
 
 				def fuzziness
-					context[:fuzziness] ? context[:fuzziness].parse(query) : nil
+					context[:fuzziness] && query && !query.empty? ? context[:fuzziness].parse(query) : nil
 				end
 
 				def sloppiness
-					context[:sloppiness] && query.include?(' ') ? "\"#{ query }\"~#{ context[:sloppiness] }" : nil
+					context[:sloppiness] && query && query.include?(' ') ? "\"#{ query }\"~#{ context[:sloppiness] }" : nil
 				end
 
 				def join_by_or(*args)
