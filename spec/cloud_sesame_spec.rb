@@ -67,18 +67,19 @@ describe CloudSesame do
 	query = Product.cloudsearch.query("nike pants")
 	.and {
 		or!(boost: 2) {
-			tags "flash_deal"
-			tags "sales"
+			# tags.not start_with "flash_deal"
+			tags.not.start_with "flash_deal"
+			# tags.near"sales"
+			# tags start_with("flash_deal"), near("sales")
 		}
 		or!.not {
 			currency "CAD", "EUR"
 		}
 		and! {
 			price r.gte(100).lt(200)
-			created_at r.gt(Date.today - 10)
 		}
-	}
+	}.created_at(Date.today).description("wasup")
 
-	binding.pry
+	# binding.pry
 
 end

@@ -6,7 +6,7 @@ module CloudSesame
 				# NEAR
 				# =======================================
 				def near(*values)
-					parents[1] = { klass: AST::Near, options: extract_options(values) }
+					parents[0] = { klass: AST::Near, options: extract_options(values) }
 				  insert_and_return_children values
 				end
 
@@ -15,7 +15,7 @@ module CloudSesame
 				# NOT
 				# =======================================
 				def not(*values)
-					parents[0] = { klass: AST::Not, options: extract_options(values) }
+					parents[1] = { klass: AST::Not, options: extract_options(values) }
 				  insert_and_return_children values
 				end
 
@@ -24,7 +24,7 @@ module CloudSesame
 				# PREFIX
 				# =======================================
 				def prefix(*values)
-				  parents[1] = { klass: AST::Prefix, options: extract_options(values) }
+				  parents[0] = { klass: AST::Prefix, options: extract_options(values) }
 				  insert_and_return_children values
 				end
 
@@ -34,15 +34,14 @@ module CloudSesame
 				def insert_and_return_children(values = [])
 					values.each do |value|
 						child = ensure_not_raw_value value
-						current_scope = dsl_scope
 						parents.compact.each do |parent|
 							node = parent[:klass].new dsl_context, parent[:options]
-							current_scope << node
-				      current_scope = node
+							node << child
+							child = node
 				    end
-						current_scope << child
+						dsl_scope << child
 					end
-					parents.clear
+					parents.clear unless values.empty?
 				  dsl_return != dsl_scope ? dsl_return : self
 				end
 

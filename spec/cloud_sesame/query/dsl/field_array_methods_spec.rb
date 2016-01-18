@@ -18,18 +18,18 @@ module CloudSesame
 
 				after { subject.clear_request }
 
-				shared_examples_for 'single_expression_operator' do |command, klass, operator_weight|
+				shared_examples_for 'single_expression_operator' do |operation, klass, operator_weight|
 
-					it "should insert the class Near into parents at index #{ operator_weight }" do
+					it "should save the class #{ klass } into parents at index #{ operator_weight }" do
 						array = nil
-						subject.and { array = tags.send(command) }
-						expect(array.parents[operator_weight]).to eq klass
+						subject.and { array = tags.send(operation) }
+						expect(array.parents[operator_weight]).to include klass: klass
 					end
 
 					context 'when given values' do
 						let(:array) {
 							array = nil
-							subject.and { array = tags.send(command, "men") }
+							subject.and { array = tags.send(operation, "men") }
 							array
 						}
 
@@ -52,15 +52,15 @@ module CloudSesame
 				end
 
 				describe '#near' do
-					it_should_behave_like "single_expression_operator", :near, AST::Near, 1
+					it_should_behave_like "single_expression_operator", :near, AST::Near, 0
 				end
 
 				describe '#prefix' do
-					it_should_behave_like "single_expression_operator", :prefix, AST::Prefix, 1
+					it_should_behave_like "single_expression_operator", :prefix, AST::Prefix, 0
 				end
 
 				describe '#not' do
-					it_should_behave_like "single_expression_operator", :not, AST::Not, 0
+					it_should_behave_like "single_expression_operator", :not, AST::Not, 1
 				end
 
 			end
