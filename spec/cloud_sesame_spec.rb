@@ -66,10 +66,7 @@ describe CloudSesame do
 	# end
 
 	# # Example Query
-	# query = Product.cloudsearch.query("shoes").and {
-	# 	searchable_text(start_with("puma")).not("nike")
-	# }
-	# .created_at(Time.now).description("wasup")
+	# query = Product.cloudsearch.shoes_by_brand("puma").and_mens
 
 	# # .and {
 	# # 	or!(boost: 2) {

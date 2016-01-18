@@ -8,7 +8,7 @@ gem install CloudSesame
 ```
 * Or add this line to the application in `Gemfile`:
 ```
-gem 'CloudSesame
+gem 'CloudSesame'
 ```
 
 #AWS Credentials
@@ -47,9 +47,43 @@ the block can set 3 values
 - **fuzzy_percent(float = 0.17)**
 	percent used to calculate the fuzziness based on the word length, fuzziness whill choose between the calculated result and maximum fizziness, whichever is smaller.
 	[(word.size * fuzzy_percent).round, max_fuzziness].min
-#####field(symbol, options = {})
-- calling field and pass in a field_name will create an literal method, which can be called to create a literal expression
 
+#####field(symbol, options = {})
+calling field and pass in a field_name will create an literal method, which can be called to create a literal expression
+
+**field examples with query options**
+```
+field :name, query: true			
+# COMPILED: query_options[:fields] = ["name"]
+
+field :tags, query: { weight: 2 }
+# COMPILED: query_options[:fields] = ["name", "tags^2"]
+```
+**field example with facet**
+```
+# To enable facet
+field :currency, facet: true
+
+# To enable facet with buckets
+field :discount, facet: { 				
+	buckets: %w([10,100] [25,100] [50,100] [70,100]), 
+	method: 'interval' 
+}
+
+# To enable facet with max size
+field :manufacturer, facet: { size: 50 }
+
+# To enable facet with sorting
+field :category, facet: { sort: 'bucket', size: 10_000 }	
+
+```
+
+#####scope(symbol, proc, &block)
+ActiveRecord styled scope method. Scope allows you to specify commonly-used queries which can be referenced as method calls on cloudsearch or inside of operator block
+
+ 
+
+**complete example**
 ```
 class Product < ActiveRecord::Base
 	include CloudSesame
@@ -63,49 +97,46 @@ class Product < ActiveRecord::Base
 		
 		define_sloppiness <integer>
 		
-		# turn on fuzzy search
 		define_fuzziness {
 			max_fuzziness <integer>
 			min_char_size <integer>
 			fuzzy_percent <float>	
 		}
 		
-		# field config
-		field :product_name,	query: { weight: <integer> }	# => query_options[:fields] = ["product_name^<integer>"]
-		field :description,		query: true						# => query_options[:fields] = ["description"]
+		field :product_name,	query: { weight: <integer> }
+		field :description,		query: true
 		
-		field :currency,		facet: true				# => enable facet
-		field :discount,	 	facet: { 				# => enable facet with buckets
+		field :currency,		facet: true		
+		field :discount,	 	facet: { 
 			buckets: %w([10,100] [25,100] [50,100] [70,100]), 
 			method: 'interval' 
 		}
-		field :manufacturer,	facet: { size: 50 }		# => enable facet with max size
-		field :category,		facet: { 				# => enable facet with sorting
-			sort: 'bucket', size: 10_000 
+		field :manufacturer,	facet: { size: <integer> }
+		field :category,		facet: { 
+			sort: 'bucket', size: <integer> 
 		}
 		
 		field :created_at
 		
-		# scope examples
-		
-		# INPUT: "puma", 
-		# OUPUT: query="shoes", filter_query="(and manufacturer:'puma')"
 		scope :shoes_by_brand, ->(brand = nil) { query("shoes").and { manufacturer brand } if brand }
-		
-		# INPUT: 1
-		# OUPUT: filter_query="(and created_at:{'2016-01-17T00:00:00Z',})"
+	
 		scope :created_in, ->(days = nil) { and { created_at r.gt(Date.today - days) } if days }
 		
 	end
 end
 ```
-##2. Inheriting from another class or model
-```
-# Inheriting Definitions from another class
-class ExclusiveProduct < Product
 
-	# load previous define cloudsearch definition
+#####load_definition_from(Class/Model)
+every cloud 
+```
+class ExclusiveProduct < Product
+	# load any define cloudsearch definition from class/model
 	load_definition_from Product
+end
+```
+
+```
+	
 	
 	# call define_cloudsearch again to override config 
 	# or map field to a different name
