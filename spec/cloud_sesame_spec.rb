@@ -49,7 +49,6 @@ describe CloudSesame do
 			scope :and_mens do
 				and! { tags "men"}
 			end
-			scope :men_stuff, -> { query("men").sort().page }
 
 		end
 
@@ -65,7 +64,8 @@ describe CloudSesame do
 	end
 
 	# Example Query
-	query = Product.cloudsearch.query("nike pants").and {
+	query = Product.cloudsearch.query("nike pants")
+	.and {
 		or!(boost: 2) {
 			tags "flash_deal"
 			tags "sales"

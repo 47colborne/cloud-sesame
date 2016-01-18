@@ -4,14 +4,14 @@ module CloudSesame
 			module FilterQueryMethods
 
 				def included?(field, value = nil)
-					(field_options = method_scope.context[:fields][field]) && (
+					(field_options = dsl_context[:fields][field]) && (
 						(value && field_options_is(:included, field_options, value)) ||
 						(!value && field_options_not_empty_in(:included, field_options))
 					)
 				end
 
 				def excluded?(field, value = nil)
-					(field_options = method_scope.context[:fields][field]) && (
+					(field_options = dsl_context[:fields][field]) && (
 						(value && field_options_is(:excluded, field_options, value)) ||
 						(!value && field_options_not_empty_in(:excluded, field_options))
 					)

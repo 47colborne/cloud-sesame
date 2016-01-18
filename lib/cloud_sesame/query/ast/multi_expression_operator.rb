@@ -5,7 +5,9 @@ module CloudSesame
         include DSL::Base
         include DSL::BlockMethods
         include DSL::FieldMethods
+        include DSL::FilterQueryMethods
         include DSL::OperatorMethods
+        include DSL::ScopeMethods
         include DSL::ValueMethods
 
         def children

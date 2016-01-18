@@ -8,7 +8,8 @@ module CloudSesame
 				def not(options = {}, &block)
 					raise missing_block unless block_given?
 					node = AST::Not.new(dsl_context, options)
-					(node << orphan_node).evaluate &block
+					orphan_node.evaluate &block
+					node << orphan_node
 					dsl_scope << node
 				  dsl_return node
 				end

@@ -4,12 +4,13 @@ module CloudSesame
 			include DSL::Base
 			include DSL::PageMethods
 			include DSL::QueryMethods
-			include DSL::SortMethods
 			include DSL::ReturnMethods
+			include DSL::SortMethods
 
 			# Filter Query DSL
 			include DSL::BlockMethods
 			include DSL::FieldMethods
+			include DSL::FilterQueryMethods
 			include DSL::ScopeMethods
 			include DSL::ValueMethods
 
