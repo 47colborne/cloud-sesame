@@ -186,7 +186,9 @@ Product.cloudsearch.or { and!.not { ...} }
 ```
 
 ###Field Methods
-* field can be set by calling #<field_name> *values
+#####field_name(*values)
+calling the field_name with multiple values will generate multiple field expression
+
 ```
 Product.cloudsearch.name("shoes")				
 # OUTPUT: "name:'shoes'"
