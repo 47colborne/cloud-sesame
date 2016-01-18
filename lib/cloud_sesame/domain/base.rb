@@ -35,6 +35,15 @@ module CloudSesame
 				define_filter_query_field(name, options)
 			end
 
+			def define_sloppiness(value)
+				context[:query, true][:sloppiness] = value.to_i
+			end
+
+			def define_fuzziness(proc = nil, &block)
+				block = proc unless block_given?
+				context[:query, true][:fuzziness] = Query::Fuzziness.new(&block)
+			end
+
 			def default_scope(proc, &block)
 				scope :default, proc, &block
 			end

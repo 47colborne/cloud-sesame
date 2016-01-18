@@ -3,24 +3,28 @@ module CloudSesame
 		module Node
 			class Query < Abstract
 
-				def terms=(array)
-					@terms = array
-				end
-
-				def terms
-					@terms ||= (q = context[:query]) ? q.split(' ') : []
-				end
+				attr_writer :query
 
 				def query
-					terms.map!(&:strip).join(' ')
-				end
-
-				def query=(string = '')
-					@terms = string.split(' ')
+					@query ||= context[:query]
 				end
 
 				def compile
-					{ query: query }
+					{ query: join_by_or(query, fuzziness, sloppiness) }
+				end
+
+				private
+
+				def fuzziness
+					context[:fuzziness] ? context[:fuzziness].parse(query) : nil
+				end
+
+				def sloppiness
+					context[:sloppiness] && query.include?(' ') ? "\"#{ query }\"~#{ context[:sloppiness] }" : nil
+				end
+
+				def join_by_or(*args)
+					(args = args.flatten.compact).size > 1 ? "(#{ args.join('|') })" : args[0]
 				end
 
 			end

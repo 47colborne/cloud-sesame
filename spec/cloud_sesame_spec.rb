@@ -27,11 +27,13 @@ describe CloudSesame do
 
 			default_size 100
 
-			# describe_fuzziness do
-			# 	max_fuzziness 3
-			# 	min_word_length 6
-			# 	fuzzy_percentage 0.17
-			# end
+			define_sloppiness 3
+
+			define_fuzziness do
+				max_fuzziness 3
+				min_char_size 6
+				fuzzy_percent 0.17
+			end
 
 			field :searchable_text, 		query: { weight: 2 }
 			field :description, 				query: true
@@ -64,7 +66,7 @@ describe CloudSesame do
 	end
 
 	# Example Query
-	query = Product.cloudsearch.query("nike pants")
+	query = Product.cloudsearch.query("children panasonic")
 	.and {
 		or!(boost: 2) {
 			# tags.not start_with "flash_deal"
