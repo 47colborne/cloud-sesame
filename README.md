@@ -1,17 +1,17 @@
 #CloudSesame
-Light and Flexible CloudSearch Query Interface
+Powerful and Flexible CloudSearch Query DSL
 
-#Install
+#Installation
 * In terminal type:
 ```
 gem install CloudSesame
 ```
-* Or add this line to the application in Gemfile:
+* Or add this line to the application in `Gemfile`:
 ```
 gem 'CloudSesame
 ```
 
-#Setup AWS Credentials
+#AWS Credentials
 *Create a initializer file, example: `config/initializers/cloud_sesame.rb`
 ```
 require 'cloud_sesame'
@@ -21,30 +21,53 @@ CloudSesame::Domain::Client.configure do |config|
 	config.secret_key = ENV['AWS_SECRET_ACCESS_KEY']
 end
 ```
-#Usage
+
+#Model Setup
 ##1. Mix CloudSesame into any class or model
+- `include CloudSesame` in a model or class
+- call `define_cloudsearch` and pass in a block to define the cloudsearch
+
+#####define_cloudsearch(&block)
+Includes all Model/Class specific cloudsearch configurations
+#####config.endpoint=(string)
+Set AWS CloudSearch instance search endpoint
+#####config.region=(string) 
+Set AWS CloudSearch isntance region
+#####default_size(integer = 10) 
+Set default search size
+#####define_sloppiness(integer)
+Setup sloppy query, it is turned off by default
+#####define_fuzziness(&block)
+Setup fuzziness, it is turned off by default.
+the block can set 3 values 
+- **max_fuzziness(integer = 3)**
+	maxinmum fuzziness per word
+- **min_char_size(integer = 6)**
+	minimum word length to trigger fuzziness
+- **fuzzy_percent(float = 0.17)**
+	percent used to calculate the fuzziness based on the word length, fuzziness whill choose between the calculated result and maximum fizziness, whichever is smaller.
+	[(word.size * fuzzy_percent).round, max_fuzziness].min
+#####field(symbol, options = {})
+- calling field and pass in a field_name will create an literal method, which can be called to create a literal expression
+
 ```
 class Product < ActiveRecord::Base
 	include CloudSesame
 	
-	# call `define_cloudsearch` to setup your CloudSearch config, default size (optional), fields, and scopes (optional)
 	define_cloudsearch do 
 	
-		# REQUIRED: class specific config
 		config.endpoint = ENV['AWS_PRODUCT_SEARCH_ENDPOINT']
 		config.region 	= ENV['AWS_PRODUCT_SEARCH_REGION']
 		
-		# default query size is 10
 		default_size <integer>
 		
-		# turn on sloppy query with distance
-		define_sloppiness 3
+		define_sloppiness <integer>
 		
 		# turn on fuzzy search
 		define_fuzziness {
-			max_fuzziness <integer> # => maximum fuzziness per word, DEFAULT: 3
-			min_char_size <integer>	# => minimum word size to trigger fuzziness, DEFAULT: 6
-			fuzzy_percent <float>	# => [(word.size * fuzzy_percent).round, max_fuzziness].min, DEFAULT: 0.17
+			max_fuzziness <integer>
+			min_char_size <integer>
+			fuzzy_percent <float>	
 		}
 		
 		# field config
