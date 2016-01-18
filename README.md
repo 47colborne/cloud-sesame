@@ -99,71 +99,130 @@ end
 ###Simple Query
 ```
 # Simple Query String
-Product.cloudsearch.query("shoes")					# OUTPUT: "shoes"
-Product.cloudsearch.query("shoes -puma")			# OUTPUT: "shoes -puma"
+Product.cloudsearch.query("shoes")				
+# OUTPUT: "shoes"
+
+Product.cloudsearch.query("shoes -puma")			
+# OUTPUT: "shoes -puma"
 
 # With Sloppy Query
-Product.cloudsearch.query("shoes")					# OUTPUT: "(shoes|\"shoes\"~3)"
-Product.cloudsearch.query("shoes -puma")			# OUTPUT: "(shoes -puma|\"shoes -puma\"~3)"
+Product.cloudsearch.query("shoes")					
+# OUTPUT: "(shoes|\"shoes\"~3)"
+
+Product.cloudsearch.query("shoes -puma")			
+# OUTPUT: "(shoes -puma|\"shoes -puma\"~3)"
 
 # With Fuzzy Search
-Product.cloudsearch.query("white shoes")			# OUTPUT: "(shoes|(white~3+shoes~3))"
-Product.cloudsearch.query("white shoes -puma")		# OUTPUT: "(shoes -puma|(white~3+shoes~3+-puma))"
+Product.cloudsearch.query("white shoes")			
+# OUTPUT: "(shoes|(white~3+shoes~3))"
+
+Product.cloudsearch.query("white shoes -puma")		
+# OUTPUT: "(shoes -puma|(white~3+shoes~3+-puma))"
 ```
 
 ###Pagination
 ```
-Product.cloudsearch.page(3).size(100)				# OUTPUT: { start: 200, size: 100 }
-Product.cloudsearch.start(99).size(100)				# OUTPUT: { start: 99, size: 100 }
+Product.cloudsearch.page(3).size(100)				
+# OUTPUT: { start: 200, size: 100 }
+
+Product.cloudsearch.start(99).size(100)				
+# OUTPUT: { start: 99, size: 100 }
 ```
 
 ###Sorting
 ```
-Product.cloudsearch.sort(name: :desc)				# OUTPUT: { sort: "name desc" }
-Product.cloudsearch.sort(name: :desc, price: :asc)	# OUTPUT: { sort: "name desc,price asc" }
+Product.cloudsearch.sort(name: :desc)				
+# OUTPUT: { sort: "name desc" }
+
+Product.cloudsearch.sort(name: :desc, price: :asc)	
+# OUTPUT: { sort: "name desc,price asc" }
 ```
 
 ###Return
 ```
-Product.cloudsearch.all_fields						# OUTPUT: { return: "_all_fields" }
-Product.cloudsearch.no_fields						# OUTPUT: { return: "_no_fields" }
-Product.cloudsearch.score							# OUTPUT: { return: "_score" }
+Product.cloudsearch.all_fields						
+# OUTPUT: { return: "_all_fields" }
+
+Product.cloudsearch.no_fields						
+# OUTPUT: { return: "_no_fields" }
+
+Product.cloudsearch.score							
+# OUTPUT: { return: "_score" }
 ```
 
 ###Scope
 ```
-Product.coudsearch.shoes_by_brand("puma")			# OUTPUT: { query:"shoes" filter_query:"(and manufacturer:'puma')" }
-Product.cloudsearch.created_in(7)					# OUTPUT: { filter_query:"(and created_at:{Date.today - 7,}) }
-Product.cloudsearch.or { 							# OUTPUT: { 
-	created_in(7)									# filter_query:"(or (and created_at:{Date.today - 7,}) discount:{25,100]
-	discount 25..100								# }
+Product.coudsearch.shoes_by_brand("puma")			
+# OUTPUT: { query:"shoes" filter_query:"(and manufacturer:'puma')" }
+
+Product.cloudsearch.created_in(7)					
+# OUTPUT: { filter_query:"(and created_at:{Date.today - 7,}) }
+
+Product.cloudsearch.or { 							
+	created_in(7)									
+	discount 25..100							
 }	
+# OUTPUT: { filter_query:"(or (and created_at:{Date.today - 7,}) discount:{25,100] }
 ```
 
 ###AND & OR Block
 ```
-Product.cloudsearch.and { ... }					# OUTPUT: "(and ...)"
-Product.cloudsearch.and {						# OUTPUT: "(and (or ...) (or ...))"
-	or! { ... }									# NOTE: AND & OR are a ruby syntax, can not be used directly,
-	or! { ... }									# so aliased them to (and!, all) and (or!, any)
+Product.cloudsearch.and { ... }					
+# OUTPUT: "(and ...)"
+
+Product.cloudsearch.and {						
+	or! { ... }									
+	or! { ... }									 
 }
-Product.cloudsearch.and.not { ... }				# OUTPUT: "(not (and ...))"
-Product.cloudsearch.or { and!.not { ...} }		# OUTPUT: "(or (not (and ...)))"
+# OUTPUT: "(and (or ...) (or ...))"
+# NOTE: AND & OR are a ruby syntax, can not be used directly,
+# so aliased them to (and!, all) and (or!, any)
+
+Product.cloudsearch.and.not { ... }				
+# OUTPUT: "(not (and ...))"
+
+Product.cloudsearch.or { and!.not { ...} }		
+# OUTPUT: "(or (not (and ...)))"
 ```
 
 ###Field Methods
 ```
-Product.cloudsearch.name("shoes")				# OUTPUT: "name:'shoes'"
-Product.cloudsearch.name("shoes").price(100)	# OUTPUT: "(and name:'shoes' price:100)"
-Product.cloudsearch.and {						# OUTPUT: "(and name:'shoes' price:[25,100])"
+Product.cloudsearch.name("shoes")				
+# OUTPUT: "name:'shoes'"
+
+Product.cloudsearch.name("shoes").price(100)	
+# OUTPUT: "(and name:'shoes' price:100)"
+
+Product.cloudsearch.and {						
 	name "shoes"
 	price 25..100
 }					
-Product.cloudsearch.and {						# OUTPUT: "(and (not name:'shoes') ...)"
+# OUTPUT: "(and name:'shoes' price:[25,100])"
+
+Product.cloudsearch.and {						
 	name.not "shoes"
 	...
 }
+# OUTPUT: "(and (not name:'shoes') ...)"
+
 Product.cloudsearch.and {
+	name.start_with "shoes"						
 }
+# OUTPUT: "(and (prefix field='name' 'shoes'))"
+
+Product.cloudsearch.and {
+	name.near "shoes"						
+}
+# OUTPUT: "(and (near field='name' 'shoes'))"
+
+Product.cloudsearch.and {
+	name.not.start_with "shoes"					
+}
+# OUTPUT: "(and (not (near field='name' 'shoes')))"
+
+Product.cloudsearch.and {
+	name start_with("shoes"), near("puma")				
+}
+# OUTPUT: "(and (near field='name' 'shoes'))"
 ```
 
