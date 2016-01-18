@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
-    module AST
-      class Leaf
+    module Error
+      class InvalidSyntax < Exception
       end
     end
   end

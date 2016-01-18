@@ -1,10 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module Value
-
-				# VALUE DSL
-        # =======================================
+			module ValueMethods
 
 				# DATE
         # =======================================

@@ -5,16 +5,16 @@ module CloudSesame
 
 				private
 
-				def method_context
-					method_scope.context
-				end
-
-				def method_return
+				def dsl_scope
 					self
 				end
 
-				def method_scope
-					self
+				def dsl_context
+					dsl_scope.context
+				end
+
+				def dsl_return(node = nil)
+					node || dsl_scope
 				end
 
 			end

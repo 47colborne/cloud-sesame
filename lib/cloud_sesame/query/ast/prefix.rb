@@ -2,12 +2,8 @@ module CloudSesame
   module Query
     module AST
       class Prefix < SingleExpressionOperator
-				self.symbol = :prefix
-
-				def compile
-					child.detailed if child.kind_of?(Literal)
-					super
-				end
+        DETAILED = true
+				SYMBOL = :prefix
       end
     end
   end

@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Value < Leaf
+      class Value
 
         attr_reader :data
 
@@ -13,12 +13,12 @@ module CloudSesame
           format data
         end
 
-        def ==(value)
-          data == value || compile == value
-        end
-
         def to_s
           compile
+        end
+
+        def ==(value)
+          data == value || compile == value
         end
 
         private

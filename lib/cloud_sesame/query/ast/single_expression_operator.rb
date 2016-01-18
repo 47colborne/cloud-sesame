@@ -1,19 +1,28 @@
 module CloudSesame
   module Query
     module AST
-      class SingleExpressionOperator < SingleBranch
-        include DSL::Boost
+      class SingleExpressionOperator < Operator
+        include DSL::Base
+        include DSL::BlockMethods
 
-        def self.symbol=(symbol)
-          @symbol = symbol
+        DETAILED = false
+
+        attr_accessor :child
+
+        def is_for(field, field_options)
+          child.is_for field, field_options
         end
 
-        def self.symbol
-          @symbol
+        def is_excluded
+          child.is_excluded
+        end
+
+        def <<(object)
+          self.child = object
         end
 
         def compile
-          "(#{ self.class.symbol  }#{ compile_boost } #{ child.compile })" if child
+          "(#{ self.class::SYMBOL  }#{ boost } #{ child.compile self.class::DETAILED })" if child
         end
 
       end

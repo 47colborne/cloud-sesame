@@ -1,22 +1,17 @@
 module CloudSesame
 	module Query
 		module DSL
-			module FilterQuery
-				include And
-				include Literal
-				include Or
-				include Scope
-				include Value
+			module FilterQueryMethods
 
 				def included?(field, value = nil)
-					(field_options = method_scope.context[:fields][field]) && (
+					(field_options = dsl_context[:fields][field]) && (
 						(value && field_options_is(:included, field_options, value)) ||
 						(!value && field_options_not_empty_in(:included, field_options))
 					)
 				end
 
 				def excluded?(field, value = nil)
-					(field_options = method_scope.context[:fields][field]) && (
+					(field_options = dsl_context[:fields][field]) && (
 						(value && field_options_is(:excluded, field_options, value)) ||
 						(!value && field_options_not_empty_in(:excluded, field_options))
 					)
@@ -31,7 +26,6 @@ module CloudSesame
 				def field_options_not_empty_in(type, field_options)
 					field_options[type] && !field_options[type].empty?
 				end
-
 
 			end
 		end

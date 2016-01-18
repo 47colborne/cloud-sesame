@@ -1,10 +1,10 @@
 module CloudSesame
 	module Query
 		module DSL
-			module Scope
+			module ScopeMethods
 
 				def scopes
-				  method_context[:scopes]
+				  dsl_context[:scopes]
 				end
 
 				private
@@ -12,7 +12,7 @@ module CloudSesame
 				def method_missing(name, *args, &block)
 					if scopes && (callback = scopes[name])
 						self.instance_exec *args, &callback
-					  method_return
+					  dsl_return
 					else
 						super
 					end

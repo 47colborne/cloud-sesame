@@ -2,11 +2,17 @@ module CloudSesame
 	module Query
 		module Builder
 			include DSL::Base
-			include DSL::FilterQuery
-			include DSL::Page
-			include DSL::Query
-			include DSL::Sort
-			include DSL::Return
+			include DSL::PageMethods
+			include DSL::QueryMethods
+			include DSL::ReturnMethods
+			include DSL::SortMethods
+
+			# Filter Query DSL
+			include DSL::BlockMethods
+			include DSL::FieldMethods
+			include DSL::FilterQueryMethods
+			include DSL::ScopeMethods
+			include DSL::ValueMethods
 
 			attr_reader :result
 
@@ -16,7 +22,7 @@ module CloudSesame
 			end
 
 			def request
-				@request ||= (clear_result; Node::Request.new context.dup)
+				@request ||= (clear_response; Node::Request.new context.dup)
 			end
 
 			def response
@@ -27,7 +33,7 @@ module CloudSesame
 				@request = nil
 			end
 
-			def clear_result
+			def clear_response
 				@response = nil
 			end
 
@@ -67,8 +73,12 @@ module CloudSesame
 
 			private
 
-			def method_scope
+			def dsl_scope
 				request.filter_query.root
+			end
+
+			def dsl_return(node = nil)
+				self
 			end
 
 		end
