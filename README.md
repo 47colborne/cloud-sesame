@@ -186,43 +186,53 @@ Product.cloudsearch.or { and!.not { ...} }
 ```
 
 ###Field Methods
+* field can be set by calling #<field_name> *values
 ```
 Product.cloudsearch.name("shoes")				
 # OUTPUT: "name:'shoes'"
 
+Product.cloudsearch.name "shoes", "sneaker"
+# OUTPUT: name:'shoes' name:'sneaker'
+
 Product.cloudsearch.name("shoes").price(100)	
 # OUTPUT: "(and name:'shoes' price:100)"
 
-Product.cloudsearch.and {						
-	name "shoes"
-	price 25..100
-}					
+Product.cloudsearch.and { name "shoes"; price 25..100 }
 # OUTPUT: "(and name:'shoes' price:[25,100])"
-
-Product.cloudsearch.and {						
-	name.not "shoes"
-	...
-}
+```
+* #not, #prefix (#start_with, #begin_with), #near can be chained after #<field_name>
+```
+Product.cloudsearch.and { name.not "shoes"; ... }
 # OUTPUT: "(and (not name:'shoes') ...)"
 
-Product.cloudsearch.and {
-	name.start_with "shoes"						
-}
+Product.cloudsearch.and { name.start_with "shoes" }
 # OUTPUT: "(and (prefix field='name' 'shoes'))"
 
-Product.cloudsearch.and {
-	name.near "shoes"						
-}
+Product.cloudsearch.and { name.near "shoes" }
 # OUTPUT: "(and (near field='name' 'shoes'))"
 
-Product.cloudsearch.and {
-	name.not.start_with "shoes"					
-}
+Product.cloudsearch.and { name.not.start_with "shoes" }
 # OUTPUT: "(and (not (near field='name' 'shoes')))"
 
-Product.cloudsearch.and {
-	name(start_with("shoes"), near("puma")).not("nike")
-}
+Product.cloudsearch.and { name(start_with("shoes"), near("puma")).not("nike") }
 # OUTPUT: "(and (prefix field='name' 'shoes') (near field='name' 'puma') (not name:'nike'))"
+```
+
+###Date, Time and Rage
+* field method accepts Ruby Date and Range Object and will automatically parse them into the CloudSearch format 
+```
+Date.today	=> "'2016-01-18T00:00:00Z'"
+Time.now	=> "'2016-01-18T14:36:57Z'"
+25..100 	=> "[25,100]"
+25...100	=> "[25,100}"
+```
+* use #range or #r for more complicated range, range object accepts Date/Time object as well
+```
+r.gt(100)		=> "{100,}"
+r.gte(100)		=> "[100,}"
+r.lt(100)		=> "{,100}"
+r.lte(100)		=> "{,100]"
+r.gte(100).lt(200)	=> "[100,200}"
+r.gt(Date.today)	=> "{'2016-01-18T00:00:00Z',}"
 ```
 
