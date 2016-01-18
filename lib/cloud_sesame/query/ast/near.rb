@@ -6,15 +6,11 @@ module CloudSesame
 				SYMBOL = :near
 
 				def compile
-          "(#{ SYMBOL }#{ boost.compile if boost }#{ distance.compile if distance } #{ child.compile DETAILED })" if child
+          "(#{ SYMBOL }#{ boost }#{ distance } #{ child.compile DETAILED })" if child
 				end
 
         def distance
-          options[:distance]
-        end
-
-        def distance=(value)
-          options[:distance] = Distance.new value
+          " distance=#{ options[:distance] }" if options[:distance]
         end
 
       end

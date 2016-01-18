@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module DSL
-      module Return
+      module ReturnMethods
 
         def all_fields
           request.return_field.value = :all_fields

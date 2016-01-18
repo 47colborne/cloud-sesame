@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module Sort
+			module SortMethods
 
 				def sort(input = nil)
 					if input.is_a? Hash

@@ -2,11 +2,16 @@ module CloudSesame
 	module Query
 		module Builder
 			include DSL::Base
-			include DSL::FilterQuery
-			include DSL::Page
-			include DSL::Query
-			include DSL::Sort
-			include DSL::Return
+			include DSL::PageMethods
+			include DSL::QueryMethods
+			include DSL::SortMethods
+			include DSL::ReturnMethods
+
+			# Filter Query DSL
+			include DSL::BlockMethods
+			include DSL::FieldMethods
+			include DSL::ScopeMethods
+			include DSL::ValueMethods
 
 			attr_reader :result
 
@@ -67,11 +72,11 @@ module CloudSesame
 
 			private
 
-			def scope
+			def dsl_scope
 				request.filter_query.root
 			end
 
-			def scope_return(node = nil)
+			def dsl_return(node = nil)
 				self
 			end
 

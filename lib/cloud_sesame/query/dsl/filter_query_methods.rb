@@ -1,12 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module FilterQuery
-				include And
-				include Literal
-				include Or
-				include Scope
-				include Value
+			module FilterQueryMethods
 
 				def included?(field, value = nil)
 					(field_options = method_scope.context[:fields][field]) && (
@@ -31,7 +26,6 @@ module CloudSesame
 				def field_options_not_empty_in(type, field_options)
 					field_options[type] && !field_options[type].empty?
 				end
-
 
 			end
 		end

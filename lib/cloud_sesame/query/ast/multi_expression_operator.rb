@@ -2,23 +2,34 @@ module CloudSesame
   module Query
     module AST
       class MultiExpressionOperator < Operator
+        include DSL::Base
+        include DSL::BlockMethods
+        include DSL::FieldMethods
+        include DSL::OperatorMethods
+        include DSL::ValueMethods
 
         def children
           @children ||= create_children
         end
 
         def compile
-          "(#{ SYMBOL  }#{ boost.compile if boost } #{ children.compile })" unless children.empty?
+          "(#{ self.class::SYMBOL  }#{ boost } #{ children.compile })" unless children.empty?
         end
 
         def <<(object)
           children << object
         end
 
+        def is_excluded
+          children.map(&:is_excluded)
+        end
+
         private
 
         def create_children
-          array = Children.new; array.scope = self; array
+          array = FieldArray.new
+          array.dsl_scope = dsl_scope
+          array
         end
 
       end

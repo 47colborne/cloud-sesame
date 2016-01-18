@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module Query
+			module QueryMethods
 
 				def query(input = nil)
 					if input

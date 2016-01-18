@@ -3,11 +3,12 @@ module CloudSesame
 		module DSL
 			module BlockMethods
 
+				attr_accessor :orphan_node
+
 				# CLAUSE: AND
 				# =========================================
 				def and(options = {}, &block)
-				  scope << AST::And.new(scope, options, &block)
-				  scope_return
+					block_style_dsl AST::And, options, &block
 				end
 
 				alias_method :all,  :and
@@ -16,21 +17,23 @@ module CloudSesame
 				# CLAUSE: OR
 				# =========================================
 				def or(options = {}, &block)
-				  scope << AST::Or.new(scope, options, &block)
-				  scope_return
+					block_style_dsl AST::Or, options, &block
 				end
 
 				alias_method :any, :or
 				alias_method :or!, :or
 
-				# CLAUSE: NOT
-				# =========================================
-				def not(options = {}, &block)
-				  scope << AST::Not.new(scope, options, &block)
-				  scope_return
-				end
+				private
 
-				alias_method :not!, :not
+				def block_style_dsl(klass, options, &block)
+					node = klass.new dsl_context, options, &block
+					if block_given?
+						dsl_scope << node
+						dsl_return node
+					else
+						AST::BlockChainingRelation.new(dsl_scope, dsl_return, node)
+					end
+				end
 
 			end
 		end

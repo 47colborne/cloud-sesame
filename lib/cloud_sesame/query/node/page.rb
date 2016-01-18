@@ -3,18 +3,18 @@ module CloudSesame
 		module Node
 			class Page < Abstract
 
-				attr_writer :page, :size
+				attr_writer :page, :size, :start
 
-				def page
-					@page ||= (context[:page] || 1)
-				end
+        def page
+					@page ||= context[:page] || 1
+        end
 
 				def size
-					@size ||= (context[:size] || 10)
+					@size ||= context[:size] || 10
 				end
 
 				def start
-					(page - 1) * size
+					@start ||= (page - 1) * size
 				end
 
 				def compile

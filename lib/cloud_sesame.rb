@@ -10,32 +10,34 @@ require 'cloud_sesame/config/credential'
 
 # Custom Errors
 # ===============================================
+require 'cloud_sesame/query/error/invalid_syntax'
 require 'cloud_sesame/query/error/missing_operator_symbol'
 require 'cloud_sesame/query/error/missing_query'
 
 # Query DSL Methods
 # ===============================================
 require 'cloud_sesame/query/dsl/base'
-require 'cloud_sesame/query/dsl/query'
-require 'cloud_sesame/query/dsl/page'
-require 'cloud_sesame/query/dsl/sort'
+require 'cloud_sesame/query/dsl/query_methods'
+require 'cloud_sesame/query/dsl/page_methods'
+require 'cloud_sesame/query/dsl/sort_methods'
+require 'cloud_sesame/query/dsl/return_methods'
+
 require 'cloud_sesame/query/dsl/block_methods'
-require 'cloud_sesame/query/dsl/chaining_methods'
-require 'cloud_sesame/query/dsl/literal_methods'
-require 'cloud_sesame/query/dsl/value'
-require 'cloud_sesame/query/dsl/scope'
-# require 'cloud_sesame/query/dsl/filter_query'
-require 'cloud_sesame/query/dsl/return'
+require 'cloud_sesame/query/dsl/block_chaining_methods'
+require 'cloud_sesame/query/dsl/field_methods'
+require 'cloud_sesame/query/dsl/field_array_methods'
+require 'cloud_sesame/query/dsl/filter_query_methods'
+require 'cloud_sesame/query/dsl/operator_methods'
+require 'cloud_sesame/query/dsl/scope_methods'
+require 'cloud_sesame/query/dsl/value_methods'
 
 # Query Query Filter Query AST Tree
 # ===============================================
 require 'cloud_sesame/query/ast/operator'
-require 'cloud_sesame/query/ast/option'
-require 'cloud_sesame/query/ast/boost'
-require 'cloud_sesame/query/ast/distance'
 require 'cloud_sesame/query/ast/multi_expression_operator'
 require 'cloud_sesame/query/ast/single_expression_operator'
-require 'cloud_sesame/query/ast/children'
+require 'cloud_sesame/query/ast/block_chaining_relation'
+require 'cloud_sesame/query/ast/field_array'
 require 'cloud_sesame/query/ast/and'
 require 'cloud_sesame/query/ast/or'
 require 'cloud_sesame/query/ast/not'

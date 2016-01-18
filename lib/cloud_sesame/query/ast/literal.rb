@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Literal < SingleBranch
+      class Literal
 
         attr_accessor :field
         attr_reader :options, :value
@@ -9,7 +9,18 @@ module CloudSesame
         def initialize(field = nil, value = nil, options = {})
           @field = field
           @value = to_value value
-          ((@options = options || {})[:included] ||= []) << @value
+          @options = options || {}
+          (@options[:included] ||= []) << @value
+        end
+
+        def is_for(field, options)
+          @field = field
+          @options = options.merge @options
+        end
+
+        def is_excluded
+          options[:included].delete value
+          (options[:excluded] ||= []) << value
         end
 
         def as_field

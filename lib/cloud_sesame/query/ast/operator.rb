@@ -4,20 +4,20 @@ module CloudSesame
       class Operator
         SYMBOL = nil
 
-        attr_reader :context
+        attr_reader :context, :options
 
         def initialize(context, options = {}, &block)
           @context = context
           @options = options
-          instance_eval &block if block_given?
+          evaluate &block if block_given?
         end
 
         def boost
-          options[:boost]
+          " boost=#{ options[:boost] }" if options[:boost]
         end
 
-        def boost=(value)
-          options[:boost] = Boost.new value
+        def evaluate(&block)
+          instance_eval &block
         end
 
       end

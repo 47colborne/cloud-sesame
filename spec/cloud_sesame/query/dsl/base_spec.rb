@@ -16,12 +16,12 @@ module CloudSesame
         end
 
         describe '#method_return' do
-          let(:result) { subject.send(:method_return) }
+          let(:result) { subject.send(:dsl_return) }
           include_examples 'return self instance'
         end
 
         describe '#method_scope' do
-          let(:result) { subject.send(:method_scope) }
+          let(:result) { subject.send(:dsl_scope) }
           include_examples 'return self instance'
         end
 

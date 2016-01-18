@@ -1,8 +1,8 @@
 module CloudSesame
   module Query
     module AST
-      class Root < And
-        SYMBOL = :and
+      class Root < MultiExpressionOperator
+        SYMBOL = :and # default operator for root
 
         def compile
           more_than_one_child? ? super : children.compile

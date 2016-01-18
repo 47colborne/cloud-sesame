@@ -13,7 +13,7 @@ module CloudSesame
 					sorting_attributes[attribute.to_sym]
 				end
 
-				def []=(attribute, order = nil)
+				def []=(attribute, order = :desc)
 					sorting_attributes[attribute.to_sym] = order.to_sym if order
 				end
 
