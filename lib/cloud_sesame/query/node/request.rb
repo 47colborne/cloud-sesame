@@ -47,6 +47,7 @@ module CloudSesame
 						query_options,
 						query_parser,
 						filter_query,
+						facet,
 						page,
 						sort,
 						return_field
