@@ -242,11 +242,17 @@ r.gt(Date.today)	=> "{'2016-01-18T00:00:00Z',}"
 ```
 
 ###Search Related Methods
-* #search  => send off the request, save and returns the response and clear the request
-* #found   => returns the hits found from the response 
-* #results => returns the hits.hit from the response
-* #each    => Calls the given block once for each result, passing that result as a parameter. Returns the results itself.
-* #map     => Creates a new array containing the results returned by the block.
+* #search   => send off the request, save and returns the response and clear the request
+* #found    => returns the hits found from the response 
+* #results  => returns the hits.hit from the response
+* #each     => Calls the given block once for each result, passing that result as a parameter. Returns the results itself.
+* #map      => Creates a new array containing the results returned by the block.
+* #request  => returns the cloudsearch ast tree
+* #response => returns the last response
+* #clear_request => resets the request
+* #clear_reponse => resets the response
+* 
+###MISC Methods
+* #compile  => compiles the current query and return the compiled hash
+* 
 
-###Other Methods
-* #
