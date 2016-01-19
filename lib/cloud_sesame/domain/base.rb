@@ -2,7 +2,7 @@ module CloudSesame
 	module Domain
 		class Base
 			extend Forwardable
-			include Query::Builder
+			include Query::Methods
 
 			attr_accessor :definition
 			attr_reader :searchable, :result

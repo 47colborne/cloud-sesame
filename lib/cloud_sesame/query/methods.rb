@@ -1,6 +1,6 @@
 module CloudSesame
 	module Query
-		module Builder
+		module Methods
 			include DSL::Base
 			include DSL::PageMethods
 			include DSL::QueryMethods
