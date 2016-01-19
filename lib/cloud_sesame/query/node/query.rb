@@ -10,7 +10,10 @@ module CloudSesame
 				end
 
 				def compile
-					{ query: join_by_or(query, fuzziness, sloppiness) }
+					compiled = [query]
+					compiled << fuzziness if context[:fuzziness]
+					compiled << sloppiness if context[:sloppiness]
+					{ query: join_by_or(compiled) }
 				end
 
 				private
@@ -23,8 +26,8 @@ module CloudSesame
 					context[:sloppiness] && query && query.include?(' ') ? "\"#{ query }\"~#{ context[:sloppiness] }" : nil
 				end
 
-				def join_by_or(*args)
-					(args = args.flatten.compact).size > 1 ? "(#{ args.join('|') })" : args[0]
+				def join_by_or(args = [])
+					(args = args.compact).size > 1 ? "(#{ args.join('|') })" : args[0]
 				end
 
 			end

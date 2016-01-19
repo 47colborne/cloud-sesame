@@ -69,8 +69,8 @@ describe CloudSesame do
 	require 'benchmark'
 	Benchmark.bm do |x|
 	  x.report do
-	  	100.times do |i|
-	  		query = Product.cloudsearch.query("black leather jacket").sort(price: :ast).page(1).size(1000).or {
+	  	1.times do |i|
+	  		query = Product.cloudsearch.query("black   jacket").sort(price: :ast).page(1).size(1000).or {
 	  				or! {
 	  					tags("men", "women")
 	  				}

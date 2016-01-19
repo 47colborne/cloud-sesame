@@ -5,15 +5,11 @@ module CloudSesame
 
 				private
 
-				def fields
-					dsl_context[:fields]
-				end
-
 				def method_missing(field, *values, &block)
-				  if fields && (options = fields[field])
+				  if (fields = dsl_context[:fields]) && fields[field]
 				  	dsl_scope.children.field = field
 				  	dsl_scope.children.dsl_return = dsl_return
-				  	dsl_scope.children.insert_and_return_children values, &block
+				  	dsl_scope.children.insert values
 				  else
 				    super
 				  end

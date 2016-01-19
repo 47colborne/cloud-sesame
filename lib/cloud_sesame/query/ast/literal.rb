@@ -11,8 +11,6 @@ module CloudSesame
           @value = valufy value
           @options = options || {}
           (@options[:included] ||= []) << @value
-
-          @value = valufy(Evaluator.new.instance_eval &block) if block_given?
         end
 
         def is_for(field, options)
@@ -52,10 +50,6 @@ module CloudSesame
 
         def escape(data = "")
           "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
-        end
-
-        class Evaluator
-          include DSL::RangeMethods
         end
 
       end

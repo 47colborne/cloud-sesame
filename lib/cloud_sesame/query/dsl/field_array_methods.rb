@@ -1,38 +1,42 @@
+# =========================================================
+# field array methods enables field array to chain
+# operators after calling the field expression
+# accessor
+# =========================================================
 module CloudSesame
 	module Query
 		module DSL
 			module FieldArrayMethods
 
-				# NEAR
-				# =======================================
-				def near(*values)
-					parents[0] = { klass: AST::Near, options: extract_options(values) }
-				  insert_and_return_children values
-				end
-
-				alias_method :sloppy, :near
-
 				# NOT
 				# =======================================
 				def not(*values)
 					parents[1] = { klass: AST::Not, options: extract_options(values) }
-				  insert_and_return_children values
+				  insert values
 				end
 
 				alias_method :is_not, :not
+
+				# NEAR
+				# =======================================
+				def near(*values)
+					parents[0] = { klass: AST::Near, options: extract_options(values) }
+				  insert values
+				end
+
+				alias_method :sloppy, :near
 
 				# PREFIX
 				# =======================================
 				def prefix(*values)
 				  parents[0] = { klass: AST::Prefix, options: extract_options(values) }
-				  insert_and_return_children values
+				  insert values
 				end
 
 				alias_method :start_with, :prefix
 				alias_method :begin_with, :prefix
 
-				def insert_and_return_children(values = [], &block)
-					values << block_literal(block) if block_given?
+				def insert(values = [])
 					values.each do |value|
 						child = ensure_not_raw_value value
 						parents.compact.each do |parent|
@@ -59,10 +63,6 @@ module CloudSesame
 					else
 						AST::Literal.new field, value, field_options
 					end
-				end
-
-				def block_literal(block)
-					AST::Literal.new field, nil, field_options, &block
 				end
 
 				def field_options

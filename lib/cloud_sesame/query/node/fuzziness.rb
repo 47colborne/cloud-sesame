@@ -26,8 +26,7 @@ module CloudSesame
         end
 
         def parse(string)
-          result = each_with(string) { |word| fuzziness word }
-          join_by_and result
+          join_by_and each_with(string) { |word| fuzziness word }
         end
 
         private
@@ -46,8 +45,8 @@ module CloudSesame
           end
         end
 
-        def join_by_and(*args)
-          (args = args.flatten.compact).size > 1 ? "(#{ args.join('+') })" : args[0]
+        def join_by_and(args = [])
+          (args = args.compact).size > 1 ? "(#{ args.join('+') })" : args[0]
         end
 
         def excluding_term?(word)
