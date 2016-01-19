@@ -38,13 +38,7 @@ module CloudSesame
 
 				def insert(values = [])
 					values.each do |value|
-						child = ensure_not_raw_value value
-						parents.compact.each do |parent|
-							node = parent[:klass].new dsl_context, parent[:options]
-							node << child
-							child = node
-				    end
-						dsl_scope << child
+						dsl_scope << create_parents(build_literal(value))
 					end
 					parents.clear unless values.empty?
 				  dsl_return != dsl_scope ? dsl_return : self
@@ -56,7 +50,16 @@ module CloudSesame
 					values[-1].is_a?(Hash) ? values.delete_at(-1) : {}
 				end
 
-				def ensure_not_raw_value(value)
+				def create_parents(child)
+					parents.compact.each do |parent|
+						node = parent[:klass].new dsl_context, parent[:options]
+						node << child
+						child = node
+					end
+					child
+				end
+
+				def build_literal(value)
 					if value.kind_of?(AST::SingleExpressionOperator) || value.is_a?(AST::Literal)
 						value.is_for field, field_options
 						value

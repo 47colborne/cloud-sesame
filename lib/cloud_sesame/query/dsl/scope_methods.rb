@@ -11,7 +11,7 @@ module CloudSesame
 
 				def method_missing(name, *args, &block)
 					if scopes && (callback = scopes[name])
-						self.instance_exec *args, &callback
+						instance_exec *args, &callback
 					  dsl_return
 					else
 						super

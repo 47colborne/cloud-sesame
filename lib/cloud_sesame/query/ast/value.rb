@@ -18,7 +18,7 @@ module CloudSesame
         end
 
         def ==(value)
-          data == value || compile == value
+          value == data || value == compile
         end
 
         private

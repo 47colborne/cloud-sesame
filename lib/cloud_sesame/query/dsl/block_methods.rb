@@ -31,8 +31,12 @@ module CloudSesame
 						dsl_scope << node
 						dsl_return node
 					else
-						AST::BlockChainingRelation.new(dsl_scope, dsl_return, node)
+						return_chaining_relation(node)
 					end
+				end
+
+				def return_chaining_relation(node)
+					AST::BlockChainingRelation.new(dsl_scope, dsl_return, node)
 				end
 
 			end

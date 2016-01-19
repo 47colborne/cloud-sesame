@@ -4,7 +4,7 @@ module CloudSesame
       class RangeValue < Value
 
         def initialize(range = nil)
-          @data = range && range.kind_of?(Range) ? [true, to_value(range.begin), to_value(range.end), !range.exclude_end?] : [false, nil, nil, false]
+          @data = range.kind_of?(Range) ? [true, valufy(range.begin), valufy(range.end), !range.exclude_end?] : [false, nil, nil, false]
         end
 
         def compile
