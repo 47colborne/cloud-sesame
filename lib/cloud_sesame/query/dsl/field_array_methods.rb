@@ -31,7 +31,8 @@ module CloudSesame
 				alias_method :start_with, :prefix
 				alias_method :begin_with, :prefix
 
-				def insert_and_return_children(values = [])
+				def insert_and_return_children(values = [], &block)
+					values << block_literal(block) if block_given?
 					values.each do |value|
 						child = ensure_not_raw_value value
 						parents.compact.each do |parent|
@@ -53,11 +54,15 @@ module CloudSesame
 
 				def ensure_not_raw_value(value)
 					if value.kind_of?(AST::SingleExpressionOperator) || value.is_a?(AST::Literal)
-						value.child.is_for field, field_options
+						value.is_for field, field_options
 						value
 					else
 						AST::Literal.new field, value, field_options
 					end
+				end
+
+				def block_literal(block)
+					AST::Literal.new field, nil, field_options, &block
 				end
 
 				def field_options

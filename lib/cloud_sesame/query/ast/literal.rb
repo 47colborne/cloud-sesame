@@ -6,11 +6,13 @@ module CloudSesame
         attr_accessor :field
         attr_reader :options, :value
 
-        def initialize(field = nil, value = nil, options = {})
+        def initialize(field = nil, value = nil, options = {}, &block)
           @field = field
-          @value = to_value value
+          @value = valufy value
           @options = options || {}
           (@options[:included] ||= []) << @value
+
+          @value = valufy(Evaluator.new.instance_eval &block) if block_given?
         end
 
         def is_for(field, options)
@@ -33,7 +35,7 @@ module CloudSesame
 
         private
 
-        def to_value(value)
+        def valufy(value)
           return value if value.kind_of? Value
           return RangeValue.new value if value.kind_of? Range
           return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
@@ -50,6 +52,10 @@ module CloudSesame
 
         def escape(data = "")
           "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
+        end
+
+        class Evaluator
+          include DSL::RangeMethods
         end
 
       end

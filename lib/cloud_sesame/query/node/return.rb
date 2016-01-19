@@ -3,16 +3,14 @@ module CloudSesame
     module Node
       class Return < Abstract
 
-        attr_accessor :value
+        attr_accessor :fields
 
-        def compile
-          { return: format(value) } if value
+        def fields
+          @fields ||= []
         end
 
-        private
-
-        def format(value)
-          value.to_s.gsub(/^_?/, '_')
+        def compile
+          { return: fields.join(',') } unless fields.empty?
         end
 
       end

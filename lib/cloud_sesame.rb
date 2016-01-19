@@ -28,9 +28,8 @@ require 'cloud_sesame/query/dsl/field_methods'
 require 'cloud_sesame/query/dsl/field_array_methods'
 require 'cloud_sesame/query/dsl/filter_query_methods'
 require 'cloud_sesame/query/dsl/operator_methods'
+require 'cloud_sesame/query/dsl/range_methods'
 require 'cloud_sesame/query/dsl/scope_methods'
-require 'cloud_sesame/query/dsl/value_methods'
-
 
 # Query Query Filter Query AST Tree
 # ===============================================

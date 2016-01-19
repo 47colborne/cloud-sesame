@@ -3,16 +3,23 @@ module CloudSesame
     module DSL
       module ReturnMethods
 
-        def all_fields
-          request.return_field.value = :all_fields
+        def return_fields(*fields)
+          unless fields.empty?
+            request.return_field.fields = fields
+            return self
+          else
+            request.return_field.fields
+          end
         end
 
-        def no_fields
-          request.return_field.value = :no_fields
+        def return_no_fields
+          request.return_field.fields = ['_no_fields']
+          return self
         end
 
-        def score
-          request.return_field.value = :score
+        def include_score
+          request.return_field.fields << '_score'
+          return self
         end
 
       end

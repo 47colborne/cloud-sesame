@@ -39,11 +39,11 @@ module CloudSesame
 				end
 
 				def create_literal(klass, options, value)
-					(operator = klass.new dsl_context, options) << literal(value)
-					return operator
+					(node = klass.new dsl_context, options) << fieldless_literal(value)
+					return node
 				end
 
-				def literal(value)
+				def fieldless_literal(value)
 					AST::Literal.new nil, value
 				end
 

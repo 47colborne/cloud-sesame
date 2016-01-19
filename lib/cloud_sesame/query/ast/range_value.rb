@@ -11,29 +11,29 @@ module CloudSesame
           "#{ lb }#{ data[1].to_s },#{ data[2].to_s }#{ ub }"
         end
 
-        def gt(value)
-          data[0], data[1] = false, to_value(value)
+        def gt(value = nil)
+          data[0], data[1] = false, valufy(value) if value
           return self
         end
 
-        def gte(value)
-          data[0], data[1] = true, to_value(value)
+        def gte(value = nil)
+          data[0], data[1] = true, valufy(value) if value
           return self
         end
 
-        def lt(value)
-          data[2], data[3] = to_value(value), false
+        def lt(value = nil)
+          data[2], data[3] = valufy(value), false if value
           return self
         end
 
-        def lte(value)
-          data[2], data[3] = to_value(value), true
+        def lte(value = nil)
+          data[2], data[3] = valufy(value), true if value
           return self
         end
 
         private
 
-        def to_value(value)
+        def valufy(value)
           return value if value.kind_of? Value
           return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
           Value.new value

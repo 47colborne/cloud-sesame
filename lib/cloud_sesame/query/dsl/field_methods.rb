@@ -13,7 +13,7 @@ module CloudSesame
 				  if fields && (options = fields[field])
 				  	dsl_scope.children.field = field
 				  	dsl_scope.children.dsl_return = dsl_return
-				  	dsl_scope.children.insert_and_return_children values
+				  	dsl_scope.children.insert_and_return_children values, &block
 				  else
 				    super
 				  end

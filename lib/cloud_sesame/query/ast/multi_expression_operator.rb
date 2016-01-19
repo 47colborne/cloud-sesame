@@ -7,8 +7,8 @@ module CloudSesame
         include DSL::FieldMethods
         include DSL::FilterQueryMethods
         include DSL::OperatorMethods
+        include DSL::RangeMethods
         include DSL::ScopeMethods
-        include DSL::ValueMethods
 
         def children
           @children ||= create_children

@@ -12,7 +12,6 @@ module CloudSesame
 			include DSL::FieldMethods
 			include DSL::FilterQueryMethods
 			include DSL::ScopeMethods
-			include DSL::ValueMethods
 
 			attr_reader :result
 
