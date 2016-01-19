@@ -36,13 +36,6 @@ module CloudSesame
 								expect(node_class).to receive(:new).and_call_original
 								subject.and.not {}
 							end
-							it 'should create a operator node with the block passed to not' do
-								proc = -> { }
-								expect_any_instance_of(AST::And).to receive(:evaluate) { |context, options, &block|
-									expect(block).to eq(proc)
-								}
-								subject.and.not &proc
-							end
 							it 'should have the operator node as child' do
 								subject.and.not {}
 								expect(subject.request.filter_query.root.children[0].child ).to be_kind_of(AST::And)

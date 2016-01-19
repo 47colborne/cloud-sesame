@@ -9,15 +9,11 @@ module CloudSesame
         def initialize(context, options = {}, &block)
           @context = context
           @options = options
-          evaluate &block if block_given?
+          instance_eval &block if block_given?
         end
 
         def boost
           " boost=#{ options[:boost] }" if options[:boost]
-        end
-
-        def evaluate(&block)
-          instance_eval &block
         end
 
       end

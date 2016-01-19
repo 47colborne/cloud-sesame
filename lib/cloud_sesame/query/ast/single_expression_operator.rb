@@ -10,11 +10,11 @@ module CloudSesame
         attr_accessor :child
 
         def is_for(field, field_options)
-          child.is_for field, field_options
+          child.is_for field, field_options if child
         end
 
         def is_excluded
-          child.is_excluded
+          child.is_excluded if child
         end
 
         def <<(object)
