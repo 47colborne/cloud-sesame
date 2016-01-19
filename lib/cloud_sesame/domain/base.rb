@@ -29,10 +29,10 @@ module CloudSesame
 			end
 
 			def field(name, options = {})
-				field_name = options[:as] || name
+				field_name = (options[:as] || name).to_sym
 				define_query_options(field_name, options.delete(:query)) if options[:query]
 				define_facet_options(field_name, options.delete(:facet)) if options[:facet]
-				define_filter_query_field(name, options)
+				define_filter_query_field(name.to_sym, options)
 			end
 
 			def define_sloppiness(value)
@@ -63,15 +63,22 @@ module CloudSesame
 				if (as = options[:as]) && (existing_options = context[:filter_query, true][:fields, true].delete(as))
 					options.merge!(existing_options)
 				end
-				context[:filter_query, true][:fields, true][name.to_sym] = options
+				if (block = options[:default])
+					filter_query_defaults << Query::AST::Literal.new(name, nil, options, &block)
+				end
+				context[:filter_query, true][:fields, true][name] = options
 			end
 
 			def define_query_options(name, options)
-				context[:query_options, true][:fields, true][name.to_sym] = format_options(options)
+				context[:query_options, true][:fields, true][name] = format_options(options)
 			end
 
 			def define_facet_options(name, options)
-				context[:facet, true][name.to_sym] = format_options(options)
+				context[:facet, true][name] = format_options(options)
+			end
+
+			def filter_query_defaults
+				context[:filter_query, true][:defaults] ||= []
 			end
 
 		end

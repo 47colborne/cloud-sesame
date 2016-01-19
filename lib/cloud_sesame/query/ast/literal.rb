@@ -8,9 +8,11 @@ module CloudSesame
 
         def initialize(field = nil, value = nil, options = {}, &block)
           @field = field
-          @value = valufy value
+          @value = valufy value if value
           @options = options || {}
           (@options[:included] ||= []) << @value
+
+          @value = valufy ValueEvaluator.new.instance_exec &block if block_given?
         end
 
         def is_for(field, options)
@@ -50,6 +52,10 @@ module CloudSesame
 
         def escape(data = "")
           "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
+        end
+
+        class ValueEvaluator
+          include DSL::RangeMethods
         end
 
       end
