@@ -21,20 +21,12 @@ module CloudSesame
 			end
 
 			def request
-				@request ||= (clear_response; Node::Request.new context.dup)
+				@request ||= Node::Request.new context.dup
 			end
 
 			def response
 				@response ||= search
-			end
-
-			def clear_request
-				@request = nil
-			end
-
-			def clear_response
-				@response = nil
-			end
+			en
 
 			def compile
 				request.compile
@@ -66,8 +58,7 @@ module CloudSesame
 			def search
 				compiled = request.compile
 				raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
-				clear_request
-				@response = client.search compiled
+				@response = searchable.cloudsearch.client.search compiled
 			end
 
 			private
