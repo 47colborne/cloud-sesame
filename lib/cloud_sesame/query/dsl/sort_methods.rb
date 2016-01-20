@@ -5,7 +5,7 @@ module CloudSesame
 
 				def sort(input = false)
 					if input.is_a? Hash
-						request.sort = input
+						request.sort.sorting_attributes = input
 						return self
 					elsif input
 						request.sort[input]

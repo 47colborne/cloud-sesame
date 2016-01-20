@@ -3,14 +3,23 @@ module CloudSesame
 		module DSL
 			module ScopeMethods
 
-				def scopes
-				  dsl_context[:scopes]
+				def scopes(name = nil, *args)
+					if (name && context_scopes && (callback = context_scopes[name])) || name.nil?
+						instance_exec(*args, &callback) if callback
+						dsl_return
+					else
+						raise NoMethodError, "scope[#{ name }] does not exist"
+					end
 				end
 
 				private
 
+				def context_scopes
+					dsl_context[:scopes]
+				end
+
 				def method_missing(name, *args, &block)
-					if scopes && (callback = scopes[name])
+					if context_scopes && (callback = context_scopes[name])
 						instance_exec *args, &callback
 					  dsl_return
 					else

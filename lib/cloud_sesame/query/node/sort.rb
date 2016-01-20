@@ -3,7 +3,7 @@ module CloudSesame
 		module Node
 			class Sort < Abstract
 
-				attr_reader :sorting_attributes
+				attr_writer :sorting_attributes
 
 				def sorting_attributes
 					@sorting_attributes ||= deserialize context[:sort]
