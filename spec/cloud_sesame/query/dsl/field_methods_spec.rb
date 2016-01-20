@@ -16,8 +16,6 @@ module CloudSesame
 
 				subject(:cloudsearch) { Product.cloudsearch.builder }
 
-				after { subject.clear_request }
-
 				context 'when field is registered' do
 					it 'should create a literal node' do
 						expect(AST::Literal).to receive(:new).with(:name, "my name", {})

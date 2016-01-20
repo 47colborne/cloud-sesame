@@ -13,8 +13,6 @@ module CloudSesame
 
 				subject(:cloudsearch) { Product.cloudsearch.builder }
 
-				after { subject.clear_request }
-
 				# NOT
 				# =======================================
 				describe '#not' do

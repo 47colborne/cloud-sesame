@@ -16,8 +16,6 @@ module CloudSesame
 
 				subject(:cloudsearch) { Product.cloudsearch.builder }
 
-				after { subject.clear_request }
-
 				shared_examples_for 'single_expression_operator' do |operation, klass, operator_weight|
 
 					it "should save the class #{ klass } into parents at index #{ operator_weight }" do
