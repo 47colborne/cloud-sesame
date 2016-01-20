@@ -16,6 +16,10 @@ module CloudSesame
           " boost=#{ options[:boost] }" if options[:boost]
         end
 
+        def symbol
+          self.class::SYMBOL
+        end
+
       end
     end
   end

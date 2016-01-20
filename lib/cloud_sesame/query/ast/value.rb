@@ -13,17 +13,18 @@ module CloudSesame
         def self.parse(value)
           return value if value.kind_of? AST::Value
           return AST::DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          return AST::RangeValue.new(value) if value.kind_of?(Range) || (value.is_a?(String) &&RANGE_FORMAT =~ value)
+          return AST::RangeValue.new(value) if value.kind_of?(Range) || (value.is_a?(String) && RANGE_FORMAT =~ value)
           return AST::NumericValue.new(value) if value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
           AST::Value.new(value)
         end
 
         def initialize(data)
           @data = data
+          @compiled = compile
         end
 
         def compile
-          escape data
+          updated? ? recompile : @compiled
         end
 
         def to_s
@@ -35,6 +36,15 @@ module CloudSesame
         end
 
         private
+
+        def updated?
+          @compiled_data != @data
+        end
+
+        def recompile
+          @compiled_data = @data
+          @compiled = escape @compiled_data
+        end
 
         def escape(data = "")
           "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"

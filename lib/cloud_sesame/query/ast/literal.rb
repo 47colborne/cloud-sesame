@@ -11,11 +11,12 @@ module CloudSesame
 
         def initialize(field = nil, value = nil, options = {}, &block)
           @field = field
+
           @value = Value.parse value if value
+          @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
+
           @options = options || {}
           (@options[:included] ||= []) << @value
-
-          @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
         end
 
         def is_for(field, options)
@@ -33,10 +34,19 @@ module CloudSesame
         end
 
         def compile(detailed = false)
-          detailed ? detailed_format : standard_format
+          updated? ? recompile(detailed) : @compiled
         end
 
         private
+
+        def updated?
+          @compiled_value != value
+        end
+
+        def recompile(detailed)
+          @compiled_value = value
+          @compiled = detailed ? detailed_format : standard_format
+        end
 
         def standard_format
           "#{ as_field }:#{ value.compile }"
@@ -47,7 +57,7 @@ module CloudSesame
         end
 
         def escape(data)
-          "'#{ data.to_s.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
+          "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
         end
 
         class ValueEvaluator
