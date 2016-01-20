@@ -2,7 +2,6 @@ module CloudSesame
   module Query
     module AST
       class Literal
-        include DSL::ValueMethods
 
         SINGLE_QUATE = /\'/
         ESCAPE_QUATE = "\\'"
@@ -12,11 +11,11 @@ module CloudSesame
 
         def initialize(field = nil, value = nil, options = {}, &block)
           @field = field
-          @value = to_value value if value
+          @value = Value.parse value if value
           @options = options || {}
           (@options[:included] ||= []) << @value
 
-          @value = to_value ValueEvaluator.new.instance_exec &block if block_given?
+          @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
         end
 
         def is_for(field, options)
@@ -44,7 +43,11 @@ module CloudSesame
         end
 
         def detailed_format
-          "field=#{ escape as_field.to_s } #{ value.compile }"
+          "field=#{ escape as_field } #{ value.compile }"
+        end
+
+        def escape(data)
+          "'#{ data.to_s.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
         end
 
         class ValueEvaluator

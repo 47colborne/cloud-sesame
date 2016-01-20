@@ -2,7 +2,6 @@ module CloudSesame
   module Query
     module AST
       class RangeValue < Value
-        include DSL::ValueMethods
 
         STRING_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
 
@@ -21,22 +20,22 @@ module CloudSesame
         end
 
         def gt(value = nil)
-          data[0], data[1] = '{', to_value(value) if value
+          data[0], data[1] = '{', Value.parse(value) if value
           return self
         end
 
         def gte(value = nil)
-          data[0], data[1] = '[', to_value(value) if value
+          data[0], data[1] = '[', Value.parse(value) if value
           return self
         end
 
         def lt(value = nil)
-          data[2], data[3] = to_value(value), '}' if value
+          data[2], data[3] = Value.parse(value), '}' if value
           return self
         end
 
         def lte(value = nil)
-          data[2], data[3] = to_value(value), ']' if value
+          data[2], data[3] = Value.parse(value), ']' if value
           return self
         end
 
