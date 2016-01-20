@@ -20,7 +20,6 @@ module CloudSesame
 
         def initialize(data)
           @data = data
-          @compiled = compile
         end
 
         def compile
