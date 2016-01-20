@@ -22,7 +22,11 @@ module CloudSesame
         end
 
         def compile
-          "(#{ self.class::SYMBOL  }#{ boost } #{ child.compile self.class::DETAILED })" if child
+          "(#{ symbol  }#{ boost } #{ child.compile detailed })" if child
+        end
+
+        def detailed
+          self.class::DETAILED
         end
 
       end

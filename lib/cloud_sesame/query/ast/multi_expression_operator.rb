@@ -15,7 +15,7 @@ module CloudSesame
         end
 
         def compile
-          "(#{ self.class::SYMBOL  }#{ boost } #{ children.compile })" unless children.empty?
+          "(#{ symbol  }#{ boost } #{ children.compile })" unless children.empty?
         end
 
         def <<(object)

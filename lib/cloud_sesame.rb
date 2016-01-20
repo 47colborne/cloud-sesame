@@ -17,19 +17,18 @@ require 'cloud_sesame/query/error/missing_query'
 # Query DSL Methods
 # ===============================================
 require 'cloud_sesame/query/dsl/base'
-require 'cloud_sesame/query/dsl/query_methods'
-require 'cloud_sesame/query/dsl/page_methods'
-require 'cloud_sesame/query/dsl/sort_methods'
-require 'cloud_sesame/query/dsl/return_methods'
-
 require 'cloud_sesame/query/dsl/block_methods'
 require 'cloud_sesame/query/dsl/block_chaining_methods'
-require 'cloud_sesame/query/dsl/field_methods'
 require 'cloud_sesame/query/dsl/field_array_methods'
+require 'cloud_sesame/query/dsl/field_methods'
 require 'cloud_sesame/query/dsl/filter_query_methods'
 require 'cloud_sesame/query/dsl/operator_methods'
+require 'cloud_sesame/query/dsl/page_methods'
+require 'cloud_sesame/query/dsl/query_methods'
 require 'cloud_sesame/query/dsl/range_methods'
+require 'cloud_sesame/query/dsl/return_methods'
 require 'cloud_sesame/query/dsl/scope_methods'
+require 'cloud_sesame/query/dsl/sort_methods'
 
 # Query Query Filter Query AST Tree
 # ===============================================
@@ -48,6 +47,7 @@ require 'cloud_sesame/query/ast/term'
 require 'cloud_sesame/query/ast/literal'
 require 'cloud_sesame/query/ast/value'
 require 'cloud_sesame/query/ast/date_value'
+require 'cloud_sesame/query/ast/numeric_Value'
 require 'cloud_sesame/query/ast/range_value'
 require 'cloud_sesame/query/ast/root'
 

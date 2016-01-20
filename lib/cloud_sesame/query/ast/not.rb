@@ -10,7 +10,7 @@ module CloudSesame
         end
 
         def compile(detailed = nil)
-          "(#{ self.class::SYMBOL  }#{ boost } #{ child.compile })" if child
+          "(#{ symbol  }#{ boost } #{ child.compile })" if child
         end
 
       end

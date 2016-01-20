@@ -3,48 +3,70 @@ module CloudSesame
     module AST
       class RangeValue < Value
 
-        def initialize(range = nil)
-          @data = range.kind_of?(Range) ? [true, valufy(range.begin), valufy(range.end), !range.exclude_end?] : [false, nil, nil, false]
+        STRING_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
+
+        def initialize(value = nil)
+          @data = if value.kind_of?(Range)
+            range_to_array(value)
+          elsif value.is_a?(String) && (match = STRING_FORMAT.match value)
+            @data = match.captures
+          else
+            default_range
+          end
         end
 
         def compile
-          "#{ lb }#{ data[1].to_s },#{ data[2].to_s }#{ ub }"
+          "#{ lb }#{ l.to_s },#{ u.to_s }#{ ub }"
         end
 
         def gt(value = nil)
-          data[0], data[1] = false, valufy(value) if value
+          data[0], data[1] = '{', Value.parse(value) if value
           return self
         end
 
         def gte(value = nil)
-          data[0], data[1] = true, valufy(value) if value
+          data[0], data[1] = '[', Value.parse(value) if value
           return self
         end
 
         def lt(value = nil)
-          data[2], data[3] = valufy(value), false if value
+          data[2], data[3] = Value.parse(value), '}' if value
           return self
         end
 
         def lte(value = nil)
-          data[2], data[3] = valufy(value), true if value
+          data[2], data[3] = Value.parse(value), ']' if value
           return self
+        end
+
+        def l
+          data[1]
+        end
+
+        def u
+          data[2]
         end
 
         private
 
-        def valufy(value)
-          return value if value.kind_of? Value
-          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          Value.new value
+        def range_to_array(r)
+          ['[', r.begin, r.end, end_symbol(r)]
+        end
+
+        def end_symbol(value)
+          value.exclude_end? ? '}' : ']'
+        end
+
+        def default_range
+          ['{', nil, nil, '}']
         end
 
         def lb
-          data[1] && data[0] ? '[' : '{'
+          data[1] ? data[0] : '{'
         end
 
         def ub
-          data[2] && data[3] ? ']' : '}'
+          data[2] ? data[3] : '}'
         end
 
       end

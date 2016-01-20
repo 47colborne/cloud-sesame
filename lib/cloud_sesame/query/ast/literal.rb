@@ -3,16 +3,20 @@ module CloudSesame
     module AST
       class Literal
 
+        SINGLE_QUATE = /\'/
+        ESCAPE_QUATE = "\\'"
+
         attr_accessor :field
         attr_reader :options, :value
 
         def initialize(field = nil, value = nil, options = {}, &block)
           @field = field
-          @value = valufy value if value
+
+          @value = Value.parse value if value
+          @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
+
           @options = options || {}
           (@options[:included] ||= []) << @value
-
-          @value = valufy ValueEvaluator.new.instance_exec &block if block_given?
         end
 
         def is_for(field, options)
@@ -26,20 +30,22 @@ module CloudSesame
         end
 
         def as_field
-          options[:as] || field
+          @as_field ||= (options[:as] || field).to_s
         end
 
         def compile(detailed = false)
-          detailed ? detailed_format : standard_format
+          updated? ? recompile(detailed) : @compiled
         end
 
         private
 
-        def valufy(value)
-          return value if value.kind_of? Value
-          return RangeValue.new value if value.kind_of? Range
-          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          Value.new value
+        def updated?
+          @compiled_value != value
+        end
+
+        def recompile(detailed)
+          @compiled_value = value
+          @compiled = detailed ? detailed_format : standard_format
         end
 
         def standard_format
@@ -50,8 +56,8 @@ module CloudSesame
           "field=#{ escape as_field } #{ value.compile }"
         end
 
-        def escape(data = "")
-          "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
+        def escape(data)
+          "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
         end
 
         class ValueEvaluator
