@@ -66,7 +66,7 @@ describe CloudSesame do
 	end
 
 	# profile the code
-	n = 1000
+	n = 500
 	result = RubyProf.profile do
 	# Benchmark.bm do |x|
 		# x.report {
