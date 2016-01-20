@@ -47,7 +47,7 @@ require 'cloud_sesame/query/ast/term'
 require 'cloud_sesame/query/ast/literal'
 require 'cloud_sesame/query/ast/value'
 require 'cloud_sesame/query/ast/date_value'
-require 'cloud_sesame/query/ast/numeric_Value'
+require 'cloud_sesame/query/ast/numeric_value'
 require 'cloud_sesame/query/ast/range_value'
 require 'cloud_sesame/query/ast/root'
 
