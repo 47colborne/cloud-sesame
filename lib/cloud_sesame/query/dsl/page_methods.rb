@@ -5,18 +5,18 @@ module CloudSesame
 
 				# CLAUSE: PAGE and SIZE
 				# =========================================
-				def page(input = nil)
-					if input
+				def page(input = false)
+					if input || input.nil?
 						request.page.start = nil
-						request.page.page = input.to_i
+						request.page.page = (input || 1).to_i
 						return self
 					else
 						request.page.page
 					end
 				end
 
-				def start(input = nil)
-					if input
+				def start(input = false)
+					if input || input.nil?
 						request.page.page = nil
 						request.page.start = input.to_i
 						return self
@@ -25,9 +25,13 @@ module CloudSesame
 					end
 				end
 
-				def size(input)
+				alias_method :offset,  :start
+
+				def size(input = false)
 					if input
 						request.page.size = input.to_i
+						return self
+					elsif input.nil?
 						return self
 					else
 						request.page.size

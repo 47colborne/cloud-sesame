@@ -62,9 +62,9 @@
 # 	end
 
 
-# 	n = 500
-# 	result = RubyProf.profile do
-# 	  n.times do
+# 	# n = 500
+# 	# result = RubyProf.profile do
+# 	#   n.times do
 # 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).and {
 # 					or! {
 # 						tags "men", "women"
@@ -93,13 +93,13 @@
 # 					}
 # 				}.compile
 
-# 	  end
-# 	end
-# 	printer = RubyProf::FlatPrinter.new(result)
-# 	printer.print(STDOUT, {})
+# 	#   end
+# 	# end
+# 	# printer = RubyProf::FlatPrinter.new(result)
+# 	# printer.print(STDOUT, {})
 
 # 	# q = Product.cloudsearch.and {
-# 	# 	binding.pry
+# 		binding.pry
 # 	# }
 
 # end
