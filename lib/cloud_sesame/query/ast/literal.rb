@@ -44,11 +44,7 @@ module CloudSesame
         end
 
         def detailed_format
-          "field=#{ escape as_field } #{ value.compile }"
-        end
-
-        def escape(data)
-          "'#{ data.to_s.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
+          "field=#{ escape as_field.to_s } #{ value.compile }"
         end
 
         class ValueEvaluator

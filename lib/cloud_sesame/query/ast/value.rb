@@ -2,11 +2,7 @@ module CloudSesame
   module Query
     module AST
       class Value
-
-        RANGE_FORMAT = /\A[\[\{].*[\]\}]\z/
-        DIGIT_FORMAT = /\A\d+(.\d+)?\z/
-        SINGLE_QUATE = /\'/
-        ESCAPE_QUATE = "\\'"
+        include DSL::ValueMethods
 
         attr_reader :data
 
@@ -24,16 +20,6 @@ module CloudSesame
 
         def ==(value)
           value == data || value == compile
-        end
-
-        private
-
-        def escape(data = "")
-          "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
-        end
-
-        def strip(string)
-          string.tr(" ", "")
         end
 
       end
