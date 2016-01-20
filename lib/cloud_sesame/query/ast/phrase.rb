@@ -3,7 +3,7 @@ module CloudSesame
     module AST
       class Phrase < SingleExpressionOperator
 				DETAILED = true
-        SYMBOL = :prefix
+        SYMBOL = :phrase
       end
     end
   end

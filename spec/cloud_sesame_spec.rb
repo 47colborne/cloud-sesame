@@ -61,43 +61,45 @@ describe CloudSesame do
 
 	end
 
-	def query
 
-	end
-
-	# profile the code
 	n = 500
 	result = RubyProf.profile do
-	# Benchmark.bm do |x|
-		# x.report {
 	  n.times do
-				Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).or {
-			  				or! {
-			  					tags("men", "women")
-			  				}
-			  				tags.not start_with("automotive"), "home"
-			  				and! {
-			  					price gt(100).lt(500)
-				  				created_at gt(Date.today - 7)
-				  				currency "CAD", "USD"
-			  				}
-
-							}.or {
-								and! {
-									tags "outdoor"
-			  					price gt(200).lt(1000)
-				  				created_at gt(Date.today - 7)
-				  				currency "CAD", "USD"
-			  				}
-							}.compile
+			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).and {
+					or! {
+						tags "men", "women"
+						and! {
+							tags.not "child", "home"
+						}
+						and!.not {
+							tags.start_with "great", "nice"
+							tags.not.start_with "super"
+							tags.not.near "hello world"
+							tags start_with("wifi"), near("electronic")
+							tags term "cool"
+							tags phrase "flash_deal"
+						}
+						or!.not {
+							price 25..100
+							price 100...200
+							price gte(200).lt(300)
+							price gte(300)
+						}
+						or! {
+							created_at Date.today - 7
+							created_at gte(Date.today)
+							created_at gte(Date.today).lt(Date.today + 3)
+						}
+					}
+				}.compile
 
 	  end
-		# }
 	end
-
-	# print a graph profile to text
-	# printer = RubyProf::GraphPrinter.new(result)
 	printer = RubyProf::FlatPrinter.new(result)
 	printer.print(STDOUT, {})
+
+	# q = Product.cloudsearch.and {
+	# 	binding.pry
+	# }
 
 end

@@ -10,14 +10,6 @@ module CloudSesame
 
         attr_reader :data
 
-        def self.create(value)
-          return value if value.kind_of? Value
-          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          return RangeValue.new(value) if value.kind_of?(Range) || value =~ RANGE_FORMAT
-          return NumericValue.new(value) if value.is_a?(Numeric) || value =~ DIGIT_FORMAT
-          Value.new(value)
-        end
-
         def initialize(data)
           @data = data
         end
@@ -31,17 +23,17 @@ module CloudSesame
         end
 
         def ==(value)
-          value == data
+          value == data || value == compile
         end
 
         private
 
-        def escape(data)
+        def escape(data = "")
           "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
         end
 
         def strip(string)
-          string.gsub(/ /, '')
+          string.tr(" ", "")
         end
 
       end
