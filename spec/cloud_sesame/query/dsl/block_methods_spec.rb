@@ -11,7 +11,7 @@ module CloudSesame
 					define_cloudsearch {}
 				end
 
-				subject(:cloudsearch) { Product.cloudsearch }
+				subject(:cloudsearch) { Product.cloudsearch.builder }
 
 				after { subject.clear_request }
 

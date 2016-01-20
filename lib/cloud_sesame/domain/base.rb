@@ -2,7 +2,6 @@ module CloudSesame
 	module Domain
 		class Base
 			extend Forwardable
-			include Query::Methods
 
 			attr_accessor :definition
 			attr_reader :searchable, :result
@@ -11,6 +10,10 @@ module CloudSesame
 
 			def initialize(searchable)
 				@searchable = searchable
+			end
+
+			def builder
+				Query::Builder.new(context, searchable)
 			end
 
 			def client
@@ -79,6 +82,13 @@ module CloudSesame
 
 			def filter_query_defaults
 				context[:filter_query, true][:defaults] ||= []
+			end
+
+			def method_missing(name, *args, &block)
+				b = builder
+				b.send(name, *args, &block)
+			rescue NoMethodError
+				super
 			end
 
 		end

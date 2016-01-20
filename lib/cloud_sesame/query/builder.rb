@@ -1,19 +1,19 @@
 module CloudSesame
 	module Query
-		module Methods
+		class Builder
 			include DSL::Base
 			include DSL::PageMethods
 			include DSL::QueryMethods
 			include DSL::ReturnMethods
 			include DSL::SortMethods
 
-			# Filter Query DSL
+			# # Filter Query DSL
 			include DSL::BlockMethods
 			include DSL::FieldMethods
 			include DSL::FilterQueryMethods
 			include DSL::ScopeMethods
 
-			attr_reader :result
+			attr_reader :context, :searchable, :result
 
 			def initialize(default_context, searchable)
 				@context = default_context

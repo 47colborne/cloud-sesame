@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module CloudSesame
   module Query
-    describe Methods do
+    describe Builder do
       let(:client) { {} }
       let(:searchable_class) { "Test" }
       subject { Builder.new(client, searchable_class) }
