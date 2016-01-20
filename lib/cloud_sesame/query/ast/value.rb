@@ -3,14 +3,27 @@ module CloudSesame
     module AST
       class Value
 
+        RANGE_FORMAT = /\A[\[\{].*[\]\}]\z/
+        DIGIT_FORMAT = /\A\d+(.\d+)?\z/
+        SINGLE_QUATE = /\'/
+        ESCAPE_QUATE = "\\'"
+
         attr_reader :data
+
+        def self.create(value)
+          return value if value.kind_of? Value
+          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
+          return RangeValue.new(value) if value.kind_of?(Range) || value =~ RANGE_FORMAT
+          return NumericValue.new(value) if value.is_a?(Numeric) || value =~ DIGIT_FORMAT
+          Value.new(value)
+        end
 
         def initialize(data)
           @data = data
         end
 
         def compile
-          format data
+          escape data
         end
 
         def to_s
@@ -18,25 +31,13 @@ module CloudSesame
         end
 
         def ==(value)
-          value == data || value == compile
+          value == data
         end
 
         private
 
-        def format(data)
-          range?(data) || digits?(data) ? data : escape(data)
-        end
-
-        def range?(data)
-          data =~ /^[\[\{].*[\]\}]$/
-        end
-
-        def digits?(data)
-          data.to_s =~ /^\d+(.\d+)?$/
-        end
-
-        def escape(data = "")
-          "'#{ data.to_s.gsub(/\'/) { "\\'" } }'"
+        def escape(data)
+          "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
         end
 
         def strip(string)

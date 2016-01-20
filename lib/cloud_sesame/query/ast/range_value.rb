@@ -3,8 +3,16 @@ module CloudSesame
     module AST
       class RangeValue < Value
 
-        def initialize(range = nil)
-          @data = range.kind_of?(Range) ? [true, valufy(range.begin), valufy(range.end), !range.exclude_end?] : [false, nil, nil, false]
+        STRING_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
+
+        def initialize(value = nil)
+          @data = if value.kind_of?(Range)
+            ['[', Value.create(value.begin), Value.create(value.end), !value.exclude_end?]
+          elsif value.is_a?(String) && (match = value.match STRING_FORMAT)
+            @data = match.captures
+          else
+            ['{', nil, nil, '}']
+          end
         end
 
         def compile
@@ -12,39 +20,33 @@ module CloudSesame
         end
 
         def gt(value = nil)
-          data[0], data[1] = false, valufy(value) if value
+          data[0], data[1] = '{', Value.create(value) if value
           return self
         end
 
         def gte(value = nil)
-          data[0], data[1] = true, valufy(value) if value
+          data[0], data[1] = '[', Value.create(value) if value
           return self
         end
 
         def lt(value = nil)
-          data[2], data[3] = valufy(value), false if value
+          data[2], data[3] = Value.create(value), '}' if value
           return self
         end
 
         def lte(value = nil)
-          data[2], data[3] = valufy(value), true if value
+          data[2], data[3] = Value.create(value), ']' if value
           return self
         end
 
         private
 
-        def valufy(value)
-          return value if value.kind_of? Value
-          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          Value.new value
-        end
-
         def lb
-          data[1] && data[0] ? '[' : '{'
+          data[1] ? data[0] : '{'
         end
 
         def ub
-          data[2] && data[3] ? ']' : '}'
+          data[2] ? data[3] : '}'
         end
 
       end

@@ -8,11 +8,11 @@ module CloudSesame
 
         def initialize(field = nil, value = nil, options = {}, &block)
           @field = field
-          @value = valufy value if value
+          @value = Value.create value if value
           @options = options || {}
           (@options[:included] ||= []) << @value
 
-          @value = valufy ValueEvaluator.new.instance_exec &block if block_given?
+          @value = Value.create ValueEvaluator.new.instance_exec &block if block_given?
         end
 
         def is_for(field, options)
@@ -34,13 +34,6 @@ module CloudSesame
         end
 
         private
-
-        def valufy(value)
-          return value if value.kind_of? Value
-          return RangeValue.new value if value.kind_of? Range
-          return DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          Value.new value
-        end
 
         def standard_format
           "#{ as_field }:#{ value.compile }"

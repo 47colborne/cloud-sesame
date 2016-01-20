@@ -1,14 +1,18 @@
 require 'spec_helper'
+require 'ruby-prof'
+require 'benchmark'
 
 describe CloudSesame do
 
 	# AWS initializer
+	# =======================================================
 	require 'yaml'
 	YAML.load_file('aws.yml').each do |key, value|
 		ENV["AWS_#{ key }"] = value
 	end
 
 	# Domain Initializer /config/initializers/cloudsearch.rb
+	# =======================================================
 	require 'cloud_sesame'
 
 	CloudSesame::Domain::Client.configure do |config|
@@ -17,6 +21,7 @@ describe CloudSesame do
 	end
 
 	# Usage Example
+	# =======================================================
 	class Product
 		include CloudSesame
 
@@ -56,45 +61,43 @@ describe CloudSesame do
 
 	end
 
-	class NewProduct < Product
-		load_definition_from Product
+	def query
 
-		define_cloudsearch do
-			field :searchable_text, 		query: { weight: 4 }
-			field :name, as: :text1
-		end
 	end
 
-	# Example Query
-	require 'benchmark'
-	Benchmark.bm do |x|
-	  x.report do
-	  	1000.times do |i|
-	  		query = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).or {
-	  				or! {
-	  					tags("men", "women")
-	  				}
-	  				tags.not start_with("automotive"), "home"
-	  				and! {
-	  					price gt(100).lt(500)
-		  				created_at gt(Date.today - 7)
-		  				currency "CAD", "USD"
-	  				}
+	# profile the code
+	n = 1000
+	result = RubyProf.profile do
+	# Benchmark.bm do |x|
+		# x.report {
+	  n.times do
+				Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).or {
+			  				or! {
+			  					tags("men", "women")
+			  				}
+			  				tags.not start_with("automotive"), "home"
+			  				and! {
+			  					price gt(100).lt(500)
+				  				created_at gt(Date.today - 7)
+				  				currency "CAD", "USD"
+			  				}
 
-					}.or {
-						and! {
-							tags "outdoor"
-	  					price gt(200).lt(1000)
-		  				created_at gt(Date.today - 7)
-		  				currency "CAD", "USD"
-	  				}
-					}
+							}.or {
+								and! {
+									tags "outdoor"
+			  					price gt(200).lt(1000)
+				  				created_at gt(Date.today - 7)
+				  				currency "CAD", "USD"
+			  				}
+							}.compile
 
-				query.compile
-	  	end
-  	end
+	  end
+		# }
 	end
 
-
+	# print a graph profile to text
+	# printer = RubyProf::GraphPrinter.new(result)
+	printer = RubyProf::FlatPrinter.new(result)
+	printer.print(STDOUT, {})
 
 end
