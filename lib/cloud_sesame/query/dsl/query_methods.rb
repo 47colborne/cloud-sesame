@@ -3,9 +3,9 @@ module CloudSesame
 		module DSL
 			module QueryMethods
 
-				def query(input = nil)
-					if input
-						request.query.query = input
+				def query(input = false)
+					if input || input.nil?
+						request.query.query = input if input
 						return self
 					else
 						request.query.query

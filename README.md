@@ -242,6 +242,36 @@ definition can be overrided by calling `#define_cloudsearch` again
 ```
 
 #Query DSL
+- `.cloudsearch` returns a CloudSesame::Domain::Base instance. It is the entry point to start building up the query
+- A CloudSesame::Query::Builder instance is expected to return from any query methods chained after `.cloudsearch` 
+```
+Product.cloudsearch #=> <CloudSesame::Domain::Base/>
+query = Product.cloudsearch.query("shoes") => <CloudSesame::Query::Builder query:'shoes'/>
+```
+**Query methods can be chained and build up**
+```
+query = Product.cloudsearch.query("shoes")
+	.and { 
+		manufacturer('puma')
+		or!.not {
+			manufacturer "nike", "adidas"
+		}
+	}
+	.sort(price: :desc)
+	.page(2)
+	.size(100)
+}
+```
+and `query.compile` will output the compiled hash
+```
+{
+	query:'shoes',
+	filter_query: "(and manufacturer:'puma' (not (or manufacturer:'nike' manufacturer:'adidas')))",
+	sort: "price desc"
+	start: 100
+	size: 100
+}
+```
 
 ###Simple Query
 ```
