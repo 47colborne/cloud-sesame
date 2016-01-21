@@ -6,12 +6,12 @@ module CloudSesame
 				def included?(field, value = nil)
 					!!(
 						(field_options = dsl_context[:fields][field]) &&
-						(active_values = field_options[:active_values]) &&
+						(applied = field_options[:applied]) &&
 						(
-							(!value && active_values.values.any?) ||
+							(!value && applied.values.any?) ||
 							(
-								value && (index = active_values.keys.index(value)) &&
-								(field_options[:active_values].values[index] != false)
+								value && (index = applied.keys.index(value)) &&
+								(field_options[:applied].values[index] != false)
 							)
 						)
 					)
@@ -20,15 +20,26 @@ module CloudSesame
 				def excluded?(field, value = nil)
 					!!(
 						(field_options = dsl_context[:fields][field]) &&
-						(active_values = field_options[:active_values]) &&
+						(applied = field_options[:applied]) &&
 						(
-							(!value && !active_values.values.all?) ||
+							(!value && !applied.values.all?) ||
 							(
-								value && (index = active_values.keys.index(value)) &&
-								field_options[:active_values].values[index] == false
+								value && (index = applied.keys.index(value)) &&
+								field_options[:applied].values[index] == false
 							)
 						)
 					)
+				end
+
+				def applied_filters
+					applied = {}
+					dsl_context[:fields].each do |field, options|
+						if options && options[:applied] &&
+							!(values = options[:applied].select { |k, v| v }.keys).empty?
+							applied[field] = values
+						end
+					end
+					applied
 				end
 
 			end

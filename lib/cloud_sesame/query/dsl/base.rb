@@ -13,6 +13,10 @@ module CloudSesame
 					dsl_scope.context
 				end
 
+				def dsl_caller
+					dsl_context[:caller]
+				end
+
 				def dsl_return(node = nil)
 					node || dsl_scope
 				end

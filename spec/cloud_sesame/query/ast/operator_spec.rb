@@ -9,15 +9,6 @@ module CloudSesame
         let(:block) { Proc.new {} }
         subject { Operator.new(context, options, &block) }
 
-        describe '#initialize' do
-          context 'given a block' do
-            let(:block) { Proc.new { context[:name] = :test } }
-            it 'should evalute the block' do
-              expect(subject.context[:name]).to eq :test
-            end
-          end
-        end
-
         describe '#boost' do
           context 'given boost option' do
             let(:options) {{ boost: 2 }}
