@@ -23,7 +23,6 @@ end
 ```
 
 #Model Setup
-##1. Mix CloudSesame into any class or model
 - `include CloudSesame` in a model or class
 - `define_cloudsearch` with a block to setup class/modal specific setting
 
@@ -104,12 +103,25 @@ end
 
 ####field(symbol, options = {})
 calling field and pass in a field_name will create an field expression accessor
+- simple usage
 ```
 field :name
 ```
-and can be called to create a field expression
+and field expression accessor can be called to create a field expression
 ```
 Product.cloudsearch.name("user")
+
+{ filter_query: "name:'user'" }
+```
+- aliase field name 
+```
+field :text1, as: :name
+```
+and field expression accessor method name will be `#name`
+```
+Product.cloudsearch.name("user")
+
+{ filter_query: "text1:'user'" }
 ```
 
 - with query options is set to `true`
@@ -172,7 +184,6 @@ ActiveRecord styled scope method. Scope allows you to specify commonly-used quer
 Product.cloudsearch.query("shoes").popular
 ```
 
-
 ####Full Example
 ```
 class Product < ActiveRecord::Base
@@ -216,29 +227,21 @@ class Product < ActiveRecord::Base
 end
 ```
 
-#####load_definition_from(Class/Model)
-every cloud 
+##Inherit cloudsearch definition from another class/modal
+####load_definition_from(Class/Model)
 ```
 class ExclusiveProduct < Product
-	# load any define cloudsearch definition from class/model
 	load_definition_from Product
 end
 ```
-
+definition can be overrided by calling `#define_cloudsearch` again
 ```
-	
-	
-	# call define_cloudsearch again to override config 
-	# or map field to a different name
 	define_cloudsearch {
-		field :name, as: :product_name		# => it will use name as product_name's alias, so user can query with
-											# NewProduct.cloudsearch.name("shoes") instead of .product_name("shoes")
-											# but the output will still be filter_query="product_name:'shoes'"
+		field :name, as: :product_name
 	}
-end
 ```
 
-##3. Query DSL
+#Query DSL
 
 ###Simple Query
 ```
