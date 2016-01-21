@@ -4,6 +4,7 @@ module CloudSesame
 			module FieldMethods
 
 				def literal(name, *values)
+					name = name.to_sym
 					if (fields = dsl_context[:fields]) && fields[name]
 				  	dsl_scope.children.field = name
 				  	dsl_scope.children.dsl_return = dsl_return

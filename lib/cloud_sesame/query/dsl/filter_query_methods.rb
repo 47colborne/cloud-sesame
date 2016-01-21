@@ -5,7 +5,7 @@ module CloudSesame
 
 				def included?(field, value = nil)
 					!!(
-						(field_options = dsl_context[:fields][field]) &&
+						(field_options = dsl_context[:fields][field.to_sym]) &&
 						(applied = field_options[:applied]) &&
 						(
 							(!value && applied.values.any?) ||
@@ -19,7 +19,7 @@ module CloudSesame
 
 				def excluded?(field, value = nil)
 					!!(
-						(field_options = dsl_context[:fields][field]) &&
+						(field_options = dsl_context[:fields][field.to_sym]) &&
 						(applied = field_options[:applied]) &&
 						(
 							(!value && !applied.values.all?) ||
