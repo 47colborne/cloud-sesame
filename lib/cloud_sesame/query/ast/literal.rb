@@ -9,7 +9,7 @@ module CloudSesame
         attr_accessor :field
         attr_reader :options, :value
 
-        def initialize(field = nil, value = nil, options = {}, &block)
+        def initialize(field = nil, value = nil, context, &block)
           @field = field
           @value = Value.parse value if value
           @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
@@ -27,7 +27,7 @@ module CloudSesame
         end
 
         def as_field
-          options[:as] || field
+          options[:fields][field][:as] || field
         end
 
         def compile(detailed = false)

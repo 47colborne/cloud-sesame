@@ -13,38 +13,41 @@ module CloudSesame
 			end
 
 			def builder
-				Query::Builder.new(context, searchable)
+				Query::Builder.new default_context, searchable
 			end
 
 			def client
 				@client ||= Client.new
 			end
 
-			def context
-				@context ||= Context.new
+			def default_context
+				@default_context ||= Context.new
 			end
 
 			# DEFAULT CONTEXT METHODS
 			# =========================================
-
+			# sets default page size
 			def default_size(value)
-				context[:page, true][:size] = value
+				default_context[:page]
+				default_context[:page, {}][:size] = value
 			end
 
+			# sets field, and field options
 			def field(name, options = {})
-				field_name = (options[:as] || name).to_sym
-				define_query_options(field_name, options.delete(:query)) if options[:query]
-				define_facet_options(field_name, options.delete(:facet)) if options[:facet]
-				define_filter_query_field(name.to_sym, options)
+				field_name = (options[:as] || name)
+				add_query field_name, options.delete(:query)
+				add_facet field_name, options.delete(:facet)
+
+				add_field_expression name.to_sym, options
 			end
 
 			def define_sloppiness(value)
-				context[:query, true][:sloppiness] = value.to_i
+				(default_context[:query] ||= {})[:sloppiness] = value.to_i
 			end
 
 			def define_fuzziness(proc = nil, &block)
 				block = proc unless block_given?
-				context[:query, true][:fuzziness] = Query::Node::Fuzziness.new(&block)
+				(default_context[:query] ||= {})[:fuzziness] = Query::Node::Fuzziness.new(&block)
 			end
 
 			def default_scope(proc, &block)
@@ -53,35 +56,46 @@ module CloudSesame
 
 			def scope(name, proc = nil, &block)
 				block = proc unless block_given?
-				context[:filter_query, true][:scopes, true][name.to_sym] = block
+				((default_context[:filter_query] ||= {})[:scopes] ||= {})[name.to_sym] = block
 			end
 
 			private
 
-			def format_options(options)
+			def ensure_hash(options)
 				options.is_a?(Hash) ? options : {}
 			end
 
-			def define_filter_query_field(name, options)
-				if (as = options[:as]) && (existing_options = context[:filter_query, true][:fields, true].delete(as))
-					options.merge!(existing_options)
+			def add_query(name, options)
+				((default_context[:query_options] ||= {})[:fields] ||= {})[name] = ensure_hash(options) if options
+			end
+
+			def add_facet(name, options)
+				(default_context[:facet] ||= {})[name] = ensure_hash(options) if options
+			end
+
+			def add_field_expression(name, options)
+				overriding_field_expression name, options
+				create_default_field_expression name, options
+				create_field_expression_writer name, options
+			end
+
+			def overriding_field_expression(name, options)
+				fields = ((default_context[:filter_query] ||= {})[:fields] ||= {})
+				if (as = options[:as]) && (existing = fields.delete(as))
+					options.merge! existing
 				end
-				if (block = options[:default])
-					filter_query_defaults << Query::AST::Literal.new(name, nil, options, &block)
+			end
+
+			def create_default_field_expression(name, options)
+				if (block = options.delete(:default))
+					(default_context[:filter_query][:default] ||= []) << block
 				end
-				context[:filter_query, true][:fields, true][name] = options
 			end
 
-			def define_query_options(name, options)
-				context[:query_options, true][:fields, true][name] = format_options(options)
-			end
-
-			def define_facet_options(name, options)
-				context[:facet, true][name] = format_options(options)
-			end
-
-			def filter_query_defaults
-				context[:filter_query, true][:defaults] ||= []
+			def create_field_expression_writer(name, options)
+				Query::DSL::FieldMethods.send(:define_method, name) do |*values|
+					literal name, *values
+				end
 			end
 
 			def method_missing(name, *args, &block)

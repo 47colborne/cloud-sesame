@@ -75,7 +75,8 @@ require 'cloud_sesame/query/builder'
 require 'cloud_sesame/domain/base'
 require 'cloud_sesame/domain/client'
 require 'cloud_sesame/domain/config'
-require 'cloud_sesame/domain/context'
+
+require 'cloud_sesame/context'
 
 # Public Interface
 # ===============================================
