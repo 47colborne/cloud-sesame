@@ -9,7 +9,7 @@ module CloudSesame
           @data = if value.kind_of?(Range)
             range_to_array(value)
           elsif value.is_a?(String) && (match = string_format?(value))
-            @data = match.captures.map(&:strip)
+            @data = match.captures
           else
             default_range
           end
@@ -46,7 +46,7 @@ module CloudSesame
         private
 
         def string_format?(string)
-           RANGE_FORMAT.match string
+           RANGE_FORMAT.match string.tr(' ', '')
         end
 
         def range_to_array(range)
