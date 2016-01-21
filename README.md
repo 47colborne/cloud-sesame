@@ -25,18 +25,59 @@ end
 #Model Setup
 ##1. Mix CloudSesame into any class or model
 - `include CloudSesame` in a model or class
-- call `define_cloudsearch` and pass in a block to define the cloudsearch
+- `define_cloudsearch` with a block to setup class/modal specific setting
 
 #####define_cloudsearch(&block)
 Includes all Model/Class specific cloudsearch configurations
+```
+class Product
+	include CloudSesame
+
+	define_cloudsearch do 
+		...
+	end
+end
+```
+
 #####config.endpoint=(string)
 Set AWS CloudSearch instance search endpoint
 #####config.region=(string) 
 Set AWS CloudSearch isntance region
+```
+class Product
+	include CloudSesame
+
+	define_cloudsearch do 
+		config.endpoint = ENV[...]
+		config.region 	= ENV[...]
+	end
+end
+```
+
 #####default_size(integer = 10) 
 Set default search size
+```
+class Product
+	include CloudSesame
+
+	define_cloudsearch do 
+		default_size 100
+	end
+end
+```
+
 #####define_sloppiness(integer)
 Setup sloppy query, it is turned off by default
+```
+class Product
+	include CloudSesame
+
+	define_cloudsearch do 
+		define_sloppiness 3
+	end
+end
+```
+
 #####define_fuzziness(&block)
 Setup fuzziness, it is turned off by default.
 the block can set 3 values 
@@ -47,35 +88,69 @@ the block can set 3 values
 - **fuzzy_percent(float = 0.17)**
 	percent used to calculate the fuzziness based on the word length, fuzziness whill choose between the calculated result and maximum fizziness, whichever is smaller.
 	[(word.size * fuzzy_percent).round, max_fuzziness].min
+```
+class Product
+	include CloudSesame
+
+	define_cloudsearch do 
+		define_fuzziness do
+			max_fuzziness 3
+			min_char_size 6
+			fuzzy_percent 0.17
+		end
+	end
+end
+```
 
 #####field(symbol, options = {})
-calling field and pass in a field_name will create an literal method, which can be called to create a literal expression
+calling field and pass in a field_name will create an field expression accessor
+```
+field :name
+```
+and can be called to create a field expression
+```
+Product.cloudsearch.name("user")
+```
 
-**field examples with query options**
+**with query options is set to TRUE**
 ```
 field :name, query: true			
-# COMPILED: query_options[:fields] = ["name"]
 
+{ query_options: { fields: ['name'] } }
+```
+
+**with weight assigned to query options**
+```
 field :tags, query: { weight: 2 }
-# COMPILED: query_options[:fields] = ["name", "tags^2"]
+
+{ query_options[:fields] = ['name', 'tags^2'] }
 ```
-**field example with facet**
+
+**with facet options passed in**
 ```
-# To enable facet
 field :currency, facet: true
 
-# To enable facet with buckets
+{ facets: { currency:{} } }
+```
+
+**with facet buckets**
+```
 field :discount, facet: { 				
 	buckets: %w([10,100] [25,100] [50,100] [70,100]), 
 	method: 'interval' 
 }
 
-# To enable facet with max size
+{ facets: { discount: { buckets:["[10,100]","[25,100]","[50,100]","[70,100]"], method:"interval"} } }
+```
+
+**with facet size set**
+```
 field :manufacturer, facet: { size: 50 }
+```
 
-# To enable facet with sorting
+**with facet sorting**
+```
 field :category, facet: { sort: 'bucket', size: 10_000 }	
-
 ```
 
 #####scope(symbol, proc, &block)
