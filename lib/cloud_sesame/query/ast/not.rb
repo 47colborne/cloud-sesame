@@ -6,10 +6,10 @@ module CloudSesame
 
         def <<(object)
           object.is_excluded
-          super
+          self.child = object
         end
 
-        def compile(detailed = nil)
+        def compile
           "(#{ symbol  }#{ boost } #{ child.compile })" if child
         end
 

@@ -62,44 +62,54 @@
 # 	end
 
 
-# 	# n = 500
-# 	# result = RubyProf.profile do
-# 	#   n.times do
+# 	n = 10000
+# 	q = nil
+# 	result = RubyProf.profile do
+# 	  n.times do
 # 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).and {
-# 					or! {
-# 						tags "men", "women"
-# 						and! {
-# 							tags.not "child", "home"
-# 						}
-# 						and!.not {
-# 							tags.start_with "great", "nice"
-# 							tags.not.start_with "super"
-# 							tags.not.near "hello world"
-# 							tags start_with("wifi"), near("electronic")
-# 							tags term "cool"
-# 							tags phrase "flash_deal"
-# 						}
-# 						or!.not {
-# 							price 25..100
-# 							price 100...200
-# 							price gte(200).lt(300)
-# 							price gte(300)
-# 						}
-# 						or! {
-# 							created_at Date.today - 7
-# 							created_at gte(Date.today)
-# 							created_at gte(Date.today).lt(Date.today + 3)
-# 						}
+# 				# tags "1", "2"
+# 				# tags.not "3", "4"
+# 				# tags.start_with "5"
+# 				# tags.near "6"
+# 				# tags.not phrase "7"
+# 				# tags.not term "8"
+# 				# tags.not start_with("9"), near("10")
+# 				# tags.start_with phrase("11")
+# 				or! {
+# 					tags "12", "13"
+# 					and! {
+# 						tags.not "14", "15"
 # 					}
-# 				}.compile
-
-# 	#   end
-# 	# end
-# 	# printer = RubyProf::FlatPrinter.new(result)
-# 	# printer.print(STDOUT, {})
-
+# 					and!.not {
+# 						tags.start_with "16", "17"
+# 						tags.not.start_with "18"
+# 						tags.not.near "19"
+# 						tags start_with("20"), near("21")
+# 						tags term "22"
+# 						tags phrase "23"
+# 					}
+# 					or!.not {
+# 						price 24..25
+# 						price 26...27
+# 						price gte(28).lt(29)
+# 						price gte(30)
+# 					}
+# 					or! {
+# 						created_at Date.today - 7
+# 						created_at gte(Date.today)
+# 						created_at gte(Date.today).lt(Date.today + 3)
+# 					}
+# 				}
+# 			}
+# 			q.compile
+# 			fields = q.context[:filter_query][:fields]
+# 	  end
+# 	end
+# 	printer = RubyProf::FlatPrinter.new(result)
+# 	printer.print(STDOUT, {})
+# 	p q.request.filter_query.compile
 # 	# q = Product.cloudsearch.and {
-# 		binding.pry
+# 		# binding.pry
 # 	# }
 
 # end

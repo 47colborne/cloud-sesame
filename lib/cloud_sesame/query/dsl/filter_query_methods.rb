@@ -4,27 +4,31 @@ module CloudSesame
 			module FilterQueryMethods
 
 				def included?(field, value = nil)
-					(field_options = dsl_context[:fields][field]) && (
-						(value && field_options_is(:included, field_options, value)) ||
-						(!value && field_options_not_empty_in(:included, field_options))
+					!!(
+						(field_options = dsl_context[:fields][field]) &&
+						(active_values = field_options[:active_values]) &&
+						(
+							(!value && active_values.values.any?) ||
+							(
+								value && (index = active_values.keys.index(value)) &&
+								(field_options[:active_values].values[index] != false)
+							)
+						)
 					)
 				end
 
 				def excluded?(field, value = nil)
-					(field_options = dsl_context[:fields][field]) && (
-						(value && field_options_is(:excluded, field_options, value)) ||
-						(!value && field_options_not_empty_in(:excluded, field_options))
+					!!(
+						(field_options = dsl_context[:fields][field]) &&
+						(active_values = field_options[:active_values]) &&
+						(
+							(!value && !active_values.values.all?) ||
+							(
+								value && (index = active_values.keys.index(value)) &&
+								field_options[:active_values].values[index] == false
+							)
+						)
 					)
-				end
-
-				private
-
-				def field_options_is(type, field_options, value)
-					(values = field_options[type]) && values.include?(value)
-				end
-
-				def field_options_not_empty_in(type, field_options)
-					field_options[type] && !field_options[type].empty?
 				end
 
 			end

@@ -3,7 +3,7 @@ module CloudSesame
     module AST
       class Value
 
-        RANGE_FORMAT = /\A[\[\{].*[\]\}]\z/
+        RANGE_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
         DIGIT_FORMAT = /\A\d+(.\d+)?\z/
         SINGLE_QUATE = /\'/
         ESCAPE_QUATE = "\\'"
@@ -12,9 +12,9 @@ module CloudSesame
 
         def self.parse(value)
           return value if value.kind_of? AST::Value
+          return AST::NumericValue.new(value) if value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
           return AST::DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
           return AST::RangeValue.new(value) if value.kind_of?(Range) || (value.is_a?(String) && RANGE_FORMAT =~ value)
-          return AST::NumericValue.new(value) if value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
           AST::Value.new(value)
         end
 
@@ -45,7 +45,7 @@ module CloudSesame
           @compiled = escape @compiled_data
         end
 
-        def escape(data = "")
+        def escape(data)
           "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
         end
 

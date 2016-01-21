@@ -21,11 +21,11 @@ module CloudSesame
           self.child = object
         end
 
-        def compile
-          "(#{ symbol  }#{ boost } #{ child.compile detailed })" if child
+        def compile(detailed = nil)
+          "(#{ symbol  }#{ boost } #{ child.compile operator_detailed })" if child
         end
 
-        def detailed
+        def operator_detailed
           self.class::DETAILED
         end
 

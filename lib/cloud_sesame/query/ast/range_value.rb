@@ -3,20 +3,16 @@ module CloudSesame
     module AST
       class RangeValue < Value
 
-        STRING_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
+        RANGE_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
 
         def initialize(value = nil)
           @data = if value.kind_of?(Range)
             range_to_array(value)
-          elsif value.is_a?(String) && (match = STRING_FORMAT.match value)
-            @data = match.captures
+          elsif value.is_a?(String) && (match = string_format?(value))
+            @data = match.captures.map(&:strip)
           else
             default_range
           end
-        end
-
-        def compile
-          "#{ lb }#{ l.to_s },#{ u.to_s }#{ ub }"
         end
 
         def gt(value = nil)
@@ -39,18 +35,22 @@ module CloudSesame
           return self
         end
 
-        def l
-          data[1]
+        def compile
+          "#{ lb }#{ l.to_s },#{ u.to_s }#{ ub }"
         end
 
-        def u
-          data[2]
+        def ==(object)
+          data == Value.parse(object).data
         end
 
         private
 
-        def range_to_array(r)
-          ['[', r.begin, r.end, end_symbol(r)]
+        def string_format?(string)
+           RANGE_FORMAT.match string
+        end
+
+        def range_to_array(range)
+          ['[', range.begin, range.end, end_symbol(range)]
         end
 
         def end_symbol(value)
@@ -59,6 +59,14 @@ module CloudSesame
 
         def default_range
           ['{', nil, nil, '}']
+        end
+
+        def l
+          data[1]
+        end
+
+        def u
+          data[2]
         end
 
         def lb
