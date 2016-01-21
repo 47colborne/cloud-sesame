@@ -14,7 +14,7 @@ module CloudSesame
           @value = Value.parse value if value
           @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
           @options = options || {}
-          active_values[value] = true
+          applied[@value] = true
         end
 
         def is_for(field, options)
@@ -23,7 +23,7 @@ module CloudSesame
         end
 
         def is_excluded
-          active_values[value] = active_values[value] == false ? true : false
+          applied[value] = applied[value] == false ? true : false
         end
 
         def as_field
@@ -36,8 +36,8 @@ module CloudSesame
 
         private
 
-        def active_values
-          options[:active_values] ||= {}
+        def applied
+          options[:applied] ||= {}
         end
 
         def standard_format
