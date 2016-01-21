@@ -27,7 +27,7 @@ end
 - `include CloudSesame` in a model or class
 - `define_cloudsearch` with a block to setup class/modal specific setting
 
-#####define_cloudsearch(&block)
+####define_cloudsearch(&block)
 Includes all Model/Class specific cloudsearch configurations
 ```
 class Product
@@ -39,9 +39,9 @@ class Product
 end
 ```
 
-#####config.endpoint=(string)
+####config.endpoint=(string)
 Set AWS CloudSearch instance search endpoint
-#####config.region=(string) 
+####config.region=(string) 
 Set AWS CloudSearch isntance region
 ```
 class Product
@@ -54,7 +54,7 @@ class Product
 end
 ```
 
-#####default_size(integer = 10) 
+####default_size(integer = 10) 
 Set default search size
 ```
 class Product
@@ -66,7 +66,7 @@ class Product
 end
 ```
 
-#####define_sloppiness(integer)
+####define_sloppiness(integer)
 Setup sloppy query, it is turned off by default
 ```
 class Product
@@ -78,7 +78,7 @@ class Product
 end
 ```
 
-#####define_fuzziness(&block)
+####define_fuzziness(&block)
 Setup fuzziness, it is turned off by default.
 the block can set 3 values 
 - **max_fuzziness(integer = 3)**
@@ -102,7 +102,7 @@ class Product
 end
 ```
 
-#####field(symbol, options = {})
+####field(symbol, options = {})
 calling field and pass in a field_name will create an field expression accessor
 ```
 field :name
@@ -112,28 +112,28 @@ and can be called to create a field expression
 Product.cloudsearch.name("user")
 ```
 
-**with query options is set to TRUE**
+- with query options is set to `true`
 ```
 field :name, query: true			
 
 { query_options: { fields: ['name'] } }
 ```
 
-**with weight assigned to query options**
+- with **weight** assigned to query options
 ```
 field :tags, query: { weight: 2 }
 
 { query_options[:fields] = ['name', 'tags^2'] }
 ```
 
-**with facet options passed in**
+- with **facet options** passed in
 ```
 field :currency, facet: true
 
 { facets: { currency:{} } }
 ```
 
-**with facet buckets**
+- with facet **buckets**
 ```
 field :discount, facet: { 				
 	buckets: %w([10,100] [25,100] [50,100] [70,100]), 
@@ -143,22 +143,37 @@ field :discount, facet: {
 { facets: { discount: { buckets:["[10,100]","[25,100]","[50,100]","[70,100]"], method:"interval"} } }
 ```
 
-**with facet size set**
+- with facet **size** set
 ```
 field :manufacturer, facet: { size: 50 }
 ```
 
-**with facet sorting**
+- with facet **sorting**
 ```
 field :category, facet: { sort: 'bucket', size: 10_000 }	
 ```
 
-#####scope(symbol, proc, &block)
+
+####scope(symbol, proc, &block)
 ActiveRecord styled scope method. Scope allows you to specify commonly-used queries which can be referenced as method calls on cloudsearch or inside of operator block
+**set scope**
+```
+	...
+	define_cloudsearch do 
+		....
 
- 
+		scope :popular, -> { or! { tags "popular"; popularity gt(70) } }
+	end
 
-**complete example**
+
+```
+**call a scope**
+```
+Product.cloudsearch.query("shoes").popular
+```
+
+
+####Full Example
 ```
 class Product < ActiveRecord::Base
 	include CloudSesame
