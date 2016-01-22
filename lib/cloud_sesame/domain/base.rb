@@ -3,36 +3,34 @@ module CloudSesame
 		class Base
 			extend Forwardable
 
-			attr_accessor :definition
 			attr_reader :searchable, :result
 
 			def_delegator :client, :config
+
+			DEFINITIONS = {}
 
 			def initialize(searchable)
 				@searchable = searchable
 			end
 
 			def builder
-				Query::Builder.new default_context, searchable
+				Query::Builder.new context, searchable
 			end
 
 			def client
 				@client ||= Client.new
 			end
 
-			def default_context
-				@default_context ||= Context.new
+			def context
+				@context ||= Context.new
 			end
 
 			# DEFAULT CONTEXT METHODS
 			# =========================================
-			# sets default page size
 			def default_size(value)
-				default_context[:page]
-				default_context[:page, {}][:size] = value
+				(context[:page] ||= {})[:size] = value
 			end
 
-			# sets field, and field options
 			def field(name, options = {})
 				field_name = (options[:as] || name)
 				add_query field_name, options.delete(:query)
@@ -42,12 +40,12 @@ module CloudSesame
 			end
 
 			def define_sloppiness(value)
-				(default_context[:query] ||= {})[:sloppiness] = value.to_i
+				(context[:query] ||= {})[:sloppiness] = value.to_i
 			end
 
 			def define_fuzziness(proc = nil, &block)
 				block = proc unless block_given?
-				(default_context[:query] ||= {})[:fuzziness] = Query::Node::Fuzziness.new(&block)
+				(context[:query] ||= {})[:fuzziness] = Query::Node::Fuzziness.new(&block)
 			end
 
 			def default_scope(proc, &block)
@@ -56,7 +54,7 @@ module CloudSesame
 
 			def scope(name, proc = nil, &block)
 				block = proc unless block_given?
-				((default_context[:filter_query] ||= {})[:scopes] ||= {})[name.to_sym] = block
+				((context[:filter_query] ||= {})[:scopes] ||= {})[name.to_sym] = block
 			end
 
 			private
@@ -66,11 +64,11 @@ module CloudSesame
 			end
 
 			def add_query(name, options)
-				((default_context[:query_options] ||= {})[:fields] ||= {})[name] = ensure_hash(options) if options
+				((context[:query_options] ||= {})[:fields] ||= {})[name] = ensure_hash(options) if options
 			end
 
 			def add_facet(name, options)
-				(default_context[:facet] ||= {})[name] = ensure_hash(options) if options
+				(context[:facet] ||= {})[name] = ensure_hash(options) if options
 			end
 
 			def add_field_expression(name, options)
@@ -80,7 +78,7 @@ module CloudSesame
 			end
 
 			def overriding_field_expression(name, options)
-				fields = ((default_context[:filter_query] ||= {})[:fields] ||= {})
+				fields = ((context[:filter_query] ||= {})[:fields] ||= {})
 				if (as = options[:as]) && (existing = fields.delete(as))
 					options.merge! existing
 				end
@@ -88,21 +86,19 @@ module CloudSesame
 
 			def create_default_field_expression(name, options)
 				if (block = options.delete(:default))
-					(default_context[:filter_query][:default] ||= []) << block
+					(context[:filter_query][:default] ||= []) << block
 				end
 			end
 
 			def create_field_expression_writer(name, options)
+				(context[:filter_query][:fields] ||= {})[name] = options
 				Query::DSL::FieldMethods.send(:define_method, name) do |*values|
 					literal name, *values
 				end
 			end
 
 			def method_missing(name, *args, &block)
-				b = builder
-				b.send(name, *args, &block)
-			rescue NoMethodError
-				super
+				builder.send(name, *args, &block) rescue super
 			end
 
 		end

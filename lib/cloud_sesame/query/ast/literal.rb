@@ -9,17 +9,22 @@ module CloudSesame
         attr_accessor :field
         attr_reader :options, :value
 
-        def initialize(field = nil, value = nil, context, &block)
+        def initialize(field, value, options = {}, &block)
           @field = field
           @value = Value.parse value if value
-          @value = Value.parse ValueEvaluator.new.instance_exec &block if block_given?
-          @options = options || {}
-          applied[@value] = true
+          @value = Value.parse(ValueEvaluator.new.instance_exec &block) if block_given?
+
+          @options = options
+          is_included
         end
 
-        def is_for(field, options)
+        def is_for(field, options = {})
           @field = field
           @options = options.merge @options
+        end
+
+        def is_included
+          applied[value] = true
         end
 
         def is_excluded
@@ -27,7 +32,7 @@ module CloudSesame
         end
 
         def as_field
-          options[:fields][field][:as] || field
+          options[:as] || field
         end
 
         def compile(detailed = false)

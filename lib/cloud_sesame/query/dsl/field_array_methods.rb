@@ -69,7 +69,7 @@ module CloudSesame
 				end
 
 				def field_options
-				  dsl_context[:fields][field]
+					dsl_context[:fields][field]
 				end
 
 			end

@@ -15,13 +15,13 @@ module CloudSesame
 
 			attr_reader :context, :searchable, :result
 
-			def initialize(default_context, searchable)
-				@context = default_context
+			def initialize(context, searchable)
+				@context = Context.new.duplicate context
 				@searchable = searchable
 			end
 
 			def request
-				@request ||= Node::Request.new(context.dup)
+				@request ||= Node::Request.new context
 			end
 
 			def response

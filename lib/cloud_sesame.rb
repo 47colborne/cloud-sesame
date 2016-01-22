@@ -72,11 +72,10 @@ require 'cloud_sesame/query/builder'
 
 # Domain Objects
 # ===============================================
+require 'cloud_sesame/context'
 require 'cloud_sesame/domain/base'
 require 'cloud_sesame/domain/client'
 require 'cloud_sesame/domain/config'
-
-require 'cloud_sesame/context'
 
 # Public Interface
 # ===============================================
@@ -89,19 +88,19 @@ module CloudSesame
   module ClassMethods
 
     def cloudsearch
-      @cloudsearch ||= CloudSesame::Domain::Base.new self
+      @cloudsearch ||= Domain::Base.new self
     end
 
     def define_cloudsearch(&block)
       if block_given?
-        cloudsearch.definition = block
+        Domain::Base::DEFINITIONS[self] = block
         cloudsearch.instance_eval &block
       end
     end
 
     def load_definition_from(klass)
-      if klass.respond_to?(:cloudsearch) && klass.cloudsearch.definition
-        cloudsearch.instance_eval &klass.cloudsearch.definition
+      if (definition = Domain::Base::DEFINITIONS[self])
+        cloudsearch.instance_eval &definition
       end
     end
 

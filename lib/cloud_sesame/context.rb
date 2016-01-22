@@ -1,8 +1,15 @@
+require 'active_support/core_ext/object/deep_dup'
+
 module CloudSesame
   class Context
     extend Forwardable
 
-    def_delegators :table,  :each, :map, :delete, :select
+    def_delegators :table, :each,
+                           :map,
+                           :delete,
+                           :select,
+                           :include?,
+                           :empty?
 
     attr_reader :table
 
@@ -16,6 +23,11 @@ module CloudSesame
 
     def []=(key, value)
       table[key.to_sym] = value
+    end
+
+    def duplicate(context)
+      @table = context.table.deep_dup
+      self
     end
 
   end

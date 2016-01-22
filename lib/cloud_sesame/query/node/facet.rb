@@ -4,7 +4,7 @@ module CloudSesame
       class Facet < Abstract
 
         def facet
-          @facet ||= context.table
+          @facet ||= context
         end
 
         def compile

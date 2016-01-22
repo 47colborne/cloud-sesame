@@ -7,35 +7,35 @@ module CloudSesame
 				# =========================================
 
 				def query
-					@query ||= Query.new(context[:query, true])
+					@query ||= Query.new(context[:query] ||= {})
 				end
 
 				def query_options
-					@query_options ||= QueryOptions.new(context[:query_options, true])
+					@query_options ||= QueryOptions.new(context[:query_options] ||= {})
 				end
 
 				def query_parser
-					@query_parser ||= QueryParser.new(context[:query_parser, true])
+					@query_parser ||= QueryParser.new(context[:query_parser] ||= {})
 				end
 
 				def filter_query
-					@filter_query ||= FilterQuery.new(context[:filter_query, true])
+					@filter_query ||= FilterQuery.new(context[:filter_query] ||= {})
 				end
 
 				def facet
-					@facet ||= Facet.new(context[:facet, true])
+					@facet ||= Facet.new(context[:facet] ||= {})
 				end
 
 				def page
-					@page ||= Page.new(context[:page, true])
+					@page ||= Page.new(context[:page] ||= {})
 				end
 
 				def sort
-					@sort ||= Sort.new(context[:sort, true])
+					@sort ||= Sort.new(context[:sort] ||= {})
 				end
 
 				def return_field
-					@return ||= Return.new(context[:return, true])
+					@return ||= Return.new(context[:return] ||= {})
 				end
 
 				# EVALUATION
