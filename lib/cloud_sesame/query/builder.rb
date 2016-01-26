@@ -33,6 +33,21 @@ module CloudSesame
 				"#<#{ self.class }:#{ object_id } #{ compile }>"
 			end
 
+			# OPERATOR METHODS
+			# =========================================
+			def and(options = {}, &block)
+				node = AST::And.new dsl_scope.context, options
+				caller = block.binding.eval("self")
+				block_domain = Domain::Block.new caller
+				if block_given?
+
+					block_domain._evaluate node, request.filter_query.root, &block
+					self
+				else
+
+				end
+			end
+
 			private
 
 			def dsl_scope
