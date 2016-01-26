@@ -12,8 +12,9 @@ module CloudSesame
 			include DSL::FieldMethods
 			include DSL::FilterQueryMethods
 			include DSL::ScopeMethods
+			include DSL::ResponseMethods
 
-			attr_reader :context, :searchable, :result
+			attr_reader :context, :searchable
 
 			def initialize(context, searchable)
 				@context = Context.new.duplicate context
@@ -24,41 +25,12 @@ module CloudSesame
 				@request ||= Node::Request.new context
 			end
 
-			def response
-				@response ||= search
-			end
-
 			def compile
 				request.compile
 			end
 
 			def inspect
 				"#<#{ self.class }:#{ object_id } #{ compile }>"
-			end
-
-			# ENDING METHODS
-			# =========================================
-
-			def found
-				response.hits.found
-			end
-
-			def results
-				response.hits.hit
-			end
-
-			def each(&block)
-				results.each &block
-			end
-
-			def map(&block)
-				results.map &block
-			end
-
-			def search
-				compiled = request.compile
-				raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
-				@response = searchable.cloudsearch.client.search compiled
 			end
 
 			private
