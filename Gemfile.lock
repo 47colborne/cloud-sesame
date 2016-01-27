@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    CloudSesame (0.4.3)
+    CloudSesame (0.4.4)
       activesupport (~> 4.2)
       aws-sdk (~> 2)
 
