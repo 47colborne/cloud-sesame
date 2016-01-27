@@ -98,7 +98,9 @@ module CloudSesame
 			end
 
 			def method_missing(name, *args, &block)
-				builder.send(name, *args, &block) rescue super
+				builder.send(name, *args, &block)
+			# rescue NoMethodError
+			# 	super
 			end
 
 		end
