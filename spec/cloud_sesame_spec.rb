@@ -62,43 +62,49 @@ describe CloudSesame do
 	end
 
 
-	n = 10_000
-  q = nil
-	result = RubyProf.profile do
-	  n.times do
-			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).and {
-					or! {
-					tags "1", "2"
-					and! {
-						tags.not "3", "4"
-					}
-					and!.not {
-						tags.start_with "5", "6"
-						tags.not.start_with "7"
-						tags.not.near "8"
-						tags start_with("9"), near("10")
-						tags term "11"
-						tags phrase "12"
-					}
-					or!.not {
-						price 25..100
-						price 100...200
-						price gte(200).lt(300)
-						price gte(300)
-					}
-					or! {
-						created_at Date.today - 7
-						created_at gte(Date.today)
-						created_at gte(Date.today).lt(Date.today + 3)
-					}
-				}
-			}
-			q.applied_filters
+	# n = 10_000
+ #  q = nil
+	# result = RubyProf.profile do
+	#   n.times do
+	# 		q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).and {
+	# 				or! {
+	# 				tags "1", "2"
+	# 				and! {
+	# 					tags.not "3", "4"
+	# 				}
+	# 				and!.not {
+	# 					tags.start_with "5", "6"
+	# 					tags.not.start_with "7"
+	# 					tags.not.near "8"
+	# 					tags start_with("9"), near("10")
+	# 					tags term "11"
+	# 					tags phrase "12"
+	# 				}
+	# 				or!.not {
+	# 					price 25..100
+	# 					price 100...200
+	# 					price gte(200).lt(300)
+	# 					price gte(300)
+	# 				}
+	# 				or! {
+	# 					created_at Date.today - 7
+	# 					created_at gte(Date.today)
+	# 					created_at gte(Date.today).lt(Date.today + 3)
+	# 				}
+	# 			}
+	# 		}
+	# 		q.applied_filters
 
-	  end
-	end
-	printer = RubyProf::FlatPrinter.new(result)
-	printer.print(STDOUT, {})
+	#   end
+	# end
+	# printer = RubyProf::FlatPrinter.new(result)
+	# printer.print(STDOUT, {})
+
+	q = Product.cloudsearch.and {
+		or! {
+			and! {}
+		}
+	}
 
 	binding.pry
 

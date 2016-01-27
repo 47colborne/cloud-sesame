@@ -8,7 +8,7 @@ module CloudSesame
 			include DSL::SortMethods
 
 			# # Filter Query DSL
-			include DSL::BlockMethods
+			# include DSL::BlockMethods
 			include DSL::FieldMethods
 			include DSL::FilterQueryMethods
 			include DSL::ScopeMethods
@@ -36,26 +36,20 @@ module CloudSesame
 			# OPERATOR METHODS
 			# =========================================
 			def and(options = {}, &block)
-				node = AST::And.new dsl_scope.context, options
+				node = AST::And.new _scope.context, options
 				caller = block.binding.eval("self")
-				block_domain = Domain::Block.new caller
-				if block_given?
-
-					block_domain._evaluate node, request.filter_query.root, &block
-					self
-				else
-
-				end
+				domain = Domain::Block.new caller, _scope.context
+				domain._eval node, _scope, self, &block
 			end
 
 			private
 
-			def dsl_scope
-				request.filter_query.root
+			def _eval(node, _scope, _return, &block)
+
 			end
 
-			def dsl_return(node = nil)
-				self
+			def _scope
+				request.filter_query.root
 			end
 
 		end

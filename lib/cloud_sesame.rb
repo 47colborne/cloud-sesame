@@ -31,6 +31,9 @@ require 'cloud_sesame/query/dsl/return_methods'
 require 'cloud_sesame/query/dsl/scope_methods'
 require 'cloud_sesame/query/dsl/sort_methods'
 
+require 'cloud_sesame/query/domain/block'
+require 'cloud_sesame/query/domain/chaining_block'
+
 # Query Query Filter Query AST Tree
 # ===============================================
 require 'cloud_sesame/query/ast/operator'
