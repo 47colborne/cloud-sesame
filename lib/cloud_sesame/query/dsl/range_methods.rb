@@ -4,19 +4,19 @@ module CloudSesame
 			module RangeMethods
 
 				def gt(input)
-					AST::RangeValue.new.gt(input)
+					AST::RangeValue.new.gt input
 				end
 
 				def gte(input)
-					AST::RangeValue.new.gte(input)
+					AST::RangeValue.new.gte input
 				end
 
 				def lt(input)
-					AST::RangeValue.new.lt(input)
+					AST::RangeValue.new.lt input
 				end
 
 				def lte(input)
-					AST::RangeValue.new.lte(input)
+					AST::RangeValue.new.lte input
 				end
 
 			end

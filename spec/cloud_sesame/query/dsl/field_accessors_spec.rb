@@ -3,7 +3,7 @@ require 'spec_helper'
 module CloudSesame
 	module Query
 		module DSL
-			describe FieldMethods do
+			describe FieldAccessors do
 
 				# Setup Test Class
 				class Product

@@ -1,12 +1,13 @@
 module CloudSesame
 	module Query
 		module DSL
-			module ScopeMethods
+			module ScopeAccessors
 
 				def scopes(name = nil, *args)
+					context_scopes = _scope.context[:scopes]
 					if (name && context_scopes && (callback = context_scopes[name])) || name.nil?
 						instance_exec(*args, &callback) if callback
-						dsl_return
+						_return
 					else
 						raise NoMethodError, "scope[#{ name }] does not exist"
 					end
@@ -14,14 +15,11 @@ module CloudSesame
 
 				private
 
-				def context_scopes
-					dsl_context[:scopes]
-				end
-
 				def method_missing(name, *args, &block)
+					context_scopes = _scope.context[:scopes]
 					if context_scopes && (callback = context_scopes[name])
 						instance_exec *args, &callback
-					  dsl_return
+					  _return
 					else
 						super
 					end

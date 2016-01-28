@@ -54,7 +54,8 @@ module CloudSesame
 
 			def scope(name, proc = nil, &block)
 				block = proc unless block_given?
-				((context[:filter_query] ||= {})[:scopes] ||= {})[name.to_sym] = block
+				create_scope_accessor name, &block
+				# ((context[:filter_query] ||= {})[:scopes] ||= {})[name.to_sym] = block
 			end
 
 			private
@@ -74,7 +75,8 @@ module CloudSesame
 			def add_field_expression(name, options)
 				overriding_field_expression name, options
 				create_default_field_expression name, options
-				create_field_expression_writer name, options
+				create_field_accessor name
+				(context[:filter_query][:fields] ||= {})[name] = options
 			end
 
 			def overriding_field_expression(name, options)
@@ -90,15 +92,18 @@ module CloudSesame
 				end
 			end
 
-			def create_field_expression_writer(name, options)
-				(context[:filter_query][:fields] ||= {})[name] = options
-				Query::DSL::FieldMethods.send(:define_method, name) do |*values|
+			def create_field_accessor(name)
+				Query::DSL::FieldAccessors.send(:define_method, name) do |*values|
 					literal name, *values
 				end
 			end
 
+			def create_scope_accessor(name, &block)
+				Query::DSL::ScopeAccessors.send(:define_method, name, &block)
+			end
+
 			def method_missing(name, *args, &block)
-				builder.send(name, *args, &block) rescue super
+				builder.send(name, *args, &block)
 			end
 
 		end

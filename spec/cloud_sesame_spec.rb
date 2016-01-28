@@ -100,9 +100,9 @@ describe CloudSesame do
 	# printer = RubyProf::FlatPrinter.new(result)
 	# printer.print(STDOUT, {})
 
-	q = Product.cloudsearch.and {
+	q = Product.cloudsearch.and.not {
 		or! {
-			and! {}
+			price 100
 		}
 	}
 
