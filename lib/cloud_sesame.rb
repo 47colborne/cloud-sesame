@@ -1,5 +1,6 @@
 # External Libraries
 # ===============================================
+require 'active_support/all'
 require 'aws-sdk'
 require 'forwardable'
 

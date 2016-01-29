@@ -1,5 +1,3 @@
-require 'active_support/core_ext/object/deep_dup'
-
 module CloudSesame
   class Context
     extend Forwardable
