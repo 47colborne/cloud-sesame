@@ -3,12 +3,15 @@ module CloudSesame
 		module DSL
 			module BlockMethods
 
-				attr_accessor :orphan_node
-
 				# CLAUSE: AND
 				# =========================================
 				def and(options = {}, &block)
-					block_style_dsl AST::And, options, &block
+					node = AST::And.new _context, options
+					if block_given?
+						_eval node, _scope, _return, &block
+					else
+						Domain::ChainingBlock.new node, _scope, _return
+					end
 				end
 
 				alias_method :all,  :and
@@ -17,7 +20,12 @@ module CloudSesame
 				# CLAUSE: OR
 				# =========================================
 				def or(options = {}, &block)
-					block_style_dsl AST::Or, options, &block
+					node = AST::Or.new _context, options
+					if block_given?
+						_eval node, _scope, _return, &block
+					else
+						Domain::ChainingBlock.new node, _scope, _return
+					end
 				end
 
 				alias_method :any, :or
@@ -25,32 +33,12 @@ module CloudSesame
 
 				private
 
-				def block_style_dsl(klass, options, &block)
-					node = klass.new dsl_context, options
-					if block_given?
-						extract_caller_from block if on_root_level?
-						node.instance_eval &block
-						dsl_scope << node
-						dsl_return node
-					else
-						chaining_relation_for(node)
-					end
-				end
-
-				def chaining_relation_for(node)
-					AST::BlockChainingRelation.new(dsl_scope, dsl_return, node)
-				end
-
-				def on_root_level?
-					dsl_scope.is_a?(AST::Root)
-				end
-
-				def extract_caller_from(block)
-					dsl_context[:caller] = block.binding.eval "self"
-				end
-
+				# ACCESS CALLER'S METHODS
+				# =========================================
 				def method_missing(name, *args, &block)
-					dsl_caller ? dsl_caller.send(name, *args, &block) : super
+					_caller.send(name, *args, &block)
+				rescue NoMethodError
+					super
 				end
 
 			end

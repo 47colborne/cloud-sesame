@@ -74,14 +74,14 @@
 # 					}
 # 					and!.not {
 # 						tags.start_with "5", "6"
-# 						tags.not.start_with "7"
-# 						tags.not.near "8"
+# 						tags.not.start_with("7")
+# 						tags.not.near("8", distance: 7)
 # 						tags start_with("9"), near("10")
-# 						tags term "11"
+# 						tags term("11", boost: 2)
 # 						tags phrase "12"
 # 					}
-# 					or!.not {
-# 						price 25..100
+# 					or! {
+# 						price(25..100)
 # 						price 100...200
 # 						price gte(200).lt(300)
 # 						price gte(300)
@@ -99,6 +99,12 @@
 # 	# end
 # 	# printer = RubyProf::FlatPrinter.new(result)
 # 	# printer.print(STDOUT, {})
+
+# 	# q = Product.cloudsearch.and.not {
+# 	# 	or!.not {
+# 	# 		price 100
+# 	# 	}
+# 	# }
 
 # 	binding.pry
 

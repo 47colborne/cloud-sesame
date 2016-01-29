@@ -2,13 +2,6 @@ module CloudSesame
   module Query
     module AST
       class MultiExpressionOperator < Operator
-        include DSL::Base
-        include DSL::BlockMethods
-        include DSL::FieldMethods
-        include DSL::FilterQueryMethods
-        include DSL::OperatorMethods
-        include DSL::RangeMethods
-        include DSL::ScopeMethods
 
         def children
           @children ||= create_children
@@ -30,7 +23,7 @@ module CloudSesame
 
         def create_children
           array = FieldArray.new
-          array.dsl_scope = dsl_scope
+          array._scope = self
           array
         end
 

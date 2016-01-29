@@ -38,10 +38,10 @@ module CloudSesame
 
 				def insert(values = [])
 					values.each do |value|
-						dsl_scope << create_parents(build_literal(value))
+						_scope << create_parents(build_literal(value))
 					end
 					parents.clear unless values.empty?
-				  dsl_return != dsl_scope ? dsl_return : self
+				  _return != _scope ? _return : self
 				end
 
 				private
@@ -52,7 +52,7 @@ module CloudSesame
 
 				def create_parents(child)
 					parents.compact.each do |parent|
-						node = parent[:klass].new dsl_context, parent[:options]
+						node = parent[:klass].new _context, parent[:options]
 						node << child
 						child = node
 					end
@@ -61,15 +61,11 @@ module CloudSesame
 
 				def build_literal(value)
 					if value.kind_of?(AST::SingleExpressionOperator) || value.is_a?(AST::Literal)
-						value.is_for field, field_options
+						value.is_for field, _context[:fields][field]
 						value
 					else
-						AST::Literal.new field, value, field_options
+						AST::Literal.new field, value, _context[:fields][field]
 					end
-				end
-
-				def field_options
-					dsl_context[:fields][field]
 				end
 
 			end

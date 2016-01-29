@@ -14,14 +14,13 @@ require 'cloud_sesame/config/credential'
 require 'cloud_sesame/query/error/invalid_syntax'
 require 'cloud_sesame/query/error/missing_operator_symbol'
 require 'cloud_sesame/query/error/missing_query'
+require 'cloud_sesame/query/error/scope_not_defined'
 
 # Query DSL Methods
 # ===============================================
-require 'cloud_sesame/query/dsl/base'
 require 'cloud_sesame/query/dsl/block_methods'
-require 'cloud_sesame/query/dsl/block_chaining_methods'
 require 'cloud_sesame/query/dsl/field_array_methods'
-require 'cloud_sesame/query/dsl/field_methods'
+require 'cloud_sesame/query/dsl/field_accessors'
 require 'cloud_sesame/query/dsl/filter_query_methods'
 require 'cloud_sesame/query/dsl/operator_methods'
 require 'cloud_sesame/query/dsl/page_methods'
@@ -29,15 +28,17 @@ require 'cloud_sesame/query/dsl/query_methods'
 require 'cloud_sesame/query/dsl/range_methods'
 require 'cloud_sesame/query/dsl/response_methods'
 require 'cloud_sesame/query/dsl/return_methods'
-require 'cloud_sesame/query/dsl/scope_methods'
+require 'cloud_sesame/query/dsl/scope_accessors'
 require 'cloud_sesame/query/dsl/sort_methods'
+
+require 'cloud_sesame/query/domain/block'
+require 'cloud_sesame/query/domain/chaining_block'
 
 # Query Query Filter Query AST Tree
 # ===============================================
 require 'cloud_sesame/query/ast/operator'
 require 'cloud_sesame/query/ast/multi_expression_operator'
 require 'cloud_sesame/query/ast/single_expression_operator'
-require 'cloud_sesame/query/ast/block_chaining_relation'
 require 'cloud_sesame/query/ast/field_array'
 require 'cloud_sesame/query/ast/and'
 require 'cloud_sesame/query/ast/or'
@@ -95,13 +96,13 @@ module CloudSesame
 
     def define_cloudsearch(&block)
       if block_given?
-        Domain::Base::DEFINITIONS[self] = block
+        Domain::Base.definitions[self] = block
         cloudsearch.instance_eval &block
       end
     end
 
     def load_definition_from(klass)
-      if (definition = Domain::Base::DEFINITIONS[self])
+      if (definition = Domain::Base.definitions[self])
         cloudsearch.instance_eval &definition
       end
     end

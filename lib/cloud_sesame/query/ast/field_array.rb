@@ -4,8 +4,8 @@ module CloudSesame
       class FieldArray < Array
         include DSL::FieldArrayMethods
 
-        attr_accessor :dsl_return
-        attr_reader :field, :dsl_scope, :dsl_context
+        attr_accessor :_scope, :_return
+        attr_reader :field
 
         def field=(field)
           parents.clear
@@ -16,9 +16,8 @@ module CloudSesame
           @parents ||= []
         end
 
-        def dsl_scope=(dsl_scope)
-          @dsl_context = dsl_scope.context
-          @dsl_scope = dsl_scope
+        def _context
+          _scope && _scope.context
         end
 
         def compile

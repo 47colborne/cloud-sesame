@@ -1,20 +1,19 @@
 module CloudSesame
 	module Query
 		class Builder
-			include DSL::Base
 			include DSL::PageMethods
 			include DSL::QueryMethods
 			include DSL::ReturnMethods
 			include DSL::SortMethods
+			include DSL::ResponseMethods
 
 			# # Filter Query DSL
 			include DSL::BlockMethods
-			include DSL::FieldMethods
+			include DSL::FieldAccessors
 			include DSL::FilterQueryMethods
-			include DSL::ScopeMethods
-			include DSL::ResponseMethods
+			include DSL::ScopeAccessors
 
-			attr_reader :context, :searchable
+			attr_reader :context
 
 			def initialize(context, searchable)
 				@context = Context.new.duplicate context
@@ -35,11 +34,21 @@ module CloudSesame
 
 			private
 
-			def dsl_scope
+			def _eval(node, _scope, _return, &block)
+				caller = block.binding.eval("self")
+				domain = Domain::Block.new caller, _context
+				domain._eval node, _scope, _return, &block
+			end
+
+			def _scope
 				request.filter_query.root
 			end
 
-			def dsl_return(node = nil)
+			def _context
+				_scope.context
+			end
+
+			def _return
 				self
 			end
 

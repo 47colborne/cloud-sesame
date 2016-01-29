@@ -2,8 +2,6 @@ module CloudSesame
   module Query
     module AST
       class SingleExpressionOperator < Operator
-        include DSL::Base
-        include DSL::BlockMethods
 
         DETAILED = false
 

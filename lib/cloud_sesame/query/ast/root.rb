@@ -16,7 +16,7 @@ module CloudSesame
 
         def create_children
           array = FieldArray.new(context[:defaults] || [])
-          array.dsl_scope = dsl_scope
+          array._scope = self
           array
         end
 
