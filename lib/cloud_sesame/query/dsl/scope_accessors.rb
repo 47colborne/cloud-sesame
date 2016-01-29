@@ -4,25 +4,22 @@ module CloudSesame
 			module ScopeAccessors
 
 				def scopes(name = nil, *args)
-					context_scopes = _scope.context[:scopes]
-					if (name && context_scopes && (callback = context_scopes[name])) || name.nil?
-						instance_exec(*args, &callback) if callback
+					defined_scopes = _scope.context[:scopes]
+					return _return if name.nil?
+					if defined_scopes && (block = defined_scopes[name.to_sym])
+						instance_exec *args, &block
 						_return
 					else
-						raise NoMethodError, "scope[#{ name }] does not exist"
+						raise Error::ScopeNotDefined
 					end
 				end
 
 				private
 
 				def method_missing(name, *args, &block)
-					context_scopes = _scope.context[:scopes]
-					if context_scopes && (callback = context_scopes[name])
-						instance_exec *args, &callback
-					  _return
-					else
-						super
-					end
+					scopes name, *args
+				rescue Error::ScopeNotDefined
+					super
 				end
 
 			end

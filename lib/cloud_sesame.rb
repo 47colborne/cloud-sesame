@@ -13,6 +13,7 @@ require 'cloud_sesame/config/credential'
 require 'cloud_sesame/query/error/invalid_syntax'
 require 'cloud_sesame/query/error/missing_operator_symbol'
 require 'cloud_sesame/query/error/missing_query'
+require 'cloud_sesame/query/error/scope_not_defined'
 
 # Query DSL Methods
 # ===============================================
@@ -94,13 +95,13 @@ module CloudSesame
 
     def define_cloudsearch(&block)
       if block_given?
-        Domain::Base::DEFINITIONS[self] = block
+        Domain::Base.definitions[self] = block
         cloudsearch.instance_eval &block
       end
     end
 
     def load_definition_from(klass)
-      if (definition = Domain::Base::DEFINITIONS[self])
+      if (definition = Domain::Base.definitions[self])
         cloudsearch.instance_eval &definition
       end
     end

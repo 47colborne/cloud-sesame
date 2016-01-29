@@ -29,7 +29,7 @@ module CloudSesame
 				def search
 					compiled = request.compile
 					raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
-					@response = searchable.cloudsearch.client.search compiled
+					@response = @searchable.cloudsearch.client.search compiled
 				end
 
 			end

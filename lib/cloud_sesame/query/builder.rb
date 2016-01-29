@@ -5,15 +5,15 @@ module CloudSesame
 			include DSL::QueryMethods
 			include DSL::ReturnMethods
 			include DSL::SortMethods
+			include DSL::ResponseMethods
 
 			# # Filter Query DSL
 			include DSL::BlockMethods
 			include DSL::FieldAccessors
 			include DSL::FilterQueryMethods
 			include DSL::ScopeAccessors
-			include DSL::ResponseMethods
 
-			attr_reader :context, :searchable
+			attr_reader :context
 
 			def initialize(context, searchable)
 				@context = Context.new.duplicate context

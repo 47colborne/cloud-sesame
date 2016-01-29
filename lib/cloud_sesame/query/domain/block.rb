@@ -4,10 +4,10 @@ module CloudSesame
 			class Block
 				include DSL::BlockMethods
 				include DSL::FieldAccessors
-        include DSL::FilterQueryMethods
+				include DSL::ScopeAccessors
         include DSL::OperatorMethods
         include DSL::RangeMethods
-        include DSL::ScopeAccessors
+				include DSL::FilterQueryMethods
 
 				attr_reader :_caller, :_context, :_scopes
 
@@ -18,9 +18,15 @@ module CloudSesame
 				end
 
 				def _eval(node, _scope, _return = _scope, &block)
-					_scope << node
 					_scopes.push node
+
+					# must build the subtree before push (<<) to it's
+					# parents (_scope) in order for the parent properly
+					# propagate message down to all the children.
+					# ===============================================
 					instance_eval &block
+					_scope << node
+
 					_scopes.pop
 					_return
 				end
