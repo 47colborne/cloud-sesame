@@ -53,7 +53,7 @@ module CloudSesame
         describe '#compile' do
           before {
             subject.child = OpenStruct.new compile: ""
-            allow(subject.child).to receive(:compile)
+            allow(subject.child).to receive(:compile).and_return(" ")
           }
           it 'should compile it\'s child and detailed set to false' do
             expect(subject.child).to receive(:compile).with(SingleExpressionOperator::DETAILED)
