@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module OperatorMethods
+			module Operators
 
 				# NEAR: creates a single NEAR node
 				# =======================================

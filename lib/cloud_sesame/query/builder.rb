@@ -3,10 +3,10 @@ module CloudSesame
 		class Builder
 			include DSL::QueryMethods
 			include DSL::ResponseMethods
-			include DSL::BlockMethods
+			include DSL::BlockStyledOperators
 			include DSL::FieldAccessors
-			include DSL::FilterQueryMethods
 			include DSL::ScopeAccessors
+			include DSL::AppliedFilterQuery
 			include DSL::PageMethods
 			include DSL::SortMethods
 			include DSL::ReturnMethods

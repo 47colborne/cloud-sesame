@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module BlockMethods
+			module BlockStyledOperators
 
 				# CLAUSE: AND
 				# =========================================

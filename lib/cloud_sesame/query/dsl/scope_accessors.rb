@@ -4,8 +4,9 @@ module CloudSesame
 			module ScopeAccessors
 
 				def scopes(name = nil, *args)
-					defined_scopes = _scope.context[:scopes]
 					return _return if name.nil?
+
+					defined_scopes = _scope.context[:scopes]
 					if defined_scopes && (block = defined_scopes[name.to_sym])
 						instance_exec *args, &block
 						_return

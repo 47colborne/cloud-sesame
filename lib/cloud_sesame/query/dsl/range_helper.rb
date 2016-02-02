@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module RangeMethods
+			module RangeHelper
 
 				def gt(input)
 					AST::RangeValue.new.gt input

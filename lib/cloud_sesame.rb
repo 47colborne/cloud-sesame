@@ -18,17 +18,21 @@ require 'cloud_sesame/query/error/scope_not_defined'
 
 # Query DSL Methods
 # ===============================================
-require 'cloud_sesame/query/dsl/block_methods'
-require 'cloud_sesame/query/dsl/field_array_methods'
+require 'cloud_sesame/query/dsl/applied_filter_query'
+require 'cloud_sesame/query/dsl/bind_caller'
+require 'cloud_sesame/query/dsl/block_styled_operators'
 require 'cloud_sesame/query/dsl/field_accessors'
-require 'cloud_sesame/query/dsl/filter_query_methods'
-require 'cloud_sesame/query/dsl/operator_methods'
+require 'cloud_sesame/query/dsl/scope_accessors'
+require 'cloud_sesame/query/dsl/operators'
+require 'cloud_sesame/query/dsl/field_array_methods'
+
+require 'cloud_sesame/query/dsl/range_helper'
 require 'cloud_sesame/query/dsl/page_methods'
 require 'cloud_sesame/query/dsl/query_methods'
-require 'cloud_sesame/query/dsl/range_methods'
+
 require 'cloud_sesame/query/dsl/response_methods'
 require 'cloud_sesame/query/dsl/return_methods'
-require 'cloud_sesame/query/dsl/scope_accessors'
+
 require 'cloud_sesame/query/dsl/sort_methods'
 
 # Query Query Domain Objects

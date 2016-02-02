@@ -2,12 +2,13 @@ module CloudSesame
 	module Query
 		module Domain
 			class Block
-				include DSL::BlockMethods
+				include DSL::AppliedFilterQuery
+				include DSL::BlockStyledOperators
 				include DSL::FieldAccessors
-				include DSL::ScopeAccessors
-        include DSL::OperatorMethods
-        include DSL::RangeMethods
-				include DSL::FilterQueryMethods
+        include DSL::Operators
+        include DSL::RangeHelper
+        include DSL::ScopeAccessors
+        include DSL::BindCaller
 
 				attr_reader :_caller, :_context, :_scopes
 
@@ -16,11 +17,7 @@ module CloudSesame
 					@_context = _context
 					@_scopes = []
 
-					@_caller.instance_variables.each do |name|
-						value = @_caller.instance_variable_get name
-						instance_variable_set name, value
-					end
-
+					_bind_caller_instance_variables
 				end
 
 				def _eval(node, _scope, _return = _scope, &block)
@@ -47,16 +44,6 @@ module CloudSesame
 
 				def _block_domain(block)
 					self
-				end
-
-				private
-
-				# ACCESS CALLER'S METHODS
-				# =========================================
-				def method_missing(name, *args, &block)
-					_caller.send(name, *args, &block)
-				rescue NoMethodError
-					super
 				end
 
 			end

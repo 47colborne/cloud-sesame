@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			module FilterQueryMethods
+			module AppliedFilterQuery
 
 				def included?(field, value = nil)
 					!!(

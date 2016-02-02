@@ -1,9 +1,7 @@
-require 'spec_helper'
-
 module CloudSesame
 	module Query
 		module DSL
-			describe BlockMethods do
+			describe BlockStyledOperators do
 
 				# Setup
 				# =================================================
