@@ -11,7 +11,7 @@ module CloudSesame
 			include DSL::SortMethods
 			include DSL::ReturnMethods
 
-			attr_reader :context
+			attr_reader :context, :searchable
 
 			def initialize(context, searchable)
 				@context = Context.new.duplicate context
