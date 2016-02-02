@@ -3,8 +3,16 @@ module CloudSesame
 		module DSL
 			module FieldAccessors
 
-				def literal(name, *values)
+				def literal(name, *values, &block)
 					name = name.to_sym
+
+					if block_given?
+						caller = block.binding.eval "self"
+						options = _scope.context[:fields][name]
+			  		node = Domain::Literal.new(name, options, caller)._eval(&block)
+			  		values << node
+			  	end
+
 			  	_scope.children.field = name
 			  	_scope.children._return = _return
 			  	_scope.children.insert values

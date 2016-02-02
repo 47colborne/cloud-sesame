@@ -5,6 +5,7 @@ module CloudSesame
 
 			def_delegator :client, :config
 
+			attr_accessor :_caller
 			attr_reader :searchable
 
 			def self.definitions
@@ -88,7 +89,8 @@ module CloudSesame
 
 			def create_default_literal(name, options)
 				if (block = options.delete(:default))
-					node = Query::Domain::Literal.new(name, options)._eval(&block)
+					caller = block.binding.eval "self"
+					node = Query::Domain::Literal.new(name, options, caller)._eval(&block)
 					filter_query_defaults << node
 				end
 			end
@@ -98,13 +100,17 @@ module CloudSesame
 			end
 
 			def create_field_accessor(name)
-				Query::DSL::FieldAccessors.send(:define_method, name) do |*values|
-					literal name, *values
+				Query::DSL::FieldAccessors.send(:define_method, name) do |*values, &block|
+					literal name, *values, &block
 				end
 			end
 
 			def method_missing(name, *args, &block)
 				builder.send(name, *args, &block)
+			rescue NoMethodError => e
+				_caller.send(name, *args, &block) if _caller
+			rescue NoMethodError => e
+				super
 			end
 
 		end

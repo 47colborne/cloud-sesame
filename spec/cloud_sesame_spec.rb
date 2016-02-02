@@ -25,6 +25,10 @@
 # 	class Product
 # 		include CloudSesame
 
+# 		def self.greeting
+# 			"hello world!"
+# 		end
+
 # 		define_cloudsearch do
 # 			# Product CloudSesame Config
 # 			config.endpoint = ENV['AWS_ENDPOINT']
@@ -67,7 +71,9 @@
 #   q = nil
 # 	result = RubyProf.profile do
 # 	  n.times do
-# 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000).and {
+# 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
+# 				.price { gt 100 }
+# 				.and {
 # 					or! {
 # 					tags *@tags
 # 					tags
@@ -96,7 +102,7 @@
 # 					}
 # 				}
 # 			}
-# 	# 		q.applied_filters
+# 			q.applied_filters
 
 # 	  end
 # 	end
