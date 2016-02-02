@@ -88,7 +88,8 @@ module CloudSesame
 
 			def create_default_accessor(name, options)
 				if (block = options.delete(:default))
-					(context[:filter_query][:default] ||= []) << block
+					default_literals = (context[:filter_query][:defaults] ||= [])
+					default_literals << Query::AST::Literal.new(name, &block)
 				end
 			end
 

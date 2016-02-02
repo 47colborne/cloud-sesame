@@ -9,7 +9,7 @@ module CloudSesame
         attr_accessor :field
         attr_reader :options, :value
 
-        def initialize(field, value, options = {}, &block)
+        def initialize(field, value = nil, options = {}, &block)
           @field = field
           @value = Value.parse value if value
           @value = Value.parse(ValueEvaluator.new.instance_exec &block) if block_given?
