@@ -74,7 +74,7 @@ module CloudSesame
 
 			def add_field(name, options)
 				replace_existing_field name, options
-				create_default_accessor name, options
+				create_default_literal name, options
 				create_field_accessor name
 				(context[:filter_query][:fields] ||= {})[name] = options
 			end
@@ -86,7 +86,7 @@ module CloudSesame
 				end
 			end
 
-			def create_default_accessor(name, options)
+			def create_default_literal(name, options)
 				if (block = options.delete(:default))
 					node = Query::Domain::Literal.new(name, options)._eval(&block)
 					filter_query_defaults << node

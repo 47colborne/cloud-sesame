@@ -10,17 +10,20 @@ module CloudSesame
         attr_reader :options, :value
 
         def initialize(field, value = nil, options = {})
-          self.is_for field, options
+          @field, @options = field, options
           self.value = value
         end
 
         def value=(value)
-          (@value = Value.parse value; is_included) if value
+          if value
+            @value = Value.parse value
+            is_included
+          end
         end
 
         def is_for(field, options = {})
           @field = field
-          @options = options.merge(@options || {})
+          @options.merge! options
         end
 
         def is_included

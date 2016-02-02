@@ -78,7 +78,7 @@ describe CloudSesame do
 						tags.not.near("8", distance: 7)
 						tags start_with("9"), near("10")
 						tags term("11", boost: 2)
-						tags phrase "12"
+						tags.not phrase "12"
 					}
 					or!.not {
 						price(25..100)
@@ -86,11 +86,11 @@ describe CloudSesame do
 						price gte(200).lt(300)
 						price gte(300)
 					}
-					# or! {
-					# 	created_at Date.today - 7
-					# 	created_at gte(Date.today)
-					# 	created_at gte(Date.today).lt(Date.today + 3)
-					# }
+					or! {
+						created_at Date.today - 7
+						created_at gte(Date.today)
+						created_at gte(Date.today).lt(Date.today + 3)
+					}
 				}
 			}
 	# 		q.applied_filters
