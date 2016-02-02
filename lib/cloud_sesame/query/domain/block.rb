@@ -15,6 +15,12 @@ module CloudSesame
 					@_caller = _caller
 					@_context = _context
 					@_scopes = []
+
+					@_caller.instance_variables.each do |name|
+						value = @_caller.instance_variable_get name
+						instance_variable_set name, value
+					end
+
 				end
 
 				def _eval(node, _scope, _return = _scope, &block)
