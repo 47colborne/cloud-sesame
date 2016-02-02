@@ -1,17 +1,15 @@
 module CloudSesame
 	module Query
 		class Builder
-			include DSL::PageMethods
 			include DSL::QueryMethods
-			include DSL::ReturnMethods
-			include DSL::SortMethods
 			include DSL::ResponseMethods
-
-			# # Filter Query DSL
 			include DSL::BlockMethods
 			include DSL::FieldAccessors
 			include DSL::FilterQueryMethods
 			include DSL::ScopeAccessors
+			include DSL::PageMethods
+			include DSL::SortMethods
+			include DSL::ReturnMethods
 
 			attr_reader :context
 
