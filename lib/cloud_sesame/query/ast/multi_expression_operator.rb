@@ -8,7 +8,9 @@ module CloudSesame
         end
 
         def compile
-          "(#{ symbol  }#{ boost } #{ children.compile })" unless children.empty?
+          if !children.empty? && (compiled = children.compile) && !compiled.empty?
+            "(#{ symbol  }#{ boost } #{ compiled })"
+          end
         end
 
         def <<(object)
