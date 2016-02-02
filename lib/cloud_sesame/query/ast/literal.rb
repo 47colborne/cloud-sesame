@@ -9,18 +9,18 @@ module CloudSesame
         attr_accessor :field
         attr_reader :options, :value
 
-        def initialize(field, value = nil, options = {}, &block)
-          @field = field
-          @value = Value.parse value if value
-          @value = Value.parse(ValueEvaluator.new.instance_exec &block) if block_given?
+        def initialize(field, value = nil, options = {})
+          self.is_for field, options
+          self.value = value
+        end
 
-          @options = options
-          is_included
+        def value=(value)
+          (@value = Value.parse value; is_included) if value
         end
 
         def is_for(field, options = {})
           @field = field
-          @options = options.merge @options
+          @options = options.merge(@options || {})
         end
 
         def is_included
@@ -36,7 +36,7 @@ module CloudSesame
         end
 
         def compile(detailed = false)
-          detailed ? detailed_format : standard_format
+          (detailed ? detailed_format : standard_format) if value
         end
 
         private
@@ -55,10 +55,6 @@ module CloudSesame
 
         def escape(data)
           "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
-        end
-
-        class ValueEvaluator
-          include DSL::RangeMethods
         end
 
       end
