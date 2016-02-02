@@ -5,7 +5,9 @@ module CloudSesame
 		module DSL
 			describe BlockMethods do
 
-				# Setup Test Class
+				# Setup
+				# =================================================
+
 				class Product
 					include CloudSesame
 					define_cloudsearch {}
@@ -13,99 +15,81 @@ module CloudSesame
 
 				subject(:cloudsearch) { Product.cloudsearch.builder }
 
-				# AND
-				# =======================================================
-				describe '#and' do
+				# Block Style Clause
+				# =================================================
+				shared_examples 'block styled clause' do
 
-					it 'should create an AND node' do
-						expect(AST::And).to receive(:new).once
-						subject.and
+					let(:node) { klass1.new({}) }
+					let(:root) { subject.request.filter_query.root }
+
+					let(:empty_block) { Proc.new { } }
+					let(:nested_block) { Proc.new { send(method, empty_block) } }
+
+					let(:clause_call) { subject.send(clause1, &empty_block) }
+
+					it "should create an multi-expression node" do
+						expect(klass1).to receive(:new).once
+						subject.send(clause1)
 					end
 
 					context 'when given a block' do
+						before { allow(klass1).to receive(:new).and_return(node) }
 
-						context 'when called from cloudsearch' do
-							it 'should become a child of root node' do
-								node = nil
-								subject.and { node = self; }
-								expect(subject.request.filter_query.root.children).to include(node)
+						context 'when called from cloudsearch build' do
+							it 'should add to root\'s children' do
+								expect{ clause_call }.to change{ root.children.size }.by(1)
+								expect(root.children).to include(node)
 							end
-							it 'should return cloudsearch' do
-								expect(subject.and {}).to eq subject
-							end
-							it 'should use self as the dsl scope in the block' do
-								block = ->(scope, node) { expect(scope).to eq node }
-								subject.and { block.call(dsl_scope, self) }
+							it 'should return the build itself' do
+								expect(clause_call).to eq(subject)
 							end
 						end
-
-						context 'when called from inside a block' do
-							it 'should become a child of the dsl_scope' do
-								parent = nil
-								child = nil
-								subject.or { parent = self; child = and! {} }
-								expect(parent.children).to include(child)
+						context 'when called within a nested block' do
+							it 'should add to scope\'s children' do
+								subject.send(clause2) do
+									child = send(clause1, &empty_block)
+									expect(_scope.children).to include(child)
+								end
 							end
 							it 'should return the node it self' do
-								node = AST::And.new({})
-								return_node = nil
-								allow(AST::And).to receive(:new).and_return(node)
-								subject.or { return_node = and! {} }
-								expect(return_node).to eq node
+								subject.send(clause2) {
+									child = send(clause1, &empty_block)
+									expect(child).to eq(node)
+								}
 							end
 						end
-
 					end
 
 					context 'when not given a block' do
-						it 'should reutnr a block chaining relation object' do
-							expect(subject.and).to be_kind_of(AST::BlockChainingRelation)
+						it 'should return a chaining block domain object' do
+							expect(subject.send(clause1)).to be_kind_of(Domain::ChainingBlock)
 						end
-						it 'should not add a child to it\'s dsl scope' do
-							expect{ subject.and }.to_not change { subject.request.filter_query.root.children.size }
+						it 'should NOT add any children to the scope node' do
+							expect{ subject.send(clause1) }.to_not change{ root.children.size }
 						end
 					end
+				end
 
+
+				# AND
+				# =======================================================
+				describe '#and' do
+					it_behaves_like 'block styled clause' do
+						let(:klass1) { AST::And }
+						let(:klass2) { AST::Or }
+						let(:clause1) { :and! }
+						let(:clause2) { :or! }
+					end
 				end
 
 				# OR
 				# =======================================================
 				describe '#or' do
-
-					it 'should create an Or node' do
-						expect(AST::Or).to receive(:new).once
-						subject.or
-					end
-
-					context 'when called from cloudsearch' do
-						it 'should become a child of root node' do
-							node = nil
-							subject.or { node = self; }
-							expect(subject.request.filter_query.root.children).to include(node)
-						end
-						it 'should return cloudsearch' do
-							expect(subject.or {}).to eq subject
-						end
-						it 'should use self as the dsl scope in the block' do
-							block = ->(scope, node) { expect(scope).to eq node }
-							subject.and { block.call(dsl_scope, self) }
-						end
-					end
-
-					context 'when called from inside a block' do
-						it 'should become a child of the dsl_scope' do
-							parent = nil
-							child = nil
-							subject.and { parent = self; child = or! {} }
-							expect(parent.children).to include(child)
-						end
-						it 'should return the node it self' do
-							node = AST::Or.new({})
-							return_node = nil
-							allow(AST::Or).to receive(:new).and_return(node)
-							subject.and { return_node = or! {} }
-							expect(return_node).to eq node
-						end
+					it_behaves_like 'block styled clause' do
+						let(:klass1) { AST::Or }
+						let(:klass2) { AST::And }
+						let(:clause1) { :or! }
+						let(:clause2) { :and! }
 					end
 				end
 

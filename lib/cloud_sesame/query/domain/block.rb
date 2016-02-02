@@ -28,7 +28,7 @@ module CloudSesame
 					_scope << node
 
 					_scopes.pop
-					_return
+					_scope.is_a?(AST::Root) ? _return : node
 				end
 
 				def _scope
@@ -37,6 +37,20 @@ module CloudSesame
 
 				def _return
 					_scope
+				end
+
+				def _block_domain(block)
+					self
+				end
+
+				private
+
+				# ACCESS CALLER'S METHODS
+				# =========================================
+				def method_missing(name, *args, &block)
+					_caller.send(name, *args, &block)
+				rescue NoMethodError
+					super
 				end
 
 			end

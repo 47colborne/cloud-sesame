@@ -72,6 +72,7 @@ require 'cloud_sesame/query/node/return'
 # Query Builder Interface
 # ===============================================
 require 'cloud_sesame/query/builder'
+require 'cloud_sesame/query/scope'
 
 # Domain Objects
 # ===============================================

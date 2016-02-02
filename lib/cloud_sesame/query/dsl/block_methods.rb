@@ -6,12 +6,7 @@ module CloudSesame
 				# CLAUSE: AND
 				# =========================================
 				def and(options = {}, &block)
-					node = AST::And.new _context, options
-					if block_given?
-						_eval node, _scope, _return, &block
-					else
-						Domain::ChainingBlock.new node, _scope, _return
-					end
+					_block_style_clause AST::And, options, &block
 				end
 
 				alias_method :all,  :and
@@ -20,12 +15,7 @@ module CloudSesame
 				# CLAUSE: OR
 				# =========================================
 				def or(options = {}, &block)
-					node = AST::Or.new _context, options
-					if block_given?
-						_eval node, _scope, _return, &block
-					else
-						Domain::ChainingBlock.new node, _scope, _return
-					end
+					_block_style_clause AST::Or, options, &block
 				end
 
 				alias_method :any, :or
@@ -33,12 +23,13 @@ module CloudSesame
 
 				private
 
-				# ACCESS CALLER'S METHODS
-				# =========================================
-				def method_missing(name, *args, &block)
-					_caller.send(name, *args, &block)
-				rescue NoMethodError
-					super
+				def _block_style_clause(klass, options, &block)
+					node = klass.new _context, options
+					if block_given?
+						_block_domain(block)._eval node, _scope, _return, &block
+					else
+						Domain::ChainingBlock.new node, _scope, (_return if _scope.is_a?(AST::Root)), _block_domain(nil)
+					end
 				end
 
 			end

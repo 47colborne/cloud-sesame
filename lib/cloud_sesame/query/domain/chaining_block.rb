@@ -3,10 +3,13 @@ module CloudSesame
 		module Domain
 			class ChainingBlock
 
-				def initialize(_orphan_node, _scope, _return)
+				attr_reader :_orphan_node, :_scope, :_return
+
+				def initialize(_orphan_node, _scope, _return, _block_domain)
 					@_orphan_node = _orphan_node
 					@_scope = _scope
 					@_return = _return
+					@_block_domain = _block_domain
 				end
 
 				# CLAUSE: NOT
@@ -14,16 +17,21 @@ module CloudSesame
 
 				def not(options = {}, &block)
 					raise missing_block unless block_given?
-					@_scope << (node = AST::Not.new @_scope.context, options)
-					_eval @_orphan_node, node, @_return, &block
+
+					node = AST::Not.new _scope.context, options
+					_block_domain(block)._eval _orphan_node, node, &block
+					_scope << node
+
+					_return || node
 				end
 
 				private
 
-				def _eval(node, _scope, _return, &block)
-					caller = block.binding.eval("self")
-					domain = Domain::Block.new caller, _scope.context
-					domain._eval node, _scope, _return, &block
+				def _block_domain(block)
+					@_block_domain ||= (
+						caller = block.binding.eval("self")
+						Domain::Block.new caller, _scope.context
+					)
 				end
 
 				def missing_block

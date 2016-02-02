@@ -34,10 +34,11 @@ module CloudSesame
 
 			private
 
-			def _eval(node, _scope, _return, &block)
-				caller = block.binding.eval("self")
-				domain = Domain::Block.new caller, _context
-				domain._eval node, _scope, _return, &block
+			def _block_domain(block)
+				if block
+					caller = block.binding.eval("self")
+					Domain::Block.new caller, _context
+				end
 			end
 
 			def _scope
