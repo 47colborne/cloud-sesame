@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'CloudSesame'
-  s.version     = '0.5.1'
-  s.date        = '2016-02-01'
+  s.version     = '0.5.2'
+  s.date        = '2016-02-08'
   s.summary     = "AWS CloudSearch Query DSL"
   s.description = "AWS CloudSearch Query DSL"
   s.authors = ['Scott Chu', 'Emily Fan', 'Greg Ward', 'David McHoull',
@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency 'aws-sdk', '~> 2'
-  s.add_dependency 'activesupport', '~> 3.2'
 
   s.add_development_dependency 'rspec', '~> 3'
   s.add_development_dependency 'pry', '~> 0'
