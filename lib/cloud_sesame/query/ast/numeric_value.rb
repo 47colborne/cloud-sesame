@@ -4,8 +4,12 @@ module CloudSesame
 			class NumericValue < Value
 
 				def compile
-					data
+					data.to_s
 				end
+
+        def ==(value)
+          value.to_f == data.to_f || value == compile
+        end
 
 			end
 		end
