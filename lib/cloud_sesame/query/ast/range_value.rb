@@ -43,7 +43,6 @@ module CloudSesame
         end
 
         def ==(object)
-          binding.pry
           data == Value.parse(object).data
         end
 
