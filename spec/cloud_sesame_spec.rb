@@ -46,7 +46,7 @@
 
 # 			field :searchable_text, 		query: { weight: 2 }
 # 			field :description, 				query: true
-# 			field :tags, as: :text1
+# 			field :tags ,               as: :text1, default: -> { "men" }
 
 # 			field :affiliate_advertiser_ext_id, facet: { size: 50 }
 # 			field :currency, 						facet: true
@@ -54,66 +54,94 @@
 # 			field :manufacturer_name, 	facet: { size: 50 }
 # 			field :price, 							facet: { buckets: %w([0,25] [25,50] [50,100] [100,200] [200,}), method: 'interval' }
 # 			field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
-# 			field :created_at,					default: -> { gt Date.today }
-
-# 			scope :shoes_by_brand, ->(brand = nil) { query("shoes").and { manufacturer_name brand }  if brand }
-# 			scope :and_mens do
-# 				and! { tags "men"}
-# 			end
+# 			field :created_at,					default: -> { Time.now }
 
 # 		end
 
 # 	end
 
 
-# 	@tags = [1, 2]
-# 	n = 10_000
-#   q = nil
-# 	result = RubyProf.profile do
-# 	  n.times do
-# 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
-# 				.price { gt 100 }
-# 				.and {
-# 					or! {
-# 					tags *@tags
-# 					tags
-# 					tags nil
-# 					and! {
-# 						tags.not "3", "4"
-# 					}
-# 					and!.not {
-# 						tags.start_with "5", "6"
-# 						tags.not.start_with("7")
-# 						tags.not.near("8", distance: 7)
-# 						tags start_with("9"), near("10")
-# 						tags term("11", boost: 2)
-# 						tags.not phrase "12"
-# 					}
-# 					or!.not {
-# 						price(25..100)
-# 						price 100...200
-# 						price gte(200).lt(300)
-# 						price gte(300)
-# 					}
-# 					or! {
-# 						created_at Date.today - 7
-# 						created_at gte(Date.today)
-# 						created_at gte(Date.today).lt(Date.today + 3)
-# 					}
-# 				}
-# 			}
-# 			q.applied_filters
+# 	# @tags = [1, 2]
+# 	# n = 10_000
+#  #  q = nil
+# 	# result = RubyProf.profile do
+# 	#   n.times do
+# 	# 		q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
+# 	# 			.price { gt 100 }
+# 	# 			.and {
+# 	# 				or! {
+# 	# 				tags *@tags
+# 	# 				tags
+# 	# 				tags nil
+# 	# 				and! {
+# 	# 					tags.not "3", "4"
+# 	# 				}
+# 	# 				and!.not {
+# 	# 					tags.start_with "5", "6"
+# 	# 					tags.not.start_with("7")
+# 	# 					tags.not.near("8", distance: 7)
+# 	# 					tags start_with("9"), near("10")
+# 	# 					tags term("11", boost: 2)
+# 	# 					tags.not phrase "12"
+# 	# 				}
+# 	# 				or!.not {
+# 	# 					price(25..100)
+# 	# 					price 100...200
+# 	# 					price gte(200).lt(300)
+# 	# 					price gte(300)
+# 	# 				}
+# 	# 				or! {
+# 	# 					created_at Date.today - 7
+# 	# 					created_at gte(Date.today)
+# 	# 					created_at gte(Date.today).lt(Date.today + 3)
+# 	# 				}
+# 	# 			}
+# 	# 		}
+# 	# 		q.applied_filters
 
-# 	  end
-# 	end
-# 	printer = RubyProf::FlatPrinter.new(result)
-# 	printer.print(STDOUT, {})
+# 	#   end
+# 	# end
+# 	# printer = RubyProf::FlatPrinter.new(result)
+# 	# printer.print(STDOUT, {})
+
+#   class Coupon
+#     include CloudSesame
+
+#     VALID_COUPON_RANK = 20
+
+#     define_cloudsearch do
+#       config.endpoint = ENV['AWS_ENDPOINT']
+#       config.region   = ENV['AWS_REGION']
+
+#       default_size 10
+
+#       define_sloppiness 3
+
+#       define_fuzziness do
+#         max_fuzziness 3
+#         min_char_size 6
+#         fuzzy_percent 0.17
+#       end
+
+#       field :end_date,                            as: :date1
+#       field :rank,                                as: :num1, default: -> { gte VALID_COUPON_RANK }
+#       field :searchable_text,                     query: true
+#       field :affiliate_advertiser_search_ext_id,  as: :string1, facet: { size: 50 }
+#       field :countries,                           as: :string_array1
+#       field :deal_types,                          as: :string_array2, facet: {}
+#       field :tags,                                as: :string_array3, facet: {}
+#       field :type,                                default: -> { 'Catalog::CouponSearchable' }
+#     end
+
+#   end
+
+#   q = Coupon.cloudsearch.builder
 
 # 	binding.pry
 
 #   # class ProductController
 
-#   #   def load_user
+#   #   def load_userq
 #   #     @name = "scott"
 #   #   end
 

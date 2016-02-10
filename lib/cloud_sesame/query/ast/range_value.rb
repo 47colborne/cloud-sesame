@@ -9,7 +9,10 @@ module CloudSesame
           @data = if value.kind_of?(Range)
             range_to_array(value)
           elsif value.is_a?(String) && (match = string_format?(value))
-            @data = match.captures
+            (matches = match.captures)[1, 2] = matches[1, 2].map do |i|
+              Value.parse(i) unless i.nil? || i.empty?
+            end
+            @data = matches
           else
             default_range
           end
@@ -40,6 +43,7 @@ module CloudSesame
         end
 
         def ==(object)
+          binding.pry
           data == Value.parse(object).data
         end
 
