@@ -30,13 +30,12 @@ module CloudSesame
 					compiled = request.compile
 					raise Error::MissingQuery.new("Query or FilterQuery can not be empty!") if !compiled[:query] || compiled[:query].empty?
 					if context[:cache]
-						compiled[:searchable] = searchable
-						@response = Rails.cache.fetch(compiled) do
-							results = @searchable.cloudsearch.client.search compiled
+						@response = Rails.cache.fetch(compiled.merge({ searchable: searchable })) do
+							results = searchable.cloudsearch.client.search compiled
 						  OpenStruct.new(status: results.status, hits: results.hits, facets: results.facets)
 						end
 					else
-						@response = @searchable.cloudsearch.client.search compiled
+						@response = searchable.cloudsearch.client.search compiled
 					end
 					@response
 				end
