@@ -56,12 +56,14 @@
 # 			field :manufacturer_name, 	facet: { size: 50 }
 # 			field :price, 							facet: { buckets: %w([0,25] [25,50] [50,100] [100,200] [200,}), method: 'interval' }
 # 			field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
-# 			field :created_at,					default: -> { Time.now }
+# 			field :created_at
 
 # 		end
 
 # 	end
 
+#   q = Product.cloudsearch.query("shoes").and{ price gte 100 }.page(2)
+#   binding.pry
 
 # 	# @tags = [1, 2]
 # 	# n = 10_000
