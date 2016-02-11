@@ -8,7 +8,9 @@ module CloudSesame
 				end
 
         def ==(value)
-          value.to_f == data.to_f || value == compile
+          value == data.to_f ||
+          value == data ||
+          value == compile
         end
 
 			end
