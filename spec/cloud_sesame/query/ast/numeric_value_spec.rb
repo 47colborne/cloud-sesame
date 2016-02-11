@@ -44,12 +44,18 @@ module CloudSesame
 
             it 'should return true if data equals to the value' do
               expect(subject == 0.990).to eq true
-              expect(subject == "0.990").to eq true
             end
 
             it 'should return false when data does not equal to the value' do
               expect(subject == 1.0).to eq false
               expect(subject == "1.0").to eq false
+            end
+          end
+
+          context 'when value comparing with a nil value' do
+            subject { NumericValue.new(1) }
+            it 'should return false' do
+              expect(subject == nil).to eq false
             end
           end
 

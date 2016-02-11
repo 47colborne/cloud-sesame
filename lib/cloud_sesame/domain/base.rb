@@ -31,6 +31,10 @@ module CloudSesame
 			# DEFAULT CONTEXT METHODS
 			# =========================================
 
+			def turn_on_cache
+				context[:cache] = !!(Rails rescue nil)
+			end
+
 			def default_size(value)
 				(context[:page] ||= {})[:size] = value
 			end
