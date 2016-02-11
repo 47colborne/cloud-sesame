@@ -76,3 +76,6 @@ DEPENDENCIES
   pry (~> 0)
   rspec (~> 3)
   ruby-prof
+
+BUNDLED WITH
+   1.11.2
