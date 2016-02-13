@@ -53,7 +53,10 @@ module CloudSesame
         end
 
         def range_to_array(range)
-          ['[', range.begin, range.end, end_symbol(range)]
+          ['[',
+            Value.parse(range.begin),
+            Value.parse(range.end),
+            end_symbol(range)]
         end
 
         def end_symbol(value)
