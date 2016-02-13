@@ -3,7 +3,7 @@ module CloudSesame
 		class Base
 			extend Forwardable
 
-			def_delegator :client, :config
+			def_delegators :client, :config, :caching_with
 
 			attr_accessor :_caller
 			attr_reader :searchable
@@ -21,7 +21,7 @@ module CloudSesame
 			end
 
 			def client
-				@client ||= Client.new
+				@client ||= Client.new searchable
 			end
 
 			def context
@@ -30,10 +30,6 @@ module CloudSesame
 
 			# DEFAULT CONTEXT METHODS
 			# =========================================
-
-			def turn_on_cache
-				context[:cache] = !!(Rails rescue nil)
-			end
 
 			def default_size(value)
 				(context[:page] ||= {})[:size] = value

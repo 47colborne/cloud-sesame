@@ -1,9 +1,9 @@
+require 'cloud_sesame/domain/client_modules/caching'
+
 module CloudSesame
 	module Domain
 		class Client
-			extend Forwardable
-
-			def_delegator :aws_client, :search
+			include ClientModules::Caching
 
 			def self.configure
 				yield global_config if block_given?
@@ -13,8 +13,16 @@ module CloudSesame
 				@global_config ||= Config.new
 			end
 
+			def initialize(searchable)
+				@searchable = searchable
+			end
+
 			def config
 				@config ||= Config.new self.class.global_config
+			end
+
+			def search(params)
+				executor.fetch aws_client, params, @searchable
 			end
 
 			private
