@@ -110,11 +110,11 @@
 
 # 	end
 
-# 	@tags = [1, 2]
-# 	n = 10_000
-#   q = nil
-# 	result = RubyProf.profile do
-# 	  n.times do
+# 	# @tags = [1, 2]
+# 	# n = 10_000
+#  #  q = nil
+# 	# result = RubyProf.profile do
+# 	#   n.times do
 # 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
 # 				.price { gt 100 }
 # 				.and {
@@ -147,10 +147,10 @@
 # 				}
 # 			}
 
-# 	  end
-# 	end
-# 	printer = RubyProf::FlatPrinter.new(result)
-# 	printer.print(STDOUT, {})
+# 	#   end
+# 	# end
+# 	# printer = RubyProf::FlatPrinter.new(result)
+# 	# printer.print(STDOUT, {})
 
 # 	binding.pry
 
