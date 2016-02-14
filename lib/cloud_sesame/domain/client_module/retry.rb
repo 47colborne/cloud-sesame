@@ -1,6 +1,6 @@
 module CloudSesame
 	module Domain
-		module ClientModules
+		module ClientModule
 			module Retry
 
 			end

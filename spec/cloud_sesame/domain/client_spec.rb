@@ -57,11 +57,11 @@ module CloudSesame
 			end
 
 			describe '#search' do
+				let(:aws_client) { OpenStruct.new }
+				let(:params) { {} }
+				before { allow(subject).to receive(:aws_client).and_return(aws_client) }
 				it 'should call fetch on executor' do
-					aws_client = OpenStruct.new
-					params = {}
-					allow(subject).to receive(:aws_client).and_return(aws_client)
-					expect(subject.send(:executor)).to receive(:fetch).with(aws_client, params, Searchable)
+					expect(subject.send(:executor)).to receive(:fetch).with(params)
 					subject.search params
 				end
 			end

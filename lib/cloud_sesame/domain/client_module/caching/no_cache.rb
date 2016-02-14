@@ -1,15 +1,11 @@
 module CloudSesame
 	module Domain
-		module ClientModules
+		module ClientModule
 			module Caching
-				class RailsCache
-
-					def initialize(client)
-						@client = client
-					end
+				class NoCache < Base
 
 					def fetch(params)
-
+						search params
 					end
 
 				end

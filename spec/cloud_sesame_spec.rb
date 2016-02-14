@@ -4,6 +4,23 @@
 
 # describe CloudSesame do
 
+# 	# FAKE RAILS AND RAILS CACHE
+# 	# =====================================
+# 	class ::Rails
+# 		def self.cache
+# 			@cache ||= FakeCache.new
+# 		end
+# 	end
+
+# 	class ::FakeCache
+# 		def table
+# 			@table ||= {}
+# 		end
+# 		def fetch(key, &block)
+# 			table[key] ||= (block.call if block_given?)
+# 		end
+# 	end
+
 # 	# AWS initializer
 # 	# =======================================================
 # 	require 'yaml'
@@ -34,7 +51,7 @@
 # 			config.endpoint = ENV['AWS_ENDPOINT']
 # 			config.region 	= ENV['AWS_REGION']
 
-#       turn_on_cache
+#       caching_with :RailsCache
 
 # 			default_size 100
 
@@ -48,7 +65,7 @@
 
 # 			field :searchable_text, 		query: { weight: 2 }
 # 			field :description, 				query: true
-# 			field :tags ,               default: -> { "men" }
+# 			field :tags
 
 # 			field :affiliate_advertiser_ext_id, facet: { size: 50 }
 # 			field :currency, 						facet: true
@@ -62,107 +79,80 @@
 
 # 	end
 
-#   q = Product.cloudsearch.query("shoes").and{ price gte 100 }.page(2)
-#   binding.pry
+# 	class Coupon
+# 	  include CloudSesame
 
-# 	# @tags = [1, 2]
-# 	# n = 10_000
-#  #  q = nil
-# 	# result = RubyProf.profile do
-# 	#   n.times do
-# 			# q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
-# 			# 	.price { gt 100 }
-# 			# 	.and {
-# 			# 		or! {
-# 			# 		tags *@tags
-# 			# 		tags
-# 			# 		tags nil
-# 			# 		and! {
-# 			# 			tags.not "3", "4"
-# 			# 		}
-# 			# 		and!.not {
-# 			# 			tags.start_with "5", "6"
-# 			# 			tags.not.start_with("7")
-# 			# 			tags.not.near("8", distance: 7)
-# 			# 			tags start_with("9"), near("10")
-# 			# 			tags term("11", boost: 2)
-# 			# 			tags.not phrase "12"
-# 			# 		}
-# 			# 		or!.not {
-# 			# 			price(25..100)
-# 			# 			price 100...200
-# 			# 			price gte(200).lt(300)
-# 			# 			price gte(300)
-# 			# 		}
-# 			# 		or! {
-# 			# 			created_at Date.today - 7
-# 			# 			created_at gte(Date.today)
-# 			# 			created_at gte(Date.today).lt(Date.today + 3)
-# 			# 		}
-# 			# 	}
-# 			# }
+# 	  VALID_COUPON_RANK = 20
 
-# 	# 		q.applied_filters
+# 	  define_cloudsearch do
+# 	    config.endpoint = ENV['AWS_ENDPOINT']
+# 	    config.region   = ENV['AWS_REGION']
 
-# 	#   end
-# 	# end
-# 	# printer = RubyProf::FlatPrinter.new(result)
-# 	# printer.print(STDOUT, {})
+# 	    default_size 10
 
-#   # class Coupon
-#   #   include CloudSesame
+# 	    define_sloppiness 3
 
-#   #   VALID_COUPON_RANK = 20
+# 	    define_fuzziness do
+# 	      max_fuzziness 3
+# 	      min_char_size 6
+# 	      fuzzy_percent 0.17
+# 	    end
 
-#   #   define_cloudsearch do
-#   #     config.endpoint = ENV['AWS_ENDPOINT']
-#   #     config.region   = ENV['AWS_REGION']
+# 	    field :end_date,                            as: :date1
+# 	    field :rank,                                as: :num1, default: -> { gte VALID_COUPON_RANK }
+# 	    field :searchable_text,                     query: true
+# 	    field :affiliate_advertiser_search_ext_id,  as: :string1, facet: { size: 50 }
+# 	    field :countries,                           as: :string_array1
+# 	    field :deal_types,                          as: :string_array2, facet: {}
+# 	    field :tags,                                as: :string_array3, facet: {}
+# 	    field :type,                                default: -> { 'Catalog::CouponSearchable' }
+# 	  end
 
-#   #     default_size 10
+# 	end
 
-#   #     define_sloppiness 3
+# 	@tags = [1, 2]
+# 	n = 10_000
+#   q = nil
+# 	result = RubyProf.profile do
+# 	  n.times do
+# 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
+# 				.price { gt 100 }
+# 				.and {
+# 					or! {
+# 					tags *@tags
+# 					tags
+# 					tags nil
+# 					and! {
+# 						tags.not "3", "4"
+# 					}
+# 					and!.not {
+# 						tags.start_with "5", "6"
+# 						tags.not.start_with("7")
+# 						tags.not.near("8", distance: 7)
+# 						tags start_with("9"), near("10")
+# 						tags term("11", boost: 2)
+# 						tags.not phrase "12"
+# 					}
+# 					or!.not {
+# 						price(25..100)
+# 						price 100...200
+# 						price gte(200).lt(300)
+# 						price gte(300)
+# 					}
+# 					or! {
+# 						created_at Date.today - 7
+# 						created_at gte(Date.today)
+# 						created_at gte(Date.today).lt(Date.today + 3)
+# 					}
+# 				}
+# 			}
 
-#   #     define_fuzziness do
-#   #       max_fuzziness 3
-#   #       min_char_size 6
-#   #       fuzzy_percent 0.17
-#   #     end
+# 	  end
+# 	end
+# 	printer = RubyProf::FlatPrinter.new(result)
+# 	printer.print(STDOUT, {})
 
-#   #     field :end_date,                            as: :date1
-#   #     field :rank,                                as: :num1, default: -> { gte VALID_COUPON_RANK }
-#   #     field :searchable_text,                     query: true
-#   #     field :affiliate_advertiser_search_ext_id,  as: :string1, facet: { size: 50 }
-#   #     field :countries,                           as: :string_array1
-#   #     field :deal_types,                          as: :string_array2, facet: {}
-#   #     field :tags,                                as: :string_array3, facet: {}
-#   #     field :type,                                default: -> { 'Catalog::CouponSearchable' }
-#   #   end
+# 	binding.pry
 
-#   # end
 
-#   # q = Coupon.cloudsearch.builder
-
-# 	# binding.pry
-
-#   # class ProductController
-
-#   #   def load_userq
-#   #     @name = "scott"
-#   #   end
-
-#   #   def greeting
-#   #     "hello world!"
-#   #   end
-
-#   #   def search
-#   #   	load_user
-#   #     q = Product.cloudsearch.and {
-#   #       binding.pry
-#   #     }
-#   #   end
-
-#   # end
-
-#   # test = ProductController.new
-#   # test.search
 # end

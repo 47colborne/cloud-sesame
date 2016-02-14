@@ -1,9 +1,11 @@
-require 'cloud_sesame/domain/client_modules/caching'
+require 'cloud_sesame/domain/client_module/caching'
 
 module CloudSesame
 	module Domain
 		class Client
-			include ClientModules::Caching
+			include ClientModule::Caching
+
+			attr_reader :searchable
 
 			def self.configure
 				yield global_config if block_given?
@@ -22,7 +24,7 @@ module CloudSesame
 			end
 
 			def search(params)
-				executor.fetch aws_client, params, @searchable
+				executor.fetch params
 			end
 
 			private
