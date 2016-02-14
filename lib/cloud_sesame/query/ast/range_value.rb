@@ -20,22 +20,22 @@ module CloudSesame
         end
 
         def gt(value = nil)
-          data[0], data[1] = '{', Value.parse(value) if value
+          update_lower_value(value) if value
           return self
         end
 
         def gte(value = nil)
-          data[0], data[1] = '[', Value.parse(value) if value
+          update_lower_value(value, true) if value
           return self
         end
 
         def lt(value = nil)
-          data[2], data[3] = Value.parse(value), '}' if value
+          update_uppoer_value(value) if value
           return self
         end
 
         def lte(value = nil)
-          data[2], data[3] = Value.parse(value), ']' if value
+          update_uppoer_value(value, true) if value
           return self
         end
 
@@ -48,6 +48,14 @@ module CloudSesame
         end
 
         private
+
+        def update_lower_value(value, included = false)
+          data[0], data[1] = (included ? '[' : '{'), Value.parse(value)
+        end
+
+        def update_uppoer_value(value, included = false)
+          data[2], data[3] = Value.parse(value), (included ? ']' : '}')
+        end
 
         def string_format?(string)
            RANGE_FORMAT.match string.tr(' ', '')
