@@ -1,11 +1,20 @@
 Gem::Specification.new do |s|
   s.name        = 'CloudSesame'
-  s.version     = '0.6.3'
-  s.date        = '2016-02-09'
+  s.version     = '0.6.4'
+  s.date        = '2016-02-14'
   s.summary     = "AWS CloudSearch Query DSL"
   s.description = "AWS CloudSearch Query DSL"
-  s.authors = ['Scott Chu', 'Emily Fan', 'Greg Ward', 'David McHoull',
-    'Alishan Ladhani', 'Justine Jones', 'Gillian Chesnais', 'Jeff Li']
+  s.authors = [
+    'Scott Chu',
+    'Emily Fan',
+    'Greg Ward',
+    'David McHoull',
+    'Alishan Ladhani',
+    'Justine Jones',
+    'Gillian Chesnais',
+    'Jeff Li',
+    'Nick Zhu'
+  ]
   s.email = 'dev@retailcommon.com'
   s.homepage = 'https://github.com/47colborne/cloud-sesame'
   s.platform = Gem::Platform::RUBY
