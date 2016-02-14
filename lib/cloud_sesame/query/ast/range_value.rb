@@ -6,16 +6,17 @@ module CloudSesame
         RANGE_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
 
         def initialize(value = nil)
-          @data = if value.kind_of?(Range)
-            range_to_array(value)
-          elsif value.is_a?(String) && (match = string_format?(value))
-            (matches = match.captures)[1, 2] = matches[1, 2].map do |i|
-              Value.parse(i) unless i.nil? || i.empty?
+          @data = (
+            if value.kind_of?(Range)
+              range_to_array(value)
+            elsif value.is_a?(String) && (match = string_format?(value))
+              data = match.captures
+              data[1, 2] = data[1, 2].map { |i| Value.parse(i) unless i.nil? || i.empty? }
+              data
+            else
+              default_range
             end
-            @data = matches
-          else
-            default_range
-          end
+          )
         end
 
         def gt(value = nil)
@@ -39,7 +40,7 @@ module CloudSesame
         end
 
         def compile
-          "#{ lb }#{ l.to_s },#{ u.to_s }#{ ub }"
+          "#{ lb }#{ l },#{ u }#{ ub }"
         end
 
         def ==(object)
