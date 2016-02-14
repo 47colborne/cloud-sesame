@@ -26,14 +26,10 @@ module CloudSesame
         end
 
         def parse(string)
-          join_by_and each_with(string) { |word| fuzziness word }
+          string.split(' ').map { |word| fuzziness word }
         end
 
         private
-
-        def each_with(string, &block)
-          string.split(' ').map &block
-        end
 
         def fuzziness(word)
           if word.length >= @min_char_size && !excluding_term?(word)
@@ -43,10 +39,6 @@ module CloudSesame
           else
             word
           end
-        end
-
-        def join_by_and(args = [])
-          (args = args.compact).size > 1 ? "(#{ args.join('+') })" : args[0]
         end
 
         def excluding_term?(word)

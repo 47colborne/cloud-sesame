@@ -37,7 +37,7 @@ module CloudSesame
             fuzziness = Fuzziness.new
             node = Query.new(fuzziness: fuzziness)
             node.query = ["term1", "term2", "term3", "-term4"].join(' ')
-            expect(fuzziness).to receive(:parse).with(node.query)
+            expect(fuzziness).to receive(:parse).with(node.query).and_call_original
             node.compile
           end
           it 'should return a serialized hash contains query string' do
