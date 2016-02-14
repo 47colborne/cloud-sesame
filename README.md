@@ -1,7 +1,7 @@
 #CloudSesame
 Powerful and Flexible Clouas1dSearch Query DSL
 
-[![Gem Version](https://badge.fury.io/rb/CloudSesame@2x.png)](https://badge.fury.io/rb/CloudSesame)
+[![Gem Version](https://badge.fury.io/rb/CloudSesame.svg)](https://badge.fury.io/rb/CloudSesame)
 
 #Installation
 * In terminal type:
