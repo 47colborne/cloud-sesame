@@ -40,7 +40,7 @@ module CloudSesame
         end
 
         def compile
-          "#{ lb }#{ l },#{ u }#{ ub }"
+          "#{ data[0] }#{ data[1] },#{ data[2] }#{ data[3] }"
         end
 
         def ==(object)
@@ -74,22 +74,6 @@ module CloudSesame
 
         def default_range
           ['{', nil, nil, '}']
-        end
-
-        def l
-          data[1]
-        end
-
-        def u
-          data[2]
-        end
-
-        def lb
-          data[1] ? data[0] : '{'
-        end
-
-        def ub
-          data[2] ? data[3] : '}'
         end
 
       end
