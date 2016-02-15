@@ -3,6 +3,8 @@ Powerful and Flexible Clouas1dSearch Query DSL
 
 [![Build Status](https://travis-ci.org/47colborne/cloud-sesame.svg?branch=master)](https://travis-ci.org/47colborne/cloud-sesame)
 [![Gem Version](https://badge.fury.io/rb/CloudSesame.svg)](https://badge.fury.io/rb/CloudSesame)
+[![Code Climate](https://codeclimate.com/github/47colborne/cloud-sesame/badges/gpa.svg)](https://codeclimate.com/github/47colborne/cloud-sesame)
+[![Test Coverage](https://codeclimate.com/github/47colborne/cloud-sesame/badges/coverage.svg)](https://codeclimate.com/github/47colborne/cloud-sesame/coverage)
 
 #Installation
 * In terminal type:
