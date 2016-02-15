@@ -12,10 +12,12 @@ module CloudSesame
 
         def self.parse(value)
           return value if value.kind_of? AST::Value
-          (is_a_numeric?(value) ? AST::NumericValue :
+          (
+            is_a_numeric?(value) ? AST::NumericValue :
             is_a_datetime?(value) ? AST::DateValue :
             is_a_range?(value) ? AST::RangeValue :
-            AST::Value).new(value)
+            AST::Value
+          ).new(value)
         end
 
         def self.is_a_numeric?(value)
