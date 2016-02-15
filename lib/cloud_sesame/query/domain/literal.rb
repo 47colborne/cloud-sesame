@@ -16,7 +16,7 @@ module CloudSesame
 				end
 
 				def _eval(&block)
-					if block_given? && (_value = instance_exec &block)
+					if block_given? && (_value = instance_exec(&block))
 						AST::Literal.new _name, _value, _options
 					end
 				end

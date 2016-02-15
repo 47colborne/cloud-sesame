@@ -10,7 +10,7 @@ module CloudSesame
           @min_char_size = 6
           @fuzzy_percent = 0.17
 
-          instance_eval &block if block_given?
+          instance_eval(&block) if block_given?
         end
 
         def max_fuzziness(int)

@@ -16,7 +16,6 @@ module CloudSesame
 
 				subject { Block.new(Caller.new, {}) }
 
-				# expect modules to be included
 				[
 					DSL::BlockStyledOperators,
 					DSL::FieldAccessors,

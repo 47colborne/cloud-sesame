@@ -5,7 +5,7 @@ module CloudSesame
         DETAILED = true
 				SYMBOL = :near
 
-				def compile(detailed = nil)
+				def compile(_detailed = nil)
           if child && (compiled = child.compile operator_detailed) && !compiled.empty?
             "(#{ symbol }#{ boost }#{ distance } #{ compiled })"
           end

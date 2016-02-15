@@ -9,9 +9,10 @@ module CloudSesame
 					if block_given?
 						caller = block.binding.eval "self"
 						options = _scope.context[:fields][name]
-			  		node = Domain::Literal.new(name, options, caller)._eval(&block)
-			  		values << node
-			  	end
+						domain = Domain::Literal.new(name, options, caller)
+						node = domain._eval(&block)
+						values << node
+					end
 
 			  	_scope.children.field = name
 			  	_scope.children._return = _return

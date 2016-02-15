@@ -9,7 +9,7 @@ module CloudSesame
 						@searchable = searchable
 					end
 
-					def fetch(params)
+					def fetch(_params)
 						raise Error::Caching, "Caching Module needs #fetch method and accepts params"
 					end
 

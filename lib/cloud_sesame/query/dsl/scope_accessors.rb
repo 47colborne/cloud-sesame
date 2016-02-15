@@ -8,7 +8,7 @@ module CloudSesame
 
 					defined_scopes = _scope.context[:scopes]
 					if defined_scopes && (block = defined_scopes[name.to_sym])
-						instance_exec *args, &block
+						instance_exec(*args, &block)
 						_return
 					else
 						raise Error::ScopeNotDefined

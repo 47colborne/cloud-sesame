@@ -27,7 +27,7 @@ module CloudSesame
 					# parents (_scope) in order for the parent properly
 					# propagate message down to all the children.
 					# ===============================================
-					instance_eval &block
+					instance_eval(&block)
 					_scope << node
 
 					_scopes.pop
@@ -42,7 +42,7 @@ module CloudSesame
 					_scope
 				end
 
-				def _block_domain(block)
+				def _block_domain(_block)
 					self
 				end
 

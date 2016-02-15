@@ -12,10 +12,22 @@ module CloudSesame
 
         def self.parse(value)
           return value if value.kind_of? AST::Value
-          return AST::NumericValue.new(value) if value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
-          return AST::DateValue.new(value) if value.kind_of?(Date) || value.kind_of?(Time)
-          return AST::RangeValue.new(value) if value.kind_of?(Range) || (value.is_a?(String) && RANGE_FORMAT =~ value)
-          AST::Value.new(value)
+          (is_a_numeric?(value) ? AST::NumericValue :
+            is_a_datetime?(value) ? AST::DateValue :
+            is_a_range?(value) ? AST::RangeValue :
+            AST::Value).new(value)
+        end
+
+        def self.is_a_numeric?(value)
+          value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
+        end
+
+        def self.is_a_datetime?(value)
+          value.kind_of?(Date) || value.kind_of?(Time)
+        end
+
+        def self.is_a_range?(value)
+          value.kind_of?(Range) || (value.is_a?(String) && RANGE_FORMAT =~ value)
         end
 
         def initialize(data)

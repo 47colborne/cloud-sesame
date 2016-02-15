@@ -19,7 +19,7 @@ module CloudSesame
           self.child = object
         end
 
-        def compile(detailed = nil)
+        def compile(_detailed = nil)
           if child && (compiled = child.compile operator_detailed) && !compiled.empty?
             "(#{ symbol  }#{ boost } #{ compiled })"
           end

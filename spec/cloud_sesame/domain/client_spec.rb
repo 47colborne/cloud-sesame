@@ -19,7 +19,6 @@ module CloudSesame
 				context 'when calling it first time' do
 					before { Client.instance_variable_set(:@global_config, nil) }
 					it 'should initialize an config object on first call' do
-						config = Config.new
 						expect(Config).to receive(:new)
 						Client.global_config
 					end

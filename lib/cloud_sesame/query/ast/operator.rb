@@ -6,7 +6,7 @@ module CloudSesame
 
         attr_reader :context, :options
 
-        def initialize(context, options = {}, &block)
+        def initialize(context, options = {})
           @context = context
           @options = options
         end

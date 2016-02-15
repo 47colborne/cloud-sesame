@@ -19,11 +19,11 @@ module CloudSesame
 				end
 
 				def each(&block)
-					results.each &block
+					results.each(&block)
 				end
 
 				def map(&block)
-					results.map &block
+					results.map(&block)
 				end
 
 				def search

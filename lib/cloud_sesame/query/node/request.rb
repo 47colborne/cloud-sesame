@@ -51,8 +51,8 @@ module CloudSesame
 						page,
 						sort,
 						return_field
-					].each_with_object({}) do |node, compiled|
-						compiled.merge!(node.compile || {})
+					].each_with_object({}) do |node, object|
+						object.merge!(node.compile || {})
 					end
 
 					if compiled[:filter_query].empty?

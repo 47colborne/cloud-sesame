@@ -107,14 +107,14 @@ module CloudSesame
       if block_given?
         Domain::Base.definitions[self] = block
         cloudsearch._caller = block.binding.eval "self"
-        cloudsearch.instance_eval &block
+        cloudsearch.instance_eval(&block)
         cloudsearch._caller = nil
       end
     end
 
     def load_definition_from(klass)
-      if (definition = Domain::Base.definitions[self])
-        cloudsearch.instance_eval &definition
+      if (definition = Domain::Base.definitions[klass])
+        cloudsearch.instance_eval(&definition)
       end
     end
 

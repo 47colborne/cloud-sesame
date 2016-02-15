@@ -74,13 +74,13 @@ module CloudSesame
 			end
 
 			def add_field(name, options)
-				replace_existing_field name, options
+				replace_existing_field options
 				create_default_literal name, options
 				create_field_accessor name
 				(context[:filter_query][:fields] ||= {})[name] = options
 			end
 
-			def replace_existing_field(name, options)
+			def replace_existing_field(options)
 				fields = ((context[:filter_query] ||= {})[:fields] ||= {})
 				if (as = options[:as]) && (existing = fields.delete(as))
 					options.merge! existing
@@ -107,9 +107,9 @@ module CloudSesame
 
 			def method_missing(name, *args, &block)
 				builder.send(name, *args, &block)
-			rescue NoMethodError => e
+			rescue NoMethodError
 				_caller.send(name, *args, &block) if _caller
-			rescue NoMethodError => e
+			rescue NoMethodError
 				super
 			end
 
