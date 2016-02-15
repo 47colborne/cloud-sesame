@@ -43,10 +43,6 @@ module CloudSesame
 				(context[:query] ||= {})[:fuzziness] = Query::Node::Fuzziness.new(&block)
 			end
 
-			# TODO
-			def default_scope(proc, &block)
-			end
-
 			def field(name, options = {})
 				field_name = (options[:as] || name)
 				add_query field_name, options.delete(:query)
