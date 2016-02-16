@@ -33,16 +33,27 @@ module CloudSesame
         end
 
         describe '#compile' do
-          it 'should parse with fuzziness if fuzziness is defined' do
-            fuzziness = Fuzziness.new
-            node = Query.new(fuzziness: fuzziness)
-            node.query = ["term1", "term2", "term3", "-term4"].join(' ')
-            expect(fuzziness).to receive(:parse).with(node.query).and_call_original
-            node.compile
+          context 'when fuzziness is defined' do
+            it 'should parse with fuzziness' do
+              fuzziness = Fuzziness.new
+              node = Query.new(fuzziness: fuzziness)
+              node.query = ["term1", "someterm2", "verylongterm3", "-excluded_term4"].join(' ')
+              expect(fuzziness).to receive(:compile).with(node.query).and_call_original
+              expect(node.compile).to eq(query: "(term1 someterm2 verylongterm3 -excluded_term4)|(term1+someterm2~2+verylongterm3~2+-excluded_term4)")
+            end
+          end
+          context 'when sloppiness is defined' do
+            it 'should parse with sloppiness' do
+              sloppiness = Sloppiness.new(4)
+              node = Query.new(sloppiness: sloppiness)
+              node.query = ["term1", "term2", "term3", "-term4"].join(' ')
+              expect(sloppiness).to receive(:compile).with(node.query).and_call_original
+               expect(node.compile).to eq(query: "(term1 term2 term3 -term4)|\"term1 term2 term3 -term4\"~4")
+            end
           end
           it 'should return a serialized hash contains query string' do
             node.query = ["term1", "term2", "term3", "-term4"].join(' ')
-            expect(node.compile).to eq({ query: "term1 term2 term3 -term4" })
+            expect(node.compile).to eq({ query: "(term1 term2 term3 -term4)" })
           end
         end
 

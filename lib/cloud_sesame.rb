@@ -67,6 +67,7 @@ require 'cloud_sesame/query/node/abstract'
 require 'cloud_sesame/query/node/request'
 require 'cloud_sesame/query/node/query'
 require 'cloud_sesame/query/node/fuzziness'
+require 'cloud_sesame/query/node/sloppiness'
 require 'cloud_sesame/query/node/query_options'
 require 'cloud_sesame/query/node/query_options_field'
 require 'cloud_sesame/query/node/query_parser'
@@ -106,9 +107,7 @@ module CloudSesame
     def define_cloudsearch(&block)
       if block_given?
         Domain::Base.definitions[self] = block
-        cloudsearch._caller = block.binding.eval "self"
         cloudsearch.instance_eval(&block)
-        cloudsearch._caller = nil
       end
     end
 

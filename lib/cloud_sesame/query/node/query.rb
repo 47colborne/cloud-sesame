@@ -10,24 +10,23 @@ module CloudSesame
 				end
 
 				def compile
-					compiled = [query]
-					compiled << fuzziness if context[:fuzziness]
-					compiled << sloppiness if context[:sloppiness]
-					{ query: join_by('|', compiled) }
+					{ query: "(#{
+							query
+						})#{
+							'|' << fuzziness.compile(query) if fuzziness
+						}#{
+							'|' << sloppiness.compile(query) if sloppiness
+						}" }
 				end
 
 				private
 
 				def fuzziness
-					join_by('+', context[:fuzziness].parse(query)) if context[:fuzziness] && query && !query.empty?
+					context[:fuzziness]
 				end
 
 				def sloppiness
-					"\"#{ query }\"~#{ context[:sloppiness] }" if context[:sloppiness] && query && query.include?(' ')
-				end
-
-				def join_by(symbol, array)
-					(array = array.compact).size > 1 ? "(#{ array.join(symbol) })" : array[0]
+					context[:sloppiness]
 				end
 
 			end

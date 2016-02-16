@@ -3,6 +3,8 @@ module CloudSesame
     module Node
       class Fuzziness
 
+        EXCLUDING_TERMS = /^\-/
+
         def initialize(&block)
 
           # default fuzziness
@@ -25,24 +27,28 @@ module CloudSesame
           @fuzzy_percent = float.to_f
         end
 
-        def parse(string)
-          string.split(' ').map { |word| fuzziness word }
+        def compile(string)
+          "(#{ each_word_in(string) { |word| fuzziness(word) }.compact.join('+') })"
         end
 
         private
 
+        def each_word_in(string, &block)
+          string.split(' ').map(&block)
+        end
+
         def fuzziness(word)
-          if word.length >= @min_char_size && !excluding_term?(word)
-            fuzziness = (word.length * @fuzzy_percent).round
+          if (length = word.length) >= @min_char_size && !excluding_term?(word)
+            fuzziness = (length * @fuzzy_percent).round
             fuzziness = [fuzziness, @max_fuzziness].min
-            "#{word}~#{fuzziness}"
+            "#{ word }~#{ fuzziness }"
           else
             word
           end
         end
 
         def excluding_term?(word)
-          !!word.match(/^\-/)
+          !!(EXCLUDING_TERMS =~ word)
         end
 
       end
