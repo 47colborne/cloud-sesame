@@ -35,7 +35,7 @@ module CloudSesame
 					# =====================================
 
 					let(:client) { OpenStruct.new(search: nil) }
-					subject { RailsCache.new(client, Searchable) }
+					subject { RailsCache.new(Searchable) { client } }
 
 					shared_examples 'cache stored' do
 						it 'should cache the result' do

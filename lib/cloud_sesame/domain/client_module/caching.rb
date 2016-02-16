@@ -13,11 +13,11 @@ module CloudSesame
 				end
 
 				def executor
-					@executor ||= Caching::NoCache.new(aws_client, @searchable)
+					@executor ||= Caching::NoCache.new(@searchable) { aws_client }
 				end
 
 				def executor=(executor)
-					@executor = executor.new(aws_client, @searchable)
+					@executor = executor.new(@searchable) { aws_client }
 				end
 
 				private

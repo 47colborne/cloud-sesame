@@ -4,9 +4,13 @@ module CloudSesame
 			module Caching
 				class Base
 
-					def initialize(client, searchable)
-						@client = client
+					def initialize(searchable, &lazy_client)
 						@searchable = searchable
+						@lazy_client = lazy_client
+					end
+
+					def client
+						@client ||= @lazy_client.call
 					end
 
 					def fetch(_params)
@@ -16,7 +20,7 @@ module CloudSesame
 					private
 
 					def search(params)
-						@client.search params
+						client.search params
 					end
 
 				end

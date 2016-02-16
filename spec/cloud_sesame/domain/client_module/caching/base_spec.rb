@@ -6,7 +6,7 @@ module CloudSesame
 
 					class Searchable; end
 
-					subject { Base.new({}, Searchable) }
+					subject { Base.new(Searchable) {} }
 
 					describe 'fetch' do
 						it 'should raise an error by default' do

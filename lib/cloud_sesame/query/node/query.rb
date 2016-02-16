@@ -16,7 +16,7 @@ module CloudSesame
 							'|' << fuzziness.compile(query) if fuzziness
 						}#{
 							'|' << sloppiness.compile(query) if sloppiness
-						}" }
+						}" } if query && !query.empty?
 				end
 
 				private

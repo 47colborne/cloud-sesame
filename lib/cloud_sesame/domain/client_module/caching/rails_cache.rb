@@ -4,7 +4,7 @@ module CloudSesame
 			module Caching
 				class RailsCache < Base
 
-					def initialize(client, searchable)
+					def initialize(searchable, &lazy_client)
 						ensure_environment_exists
 						super
 					end

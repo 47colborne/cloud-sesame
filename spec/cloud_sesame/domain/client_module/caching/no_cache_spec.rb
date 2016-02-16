@@ -8,7 +8,7 @@ module CloudSesame
 
 					let(:client) { OpenStruct.new(search: nil) }
 
-					subject { NoCache.new(client, Searchable) }
+					subject { NoCache.new(Searchable) { client } }
 
 					describe 'fetch' do
 						let(:params) {{}}
