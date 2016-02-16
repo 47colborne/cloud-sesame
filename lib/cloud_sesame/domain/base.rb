@@ -32,27 +32,27 @@ module CloudSesame
 			# =========================================
 
 			def default_size(value)
-				(context[:page] ||= {})[:size] = value
+				page[:size] = value.to_i
 			end
 
 			def define_sloppiness(value)
-				(context[:query] ||= {})[:sloppiness] = value.to_i
+				query[:sloppiness] = Query::Node::Sloppiness.new(value)
 			end
 
 			def define_fuzziness(&block)
-				(context[:query] ||= {})[:fuzziness] = Query::Node::Fuzziness.new(&block)
+				query[:fuzziness] = Query::Node::Fuzziness.new(&block)
 			end
 
 			def field(name, options = {})
 				field_name = (options[:as] || name)
-				add_query field_name, options.delete(:query)
-				add_facet field_name, options.delete(:facet)
-				add_field name.to_sym, options
+				add_query(field_name, options.delete(:query)) if options[:query]
+				add_facet(field_name, options.delete(:facet)) if options[:facet]
+				add_field(name.to_sym, options)
 			end
 
 			def scope(name, proc = nil, &block)
 				block = proc unless block_given?
-				((context[:filter_query] ||= {})[:scopes] ||= {})[name.to_sym] = block
+				filter_query_scopes[name.to_sym] = block if block
 			end
 
 			private
@@ -62,51 +62,68 @@ module CloudSesame
 			end
 
 			def add_query(name, options)
-				((context[:query_options] ||= {})[:fields] ||= {})[name] = to_hash(options) if options
+				((context[:query_options] ||= {})[:fields] ||= {})[name] = to_hash(options)
 			end
 
 			def add_facet(name, options)
-				(context[:facet] ||= {})[name] = to_hash(options) if options
+				(context[:facet] ||= {})[name] = to_hash(options)
 			end
 
 			def add_field(name, options)
-				replace_existing_field options
+				options = merge_with_as_field options if options[:as]
 				create_default_literal name, options
 				create_field_accessor name
-				(context[:filter_query][:fields] ||= {})[name] = options
+				filter_query_fields[name] = options
 			end
 
-			def replace_existing_field(options)
-				fields = ((context[:filter_query] ||= {})[:fields] ||= {})
-				if (as = options[:as]) && (existing = fields.delete(as))
-					options.merge! existing
-				end
+			def merge_with_as_field(options)
+				(existing = filter_query_fields.delete(options[:as])) ? existing.merge(options) : options
 			end
 
 			def create_default_literal(name, options)
 				if (block = options.delete(:default))
 					caller = block.binding.eval "self"
-					node = Query::Domain::Literal.new(name, options, caller)._eval(&block)
-					filter_query_defaults << node
+					domain = Query::Domain::Literal.new(name, options, caller)
+					node = domain._eval(&block)
+					filter_query_defaults << node if node
 				end
-			end
-
-			def filter_query_defaults
-				context[:filter_query][:defaults] ||= []
 			end
 
 			def create_field_accessor(name)
-				Query::DSL::FieldAccessors.send(:define_method, name) do |*values, &block|
-					literal name, *values, &block
-				end
+				Query::DSL::FieldAccessors.__define_accessor__(name)
 			end
 
 			def method_missing(name, *args, &block)
-				builder.send(name, *args, &block)
-			rescue NoMethodError
-				_caller.send(name, *args, &block) if _caller
-			rescue NoMethodError
-				super
+				if builder.respond_to?(name)
+					builder.send(name, *args, &block)
+				elsif searchable.respond_to?(name)
+					searchable.send(name, *args, &block)
+				else
+					super
+				end
+			end
+
+			# CONTEXT ACCESSORS
+			# =========================================
+
+			def page
+				context[:page] ||= {}
+			end
+
+			def query
+				context[:query] ||= {}
+			end
+
+			def filter_query_fields
+				(context[:filter_query] ||= {})[:fields] ||= {}
+			end
+
+			def filter_query_defaults
+				(context[:filter_query] ||= {})[:defaults] ||= []
+			end
+
+			def filter_query_scopes
+				(context[:filter_query] ||= {})[:scopes] ||= {}
 			end
 
 		end

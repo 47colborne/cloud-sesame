@@ -115,7 +115,7 @@
 #  #  q = nil
 # 	# result = RubyProf.profile do
 # 	#   n.times do
-# 			q = Product.cloudsearch.query("black   jacket").sort(price: :asc).page(1).size(1000)
+# 			q = Product.cloudsearch.query("black jacket").sort(price: :asc).page(1).size(1000)
 # 				.price { gt 100 }
 # 				.and {
 # 					or! {

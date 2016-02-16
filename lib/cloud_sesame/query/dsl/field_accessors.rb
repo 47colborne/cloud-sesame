@@ -3,6 +3,10 @@ module CloudSesame
 		module DSL
 			module FieldAccessors
 
+				def self.__define_accessor__(name)
+					define_method(name) { |*values, &block| literal name, *values, &block }
+				end
+
 				def literal(name, *values, &block)
 					name = name.to_sym
 
