@@ -10,13 +10,12 @@ module CloudSesame
 				end
 
 				def compile
-					{ query: "(#{
-							query
-						})#{
-							'|' << fuzziness.compile(query) if fuzziness
-						}#{
-							'|' << sloppiness.compile(query) if sloppiness
-						}" } if query && !query.empty?
+					if query && !query.empty?
+						compiled = ["(#{ query })"]
+						compiled << fuzziness.compile(query) if fuzziness
+						compiled << sloppiness.compile(query) if sloppiness
+						{ query: compiled.compact.join('|') }
+					end
 				end
 
 				private
