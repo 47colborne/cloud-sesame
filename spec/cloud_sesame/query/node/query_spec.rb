@@ -4,56 +4,100 @@ module CloudSesame
   module Query
     module Node
       describe Query do
-        let(:arguments) {{ }}
-        let(:node) { Query.new(arguments) }
-
-        describe '#initialize' do
-          context 'when arguments passed in' do
-            let(:arguments) {{ query: "" }}
-            it 'should initalize an empty string if query is empty' do
-              expect(node.query).to eq ""
-            end
-            it 'should accept query as args and initialize query' do
-              arguments[:query] = "hello world"
-              expect(node.query).to eq "hello world"
-            end
-          end
-          context 'when arguments not passed in' do
-            it 'should initialize an empty terms' do
-              expect(node.query).to eq nil
-            end
-          end
-        end
+        let(:context) {{ }}
+        let(:node) { Query.new(context) }
+        subject { Query.new(context) }
 
         describe '#query' do
-          it 'should return the query string' do
-            node.query = ["term1", "term2", "term3", "-term4"].join(' ')
-            expect(node.query).to eq "term1 term2 term3 -term4"
+          context 'when context include query on initialize' do
+            let(:query_string) { "hello world" }
+            let(:context) { { query: query_string }}
+            it 'should set query to context query' do
+              expect(subject.query).to eq query_string
+            end
+          end
+          context 'when context does not include query on initialize' do
+            it 'should just return nil' do
+              expect(subject.query).to eq nil
+            end
           end
         end
 
         describe '#compile' do
-          context 'when fuzziness is defined' do
-            it 'should parse with fuzziness' do
-              fuzziness = Fuzziness.new
-              node = Query.new(fuzziness: fuzziness)
-              node.query = ["term1", "someterm2", "verylongterm3", "-excluded_term4"].join(' ')
-              expect(fuzziness).to receive(:compile).with(node.query).and_call_original
-              expect(node.compile).to eq(query: "(term1 someterm2 verylongterm3 -excluded_term4)|(term1+someterm2~2+verylongterm3~2+-excluded_term4)")
+
+          shared_examples 'common query compile actions' do
+            context 'and query is nil' do
+              let(:query_string) { nil }
+              it 'should return nil' do
+                expect(subject.compile).to eq nil
+              end
             end
+            context 'and query is empty' do
+              let(:query_string) { "" }
+              it 'should return nil' do
+                expect(subject.compile).to eq nil
+              end
+            end
+            context 'and query contains one word' do
+              let(:query_string) { "oneword" }
+              it 'should include the original string inside parenthesis' do
+                expect(subject.compile[:query]).to include("(#{ query_string })")
+              end
+            end
+            context 'and query contains multiple words' do
+              let(:query_string) { "one three fourty longword" }
+              it 'should include the original string inside parenthesis' do
+                expect(subject.compile[:query]).to include("(#{ query_string })")
+              end
+            end
+          end
+
+          shared_examples 'with additional parser defined' do |parser_name|
+            context 'and query string is nil' do
+              let(:query_string) { nil }
+              it "should not trigger #{ parser_name }" do
+                expect(parser).to_not receive(:compile)
+                subject.compile
+              end
+            end
+            context 'and query string is empty' do
+              let(:query_string) { "" }
+              it "should not trigger #{ parser_name }" do
+                expect(parser).to_not receive(:compile)
+                subject.compile
+              end
+            end
+            context 'and query string exist and not empty' do
+              let(:query_string) { "not empty" }
+              it "should trigger #{ parser_name }" do
+                result = parser.compile(query_string)
+                expect(parser).to receive(:compile).with(query_string).and_call_original
+                expect(subject.compile[:query]).to include(result)
+              end
+            end
+          end
+
+          context 'when both fuzziness and sloppiness are not defined' do
+            let(:context) {{ query: query_string }}
+            include_examples 'common query compile actions'
+          end
+          context 'when fuzziness is defined' do
+            let(:parser) { Fuzziness.new }
+            let(:context) {{
+              query: query_string,
+              fuzziness: parser
+            }}
+            include_examples 'common query compile actions'
+            include_examples 'with additional parser defined', "fuzziness"
           end
           context 'when sloppiness is defined' do
-            it 'should parse with sloppiness' do
-              sloppiness = Sloppiness.new(4)
-              node = Query.new(sloppiness: sloppiness)
-              node.query = ["term1", "term2", "term3", "-term4"].join(' ')
-              expect(sloppiness).to receive(:compile).with(node.query).and_call_original
-               expect(node.compile).to eq(query: "(term1 term2 term3 -term4)|\"term1 term2 term3 -term4\"~4")
-            end
-          end
-          it 'should return a serialized hash contains query string' do
-            node.query = ["term1", "term2", "term3", "-term4"].join(' ')
-            expect(node.compile).to eq({ query: "(term1 term2 term3 -term4)" })
+            let(:parser) { Sloppiness.new(3) }
+            let(:context) {{
+              query: query_string,
+              sloppiness: parser
+            }}
+            include_examples 'common query compile actions'
+            include_examples 'with additional parser defined', "sloppiness"
           end
         end
 

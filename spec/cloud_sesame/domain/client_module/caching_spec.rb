@@ -49,19 +49,25 @@ module CloudSesame
 				end
 
 				describe 'executor getter' do
+					it 'should return an Caching::NoCache executor by default' do
+						expect(subject.executor).to be_kind_of(Caching::NoCache)
+					end
 					it 'should default to Caching::NoCache' do
 						expect(Caching::NoCache).to receive(:new).with(subject.searchable) do |_, &lazy_client|
-							expect(lazy_client.call).to eq subject.client
-						end.and_call_original
-						expect(subject.executor).to be_kind_of Caching::NoCache
+							expect(lazy_client.call).to eq subject.aws_client
+						end
+						subject.executor
 					end
 				end
 
 				describe 'executor setter' do
 					it 'should accept a caching module' do
 						expect(Caching::GoodCache).to receive(:new).with(subject.searchable) do |_, &lazy_client|
-							expect(lazy_client.call).to eq subject.client
-						end.and_call_original
+							expect(lazy_client.call).to eq subject.aws_client
+						end
+						subject.executor = Caching::GoodCache
+					end
+					it 'should return a Caching::GoodCache instance' do
 						subject.executor = Caching::GoodCache
 						expect(subject.executor).to be_kind_of Caching::GoodCache
 					end

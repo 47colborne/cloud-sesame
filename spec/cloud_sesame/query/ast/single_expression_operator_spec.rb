@@ -35,12 +35,6 @@ module CloudSesame
               subject.is_excluded
             end
           end
-          context 'when child not exist' do
-            it 'should call #is_excluded on it\'s child' do
-              expect(subject.child).to_not receive(:is_excluded)
-              subject.is_excluded
-            end
-          end
         end
 
         describe '#<<' do
