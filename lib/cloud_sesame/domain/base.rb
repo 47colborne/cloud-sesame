@@ -5,7 +5,6 @@ module CloudSesame
 
 			def_delegators :client, :config, :caching_with
 
-			attr_accessor :_caller
 			attr_reader :searchable
 
 			def self.definitions

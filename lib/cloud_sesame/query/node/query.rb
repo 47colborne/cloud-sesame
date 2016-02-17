@@ -11,10 +11,15 @@ module CloudSesame
 
 				def compile
 					if query && !query.empty?
-						compiled = ["(#{ query })"]
-						compiled << fuzziness.compile(query) if fuzziness
-						compiled << sloppiness.compile(query) if sloppiness
-						{ query: compiled.compact.join('|') }
+						compiled = "(#{ query })"
+
+						[fuzziness, sloppiness].each do |parser|
+							if parser && (parsed = parser.compile(query))
+								compiled << "|" << parsed
+							end
+						end
+
+						{ query: compiled }
 					end
 				end
 
