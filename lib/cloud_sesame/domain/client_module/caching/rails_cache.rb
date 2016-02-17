@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module CloudSesame
 	module Domain
 		module ClientModule
