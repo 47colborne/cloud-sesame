@@ -1,7 +1,6 @@
 *.gem
 aws.yml
-/tmp
-coverage/*
+tmp
 **/*.DS_Store
 
 
