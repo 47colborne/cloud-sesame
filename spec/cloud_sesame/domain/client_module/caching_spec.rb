@@ -29,13 +29,14 @@ module CloudSesame
 				# =======================================
 
 				subject { TestClient.new }
+				let(:aws_client) { subject.aws_client }
+				let(:searchable) { subject.searchable }
 
 				describe '#caching_with' do
 					context 'when giving an existing caching module' do
 						context 'and caching_module respond to fetch' do
 							let(:caching_module) { Caching::GoodCache }
-							before {
-								subject.caching_with(:GoodCache) }
+							before { subject.caching_with(:GoodCache) }
 							it 'should set executor to the caching module' do
 								expect(subject.send(:executor)).to be_kind_of caching_module
 							end
@@ -49,21 +50,21 @@ module CloudSesame
 				end
 
 				describe 'executor getter' do
-					it 'should return an Caching::NoCache executor by default' do
-						expect(subject.executor).to be_kind_of(Caching::NoCache)
-					end
 					it 'should default to Caching::NoCache' do
-						expect(Caching::NoCache).to receive(:new).with(subject.searchable) do |_, &lazy_client|
-							expect(lazy_client.call).to eq subject.aws_client
+						expect(Caching::NoCache).to receive(:new).with(aws_client, searchable) do |client, _|
+							expect(client).to eq subject.aws_client
 						end
 						subject.executor
+					end
+					it 'should return an Caching::NoCache executor by default' do
+						expect(subject.executor).to be_kind_of(Caching::NoCache)
 					end
 				end
 
 				describe 'executor setter' do
 					it 'should accept a caching module' do
-						expect(Caching::GoodCache).to receive(:new).with(subject.searchable) do |_, &lazy_client|
-							expect(lazy_client.call).to eq subject.aws_client
+						expect(Caching::GoodCache).to receive(:new).with(aws_client, searchable) do |client, _|
+							expect(client).to eq aws_client
 						end
 						subject.executor = Caching::GoodCache
 					end

@@ -6,9 +6,8 @@ module CloudSesame
 
 					class Searchable; end
 
-					let(:client) { OpenStruct.new(search: nil) }
-
-					subject { NoCache.new(Searchable) { client } }
+					let(:client) { instance_double(Client) }
+					subject { NoCache.new(client, Searchable) }
 
 					describe 'fetch' do
 						let(:params) {{}}

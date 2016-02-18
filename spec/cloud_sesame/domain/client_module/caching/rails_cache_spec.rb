@@ -27,20 +27,20 @@ module CloudSesame
 
 					# HELPERS
 					# =====================================
-					def hashify(params)
-						subject.send(:hashify, params)
+					def hexdigest(params)
+						subject.send(:hexdigest, params)
 					end
 
 					# TESTS
 					# =====================================
 
-					let(:client) { OpenStruct.new(search: nil) }
-					subject { RailsCache.new(Searchable) { client } }
+					let(:client) { instance_double(Client) }
+					subject { RailsCache.new(client, Searchable) }
 
 					shared_examples 'cache stored' do
 						it 'should cache the result' do
 							expect{ subject.fetch(params) }.to change{ Rails.cache.table.keys.size }
-							expect(Rails.cache.table[hashify(params)]).to eq results
+							expect(Rails.cache.table[hexdigest(params)]).to eq results
 						end
 					end
 
@@ -54,7 +54,7 @@ module CloudSesame
 						end
 
 						it 'should use the hash key generated from params to fetch the cache from Rails' do
-							hash_key = hashify(params)
+							hash_key = hexdigest(params)
 							expect(Rails.cache).to receive(:fetch).with(hash_key)
 							subject.fetch(params)
 						end

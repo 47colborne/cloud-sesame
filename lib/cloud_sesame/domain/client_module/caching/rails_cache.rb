@@ -6,13 +6,13 @@ module CloudSesame
 			module Caching
 				class RailsCache < Base
 
-					def initialize(searchable, &lazy_client)
+					def initialize(client, searchable)
 						ensure_environment_exists
 						super
 					end
 
 					def fetch(params)
-						Rails.cache.fetch(hashify(params)) do
+						Rails.cache.fetch(hexdigest(params)) do
 							results = search params
 							OpenStruct.new(status: results.status, hits: results.hits, facets: results.facets)
 						end
@@ -20,7 +20,7 @@ module CloudSesame
 
 					private
 
-					def hashify(params)
+					def hexdigest(params)
 						searchable_params = params.merge(searchable: @searchable)
 						Digest::MD5.hexdigest Marshal.dump(searchable_params)
 					end

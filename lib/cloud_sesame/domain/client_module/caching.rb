@@ -8,16 +8,18 @@ module CloudSesame
 			module Caching
 
 				def caching_with(caching_module)
-					unrecognized_caching_module if !module_defined?(caching_module)
+					if !module_defined?(caching_module)
+						unrecognized_caching_module
+					end
 					self.executor = module_get(caching_module)
 				end
 
 				def executor
-					@executor ||= Caching::NoCache.new(@searchable) { aws_client }
+					@executor ||= Caching::NoCache.new(aws_client, @searchable)
 				end
 
 				def executor=(executor)
-					@executor = executor.new(@searchable) { aws_client }
+					@executor = executor.new(aws_client, @searchable)
 				end
 
 				private

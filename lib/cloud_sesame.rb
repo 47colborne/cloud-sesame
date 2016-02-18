@@ -7,6 +7,7 @@ require 'forwardable'
 # Internal Libraries
 # ===============================================
 require 'abstract_object'
+require 'lazy_object'
 require 'cloud_sesame/config/credential'
 
 # Custom Errors

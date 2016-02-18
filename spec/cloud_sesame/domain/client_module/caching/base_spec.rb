@@ -6,7 +6,8 @@ module CloudSesame
 
 					class Searchable; end
 
-					subject { Base.new(Searchable) {} }
+					let(:client) { instance_double(Client) }
+					subject { Base.new(client, Searchable) }
 
 					describe 'fetch' do
 						it 'should raise an error by default' do

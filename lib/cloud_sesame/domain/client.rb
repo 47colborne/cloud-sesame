@@ -30,7 +30,7 @@ module CloudSesame
 			private
 
 			def aws_client
-				@aws_client ||= ::Aws::CloudSearchDomain::Client.new config.to_hash
+				@aws_client ||= LazyObject.new { ::Aws::CloudSearchDomain::Client.new config.to_hash }
 			end
 
 		end
