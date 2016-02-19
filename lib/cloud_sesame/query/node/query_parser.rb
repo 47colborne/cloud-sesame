@@ -3,18 +3,16 @@ module CloudSesame
     module Node
       class QueryParser < Abstract
 
-        TYPES = %w(simple structured lucene dismax)
-
-        attr_writer :type
-
-        TYPES.each do |type|
-          define_method type do
-            self.type = type; self
-          end
+        def type
+          @type ||= (context[:query_parser] || "simple")
         end
 
-        def type
-          @type ||= (context[:query_parser] || :simple).to_s
+        def simple
+          @type = "simple"
+        end
+
+        def structured
+          @type = "structured"
         end
 
         def compile

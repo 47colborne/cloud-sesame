@@ -42,37 +42,49 @@ module CloudSesame
 				# =========================================
 
 				def compile
-					compiled = [
-						query,
-						query_options,
-						query_parser,
-						filter_query,
-						facet,
-						page,
-						sort,
-						return_field
-					].each_with_object({}) do |node, object|
-						object.merge!(node.compile || {})
-					end
-
-					if compiled[:filter_query].empty?
-						compiled.delete(:filter_query)
-					elsif compiled[:query].nil? || compiled[:query].empty?
-						convert_to_structured_query(compiled)
-					end
-
+					compiled = {}
+					insert_q compiled
+					insert_fq compiled
+					insert_type compiled
+					insert_rest compiled
 					compiled
 				end
 
 				private
 
-				def convert_to_structured_query(compiled)
-					replace(compiled, :query, :filter_query).merge! query_parser.structured.compile
+				def insert_q(compiled)
+					if (compiled_query = query.compile) && !compiled_query.empty?
+						compiled.merge! compiled_query
+					end
 				end
 
-				def replace(hash, key1, key2)
-					hash[key1] = hash.delete key2
-					hash
+				def insert_fq(compiled)
+					if (compiled_filter_query = filter_query.compile)
+						if compiled[:query]
+							query_parser.simple
+							compiled.merge! compiled_filter_query
+						else
+							query_parser.structured
+							compiled[:query] = compiled_filter_query[:filter_query]
+						end
+					end
+				end
+
+				def insert_type(compiled)
+					compiled.merge! query_parser.compile
+				end
+
+				def insert_rest(compiled)
+					[
+						query_options,
+						facet,
+						page,
+						sort,
+						return_field
+					].each do |node, object|
+						compiled_node = node.compile
+						compiled.merge!(compiled_node) if compiled_node
+					end
 				end
 
 			end
