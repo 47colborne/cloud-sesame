@@ -60,12 +60,12 @@ module CloudSesame
           context 'with existing sorting attributes' do
             let(:arguments) {{ sort: "score asc,price desc" }}
             it 'should return a hash with serialized sort attributes' do
-              expect(node.compile).to eq arguments
+              expect(node.compile).to eq arguments[:sort]
             end
           end
           context 'with empty sorting attributes' do
-            it 'should return an empty hash' do
-              expect(node.compile).to eq({})
+            it 'should return nil' do
+              expect(node.compile).to eq nil
             end
           end
         end

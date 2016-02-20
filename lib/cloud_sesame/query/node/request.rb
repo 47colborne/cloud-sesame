@@ -55,25 +55,24 @@ module CloudSesame
 
 				def insert_q(compiled)
 					if (compiled_query = query.compile) && !compiled_query.empty?
-						compiled.merge! compiled_query
+						compiled[:query] = compiled_query
 					end
 				end
 
 				def insert_fq(compiled)
-					if (compiled_filter_query = filter_query.compile)
+					if (compiled_fq = filter_query.compile)
 						if compiled[:query]
 							query_parser.simple
-							compiled.merge! compiled_filter_query
+							compiled[:filter_query] = compiled_fq
 						else
 							query_parser.structured
-							compiled[:query] = compiled_filter_query[:filter_query]
+							compiled[:query] = compiled_fq
 						end
 					end
 				end
 
 				def insert_type(compiled)
 					compiled[:query_parser] = query_parser.compile
-					compiled
 				end
 
 				def insert_rest(compiled)

@@ -8,7 +8,7 @@ module CloudSesame
         end
 
         def compile
-          JSON.dump({ fields: compile_fields }) if fields
+          JSON.dump({ fields: compile_fields }) unless fields.empty?
         end
 
         private
@@ -18,9 +18,11 @@ module CloudSesame
         end
 
         def build(fields)
-          fields.map do |field, options|
-            QueryOptionsField.new field, options[:weight]
-          end if fields
+          fields ? fields.map { |field, opt| build_field(field, opt) } : []
+        end
+
+        def build_field(field, options)
+          QueryOptionsField.new field, options[:weight]
         end
 
       end

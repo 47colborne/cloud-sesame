@@ -45,7 +45,7 @@ module CloudSesame
             let(:context) { {fields: { description: { weight: 2 }, name: {} } } }
             it 'should return a hash with query_options and fields as JSON' do
               expected_result = { fields: ['description^2', 'name'] }
-              expect(query_options.compile).to include(query_options: JSON.dump(expected_result))
+              expect(query_options.compile).to eq JSON.dump(expected_result)
             end
           end
         end

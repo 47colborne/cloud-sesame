@@ -27,7 +27,7 @@ module CloudSesame
 
         describe '#compile' do
           it 'should return a hash with query_parser type' do
-            expect(subject.compile).to eq({query_parser: 'simple'})
+            expect(subject.compile).to eq 'simple'
           end
         end
 

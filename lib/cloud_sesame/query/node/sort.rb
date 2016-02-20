@@ -18,21 +18,22 @@ module CloudSesame
 				end
 
 				def compile
-					compiled unless (compiled = serialize sorting_attributes).empty?
+					unless (compiled = serialize sorting_attributes).empty?
+						compiled
+					end
 				end
 
 				private
 
 				def serialize(hash = {})
-					hash.to_a.map { |i| i.join(' ') }.join(',')
+					hash.each.reduce("") do |result, (key, value)|
+						result << ',' unless result.empty?
+						result << "#{ key } #{ value }"
+						result
+					end
 				end
 
-				def deserialize(serialized_attributes)
-					if string
-						string.split(',').map do ||
-							i.strip.split(' ')
-						end
-						[*]
+				def deserialize(string)
 					Hash[*((string || "").split(',').map { |i| i.strip.split(' ').map(&:to_sym) }.flatten)]
 				end
 

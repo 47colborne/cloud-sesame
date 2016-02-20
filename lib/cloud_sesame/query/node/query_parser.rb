@@ -16,7 +16,7 @@ module CloudSesame
         end
 
         def compile
-          { query_parser: type.to_s }
+          type.to_s
         end
 
       end

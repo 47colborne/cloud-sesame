@@ -12,7 +12,7 @@ module CloudSesame
             subject.compile
           end
           it 'should return an hash with filter query' do
-            expect(subject.compile).to include(filter_query: subject.root.compile )
+            expect(subject.compile).to eq subject.root.compile
           end
         end
 

@@ -41,13 +41,13 @@ module CloudSesame
             context 'and query contains one word' do
               let(:query_string) { "oneword" }
               it 'should include the original string inside parenthesis' do
-                expect(subject.compile[:query]).to include("(#{ query_string })")
+                expect(subject.compile).to include("(#{ query_string })")
               end
             end
             context 'and query contains multiple words' do
               let(:query_string) { "one three fourty longword" }
               it 'should include the original string inside parenthesis' do
-                expect(subject.compile[:query]).to include("(#{ query_string })")
+                expect(subject.compile).to include("(#{ query_string })")
               end
             end
           end
@@ -72,7 +72,7 @@ module CloudSesame
               it "should trigger #{ parser_name }" do
                 result = parser.compile(query_string)
                 expect(parser).to receive(:compile).with(query_string).and_call_original
-                expect(subject.compile[:query]).to include(result)
+                expect(subject.compile).to include(result)
               end
             end
           end
