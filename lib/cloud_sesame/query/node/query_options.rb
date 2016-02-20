@@ -4,15 +4,11 @@ module CloudSesame
       class QueryOptions < Abstract
 
         def fields
-          @fields ||= default_fields
+          @fields ||= build(context[:fields])
         end
 
         def compile
-          {
-            query_options: JSON.dump({
-              fields: compile_fields
-            })
-          } unless fields.empty?
+          JSON.dump({ fields: compile_fields }) if fields
         end
 
         private
@@ -21,14 +17,10 @@ module CloudSesame
           fields.map(&:compile)
         end
 
-        def default_fields
-          if context[:fields]
-            context[:fields].map do |field, options|
-              QueryOptionsField.new field, options[:weight]
-            end
-          else
-            []
-          end
+        def build(fields)
+          fields.map do |field, options|
+            QueryOptionsField.new field, options[:weight]
+          end if fields
         end
 
       end

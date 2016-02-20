@@ -18,7 +18,7 @@ module CloudSesame
 				end
 
 				def compile
-					(result = serialize(sorting_attributes)).empty? ? {} : { sort: result }
+					compiled unless (compiled = serialize sorting_attributes).empty?
 				end
 
 				private
@@ -27,7 +27,12 @@ module CloudSesame
 					hash.to_a.map { |i| i.join(' ') }.join(',')
 				end
 
-				def deserialize(string)
+				def deserialize(serialized_attributes)
+					if string
+						string.split(',').map do ||
+							i.strip.split(' ')
+						end
+						[*]
 					Hash[*((string || "").split(',').map { |i| i.strip.split(' ').map(&:to_sym) }.flatten)]
 				end
 

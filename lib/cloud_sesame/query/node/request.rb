@@ -47,6 +47,7 @@ module CloudSesame
 					insert_fq compiled
 					insert_type compiled
 					insert_rest compiled
+					insert_page compiled
 					compiled
 				end
 
@@ -71,20 +72,25 @@ module CloudSesame
 				end
 
 				def insert_type(compiled)
-					compiled.merge! query_parser.compile
+					compiled[:query_parser] = query_parser.compile
+					compiled
 				end
 
 				def insert_rest(compiled)
-					[
-						query_options,
-						facet,
-						page,
-						sort,
-						return_field
-					].each do |node, object|
+					{
+						query_options: query_options,
+						facet: facet,
+						sort: sort,
+						return: return_field
+					}.each do |name, node|
 						compiled_node = node.compile
-						compiled.merge!(compiled_node) if compiled_node
+						compiled[name] = compiled_node if compiled_node
 					end
+					compiled
+				end
+
+				def insert_page(compiled)
+					compiled.merge! page.compile
 				end
 
 			end

@@ -11,7 +11,9 @@ module CloudSesame
         end
 
         def compile
-          "#{ field }#{ '^' + weight.to_s if weight }"
+          compiled = field.to_s
+          compiled << '^' << weight.to_s if weight
+          compiled
         end
 
       end

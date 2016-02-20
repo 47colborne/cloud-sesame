@@ -8,7 +8,7 @@ module CloudSesame
         end
 
         def compile
-          { facet: JSON.dump(facet) } unless facet.empty?
+          JSON.dump(facet) unless facet.empty?
         end
 
       end
