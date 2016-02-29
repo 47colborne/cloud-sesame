@@ -12,7 +12,7 @@ module CloudSesame
     attr_reader :table
 
     def initialize(hash = {})
-      @table = hash
+      @table = hash.deep_dup
     end
 
     def [](key, default = nil)

@@ -10,7 +10,7 @@ module CloudSesame
           context 'when arguments passed in' do
             let(:arguments) { { page: 2, size: 13 } }
             it 'should initialize the page with the page argument' do
-              expect(node.page).to eq 2
+              expect(node.page).to eq 1
             end
             it 'should initialize the size with the size argument' do
               expect(node.size).to eq 13
@@ -36,7 +36,8 @@ module CloudSesame
             page: 3, size: 13, expect_start: 26
           }].each do |arguments|
             it 'should calculate and return the starting point' do
-              node = Page.new arguments
+              node = Page.new(size: arguments[:size])
+              node.page = arguments[:page]
               expect(node.start).to eq arguments[:expect_start]
             end
           end

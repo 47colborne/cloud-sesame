@@ -6,11 +6,11 @@ module CloudSesame
 				attr_writer :page, :size, :start
 
         def page
-					@page ||= context[:page] || 1
+					@page ||= 1
         end
 
 				def size
-					@size ||= context[:size] || 10
+					@size ||= (context && context[:size]) || 10
 				end
 
 				def start

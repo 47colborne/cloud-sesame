@@ -5,27 +5,12 @@ module CloudSesame
     module Node
       describe Query do
         let(:context) {{ }}
-        let(:node) { Query.new(context) }
         subject { Query.new(context) }
-
-        describe '#query' do
-          context 'when context include query on initialize' do
-            let(:query_string) { "hello world" }
-            let(:context) { { query: query_string }}
-            it 'should set query to context query' do
-              expect(subject.query).to eq query_string
-            end
-          end
-          context 'when context does not include query on initialize' do
-            it 'should just return nil' do
-              expect(subject.query).to eq nil
-            end
-          end
-        end
 
         describe '#compile' do
 
           shared_examples 'common query compile actions' do
+            before { subject.query = query_string }
             context 'and query is nil' do
               let(:query_string) { nil }
               it 'should return nil' do
@@ -53,6 +38,8 @@ module CloudSesame
           end
 
           shared_examples 'with additional parser defined' do |parser_name|
+            before { subject.query = query_string }
+
             context 'and query string is nil' do
               let(:query_string) { nil }
               it "should not trigger #{ parser_name }" do
@@ -78,24 +65,19 @@ module CloudSesame
           end
 
           context 'when both fuzziness and sloppiness are not defined' do
-            let(:context) {{ query: query_string }}
+            let(:context) {{ }}
+
             include_examples 'common query compile actions'
           end
           context 'when fuzziness is defined' do
             let(:parser) { Fuzziness.new }
-            let(:context) {{
-              query: query_string,
-              fuzziness: parser
-            }}
+            let(:context) {{ fuzziness: parser }}
             include_examples 'common query compile actions'
             include_examples 'with additional parser defined', "fuzziness"
           end
           context 'when sloppiness is defined' do
             let(:parser) { Sloppiness.new(3) }
-            let(:context) {{
-              query: query_string,
-              sloppiness: parser
-            }}
+            let(:context) {{ sloppiness: parser }}
             include_examples 'common query compile actions'
             include_examples 'with additional parser defined', "sloppiness"
           end

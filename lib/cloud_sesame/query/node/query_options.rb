@@ -8,14 +8,10 @@ module CloudSesame
         end
 
         def compile
-          JSON.dump({ fields: compile_fields }) unless fields.empty?
+          JSON.dump({ fields: fields.map(&:compile) }) unless fields.empty?
         end
 
         private
-
-        def compile_fields
-          fields.map(&:compile)
-        end
 
         def build(fields)
           fields ? fields.map { |field, opt| build_field(field, opt) } : []

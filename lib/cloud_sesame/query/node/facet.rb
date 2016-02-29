@@ -3,12 +3,8 @@ module CloudSesame
     module Node
       class Facet < Abstract
 
-        def facet
-          @facet ||= context
-        end
-
         def compile
-          JSON.dump(facet) unless facet.empty?
+          JSON.dump(context) if context && !context.empty?
         end
 
       end

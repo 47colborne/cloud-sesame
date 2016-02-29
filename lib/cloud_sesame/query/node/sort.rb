@@ -6,7 +6,7 @@ module CloudSesame
 				attr_writer :sorting_attributes
 
 				def sorting_attributes
-					@sorting_attributes ||= deserialize context[:sort]
+					@sorting_attributes ||= {}
 				end
 
 				def [](attribute)

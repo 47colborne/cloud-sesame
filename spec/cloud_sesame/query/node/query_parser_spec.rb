@@ -17,12 +17,6 @@ module CloudSesame
           it 'should default to simple if not passed in from context' do
             expect(subject.type).to eq('simple')
           end
-          context 'when default context passed in' do
-            let(:context) { {query_parser: 'structured'} }
-            it 'should default to the context value' do
-              expect(subject.type).to eq('structured')
-            end
-          end
         end
 
         describe '#compile' do

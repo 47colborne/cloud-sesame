@@ -14,7 +14,7 @@ module CloudSesame
 			attr_reader :context, :searchable
 
 			def initialize(context, searchable)
-				@context = Context.new.duplicate context
+				@context = context
 				@searchable = searchable
 			end
 

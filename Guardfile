@@ -24,7 +24,8 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "CODECLIMATE_REPO_TOKEN=f80e30cc893d8c6a41550e747e1d838c6123e9cc53f088bf4bc1337d40b3e581 bundle exec rspec" do
+# guard :rspec, cmd: "CODECLIMATE_REPO_TOKEN=f80e30cc893d8c6a41550e747e1d838c6123e9cc53f088bf4bc1337d40b3e581 bundle exec rspec" do
+guard :rspec, cmd: "bundle exec rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 

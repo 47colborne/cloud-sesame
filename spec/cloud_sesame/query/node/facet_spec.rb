@@ -5,20 +5,6 @@ module CloudSesame
     module Node
       describe Facet do
         let(:facet) { Facet.new(facet_options) }
-        describe '#facet' do
-          context 'when default facet is defined' do
-            let(:facet_options) { { price: { size: 100 } } }
-            it 'should return the default facet options' do
-              expect(facet_options).to include(facet_options)
-            end
-          end
-          context 'when default facet is not defined' do
-            let(:facet_options) { {} }
-            it 'should return an empty facet options' do
-              expect(facet_options).to include(facet_options)
-            end
-          end
-        end
 
         describe '#compile' do
           context 'when facet is not empty' do

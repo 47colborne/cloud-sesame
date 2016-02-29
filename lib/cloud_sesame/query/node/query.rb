@@ -3,11 +3,7 @@ module CloudSesame
 		module Node
 			class Query < Abstract
 
-				attr_writer :query
-
-				def query
-					@query ||= context[:query]
-				end
+				attr_accessor :query
 
 				def compile
 					if query && !query.empty?

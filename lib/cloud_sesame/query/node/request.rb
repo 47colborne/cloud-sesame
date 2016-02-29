@@ -7,35 +7,35 @@ module CloudSesame
 				# =========================================
 
 				def query
-					@query ||= Query.new(context[:query] ||= {})
+					@query ||= Query.new(context[:query])
 				end
 
 				def query_options
-					@query_options ||= QueryOptions.new(context[:query_options] ||= {})
+					@query_options ||= QueryOptions.new(context[:query_options])
 				end
 
 				def query_parser
-					@query_parser ||= QueryParser.new(context[:query_parser] ||= {})
+					@query_parser ||= QueryParser.new(context[:query_parser])
 				end
 
 				def filter_query
-					@filter_query ||= FilterQuery.new(context[:filter_query] ||= {})
+					@filter_query ||= FilterQuery.new(Context.new context[:filter_query])
 				end
 
 				def facet
-					@facet ||= Facet.new(context[:facet] ||= {})
+					@facet ||= Facet.new(context[:facet])
 				end
 
 				def page
-					@page ||= Page.new(context[:page] ||= {})
+					@page ||= Page.new(context[:page])
 				end
 
 				def sort
-					@sort ||= Sort.new(context[:sort] ||= {})
+					@sort ||= Sort.new(context[:sort])
 				end
 
 				def return_field
-					@return ||= Return.new(context[:return] ||= {})
+					@return ||= Return.new(context[:return])
 				end
 
 				# EVALUATION
@@ -43,9 +43,9 @@ module CloudSesame
 
 				def compile
 					compiled = {}
-					insert_q compiled
-					insert_fq compiled
-					insert_type compiled
+					insert_query compiled
+					insert_filter_query compiled
+					insert_query_parser compiled
 					insert_rest compiled
 					insert_page compiled
 					compiled
@@ -53,13 +53,13 @@ module CloudSesame
 
 				private
 
-				def insert_q(compiled)
+				def insert_query(compiled)
 					if (compiled_query = query.compile) && !compiled_query.empty?
 						compiled[:query] = compiled_query
 					end
 				end
 
-				def insert_fq(compiled)
+				def insert_filter_query(compiled)
 					if (compiled_fq = filter_query.compile)
 						if compiled[:query]
 							query_parser.simple
@@ -71,8 +71,12 @@ module CloudSesame
 					end
 				end
 
-				def insert_type(compiled)
+				def insert_query_parser(compiled)
 					compiled[:query_parser] = query_parser.compile
+				end
+
+				def insert(key, value)
+
 				end
 
 				def insert_rest(compiled)

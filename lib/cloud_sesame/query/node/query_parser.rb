@@ -4,7 +4,7 @@ module CloudSesame
       class QueryParser < Abstract
 
         def type
-          @type ||= (context[:query_parser] || "simple")
+          @type ||= "simple"
         end
 
         def simple
