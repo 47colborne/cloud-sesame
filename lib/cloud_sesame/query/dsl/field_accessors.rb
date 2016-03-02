@@ -4,7 +4,9 @@ module CloudSesame
 			module FieldAccessors
 
 				def self.__define_accessor__(name)
-					define_method(name) { |*values, &block| literal name, *values, &block }
+					define_method(name) do |*values, &block|
+						literal(name, *values, &block)
+					end
 				end
 
 				def literal(name, *values, &block)

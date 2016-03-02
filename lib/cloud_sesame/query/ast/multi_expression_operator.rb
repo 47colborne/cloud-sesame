@@ -17,8 +17,8 @@ module CloudSesame
           children << object
         end
 
-        def is_excluded
-          children.map(&:is_excluded)
+        def applied(included = true)
+          children.map { |child| child.applied(included) }
         end
 
         private

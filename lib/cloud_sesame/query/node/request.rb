@@ -19,7 +19,7 @@ module CloudSesame
 				end
 
 				def filter_query
-					@filter_query ||= FilterQuery.new(Context.new context[:filter_query])
+					@filter_query ||= FilterQuery.new(context[:filter_query])
 				end
 
 				def facet

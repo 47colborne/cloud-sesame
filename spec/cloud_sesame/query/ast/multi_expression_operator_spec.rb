@@ -59,17 +59,6 @@ module CloudSesame
           end
         end
 
-        describe '#is_excluded' do
-          let(:child) { OpenStruct.new(is_excluded: nil) }
-          before { subject.children << child.dup << child.dup << child.dup }
-          it 'should broadcast down this method to it\'s children' do
-            subject.children.each do |child|
-              expect(child).to receive(:is_excluded)
-            end
-            subject.is_excluded
-          end
-        end
-
       end
     end
   end

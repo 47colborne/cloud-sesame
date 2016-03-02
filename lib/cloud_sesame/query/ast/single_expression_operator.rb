@@ -11,8 +11,8 @@ module CloudSesame
           child.is_for field, options if child
         end
 
-        def is_excluded
-          child.is_excluded if child
+        def applied(included = true)
+          child.applied(included)
         end
 
         def <<(object)

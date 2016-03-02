@@ -3,6 +3,10 @@ module CloudSesame
 		module AST
 			class NumericValue < Value
 
+        def to_s
+          compile
+        end
+
 				def compile
 					data.to_s
 				end

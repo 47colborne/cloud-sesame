@@ -12,7 +12,7 @@ module CloudSesame
     attr_reader :table
 
     def initialize(hash = {})
-      @table = hash.deep_dup
+      @table = hash
     end
 
     def [](key, default = nil)
@@ -21,11 +21,6 @@ module CloudSesame
 
     def []=(key, value)
       table[key.to_sym] = value
-    end
-
-    def duplicate(context)
-      @table = context.table.deep_dup
-      self
     end
 
   end

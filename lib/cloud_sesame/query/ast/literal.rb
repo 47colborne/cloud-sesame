@@ -10,15 +10,13 @@ module CloudSesame
         attr_reader :options, :value
 
         def initialize(field, value = nil, options = {})
-          @field, @options = field, options
+          @field = field
+          @options = options
           self.value = value
         end
 
         def value=(value)
-          if value
-            @value = Value.parse value
-            is_included
-          end
+          @value = Value.parse value if value
         end
 
         def is_for(field, options = {})
@@ -26,12 +24,8 @@ module CloudSesame
           @options.merge! options
         end
 
-        def is_included
-          applied[value] = true
-        end
-
-        def is_excluded
-          applied[value] = applied[value] == false ? true : false
+        def applied(included)
+          { field: field, value: value, included: included } if value
         end
 
         def as_field
@@ -43,10 +37,6 @@ module CloudSesame
         end
 
         private
-
-        def applied
-          options[:applied] ||= {}
-        end
 
         def standard_format
           "#{ as_field }:#{ value.compile }"

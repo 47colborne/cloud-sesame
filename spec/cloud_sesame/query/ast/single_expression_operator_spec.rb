@@ -27,16 +27,6 @@ module CloudSesame
           end
         end
 
-        describe '#is_excluded' do
-          context 'when child exist' do
-            it 'should call #is_excluded on it\'s child' do
-              subject.child = OpenStruct.new is_excluded: ""
-              expect(subject.child).to receive(:is_excluded)
-              subject.is_excluded
-            end
-          end
-        end
-
         describe '#<<' do
           it 'should set the object as child' do
             child = OpenStruct.new()

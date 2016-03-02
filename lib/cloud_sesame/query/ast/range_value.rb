@@ -39,6 +39,10 @@ module CloudSesame
           return self
         end
 
+        def to_s
+          compile
+        end
+
         def compile
           "#{ data[0] }#{ data[1] },#{ data[2] }#{ data[3] }"
         end

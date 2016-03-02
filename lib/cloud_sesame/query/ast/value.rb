@@ -10,26 +10,38 @@ module CloudSesame
 
         attr_reader :data
 
-        def self.parse(value)
-          return value if value.kind_of? AST::Value
-          (
-            is_a_numeric?(value) ? AST::NumericValue :
-            is_a_datetime?(value) ? AST::DateValue :
-            is_a_range?(value) ? AST::RangeValue :
-            AST::Value
-          ).new(value)
-        end
+        class << self
 
-        def self.is_a_numeric?(value)
-          value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
-        end
+          def types
+            @types ||= {
+              string: AST::Value,
+              numeric: AST::NumericValue,
+              date: AST::DateValue
+            }
+          end
 
-        def self.is_a_datetime?(value)
-          value.kind_of?(Date) || value.kind_of?(Time)
-        end
+          def parse(value)
+            return value if value.kind_of? AST::Value
+            (
+              numeric?(value) ? AST::NumericValue :
+              datetime?(value) ? AST::DateValue :
+              range?(value) ? AST::RangeValue :
+              AST::Value
+            ).new(value)
+          end
 
-        def self.is_a_range?(value)
-          value.kind_of?(Range) || (value.is_a?(String) && RANGE_FORMAT =~ value)
+          def numeric?(value)
+            value.is_a?(Numeric) || (value.is_a?(String) && DIGIT_FORMAT =~ value)
+          end
+
+          def datetime?(value)
+            value.kind_of?(Date) || value.kind_of?(Time)
+          end
+
+          def range?(value)
+            value.kind_of?(Range) || (value.is_a?(String) && RANGE_FORMAT =~ value)
+          end
+
         end
 
         def initialize(data)
@@ -41,7 +53,7 @@ module CloudSesame
         end
 
         def to_s
-          compile
+          data
         end
 
         def ==(value)

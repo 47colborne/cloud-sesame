@@ -4,31 +4,30 @@ module CloudSesame
 			module AppliedFilterQuery
 
 				def included?(field, value = nil)
-					return false unless (options = field_options_for(field)) && (applied = options[:applied])
+					field = field.to_sym
+					applied = applied_filters(true)
 					if value
-						(index = applied.keys.index(value)) &&
-						(applied.values[index] != false)
+						 applied[field] && applied[field].include?(value)
 					else
-						applied.values.any?
+						applied[field] && !applied[field].empty?
 					end
 				end
 
 				def excluded?(field, value = nil)
-					return false unless (options = field_options_for(field)) && (applied = options[:applied])
+					field = field.to_sym
+					applied = applied_filters(false)
 					if value
-						(index = applied.keys.index(value)) &&
-						(applied.values[index] == false)
+						applied[field] && applied[field].include?(value)
 					else
-						!applied.values.all?
+						applied[field] && !applied[field].empty?
 					end
 				end
 
-				def applied_filters
-					applied = {}
-					_context[:fields].each do |field, options|
-						if options && options[:applied] &&
-							!(values = options[:applied].select { |_, v| v }.keys).empty?
-							applied[field] = values
+				def applied_filters(included = nil)
+					applied = Hash.new { |hash, key| hash[key] = [] }
+					_scope.applied.flatten.compact.each do |result|
+						if included.nil? || result[:included] == included
+							applied[result[:field]] << result[:value]
 						end
 					end
 					applied

@@ -4,15 +4,14 @@ module CloudSesame
       class Not < SingleExpressionOperator
 				SYMBOL = :not
 
-        def <<(object)
-          object.is_excluded
-          self.child = object
-        end
-
         def compile
           if child && (compiled = child.compile) && !compiled.empty?
             "(#{ symbol  }#{ boost } #{ compiled })"
           end
+        end
+
+        def applied(included = true)
+          child.applied(!included)
         end
 
       end
