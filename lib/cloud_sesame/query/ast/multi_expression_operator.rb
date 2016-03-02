@@ -3,6 +3,14 @@ module CloudSesame
     module AST
       class MultiExpressionOperator < Operator
 
+        def <<(object)
+          children << object
+        end
+
+        def applied(included = true)
+          children.map { |child| child.applied(included) }
+        end
+
         def children
           @children ||= create_children
         end
@@ -11,14 +19,6 @@ module CloudSesame
           if !children.empty? && (compiled = children.compile) && !compiled.empty?
             "(#{ symbol  }#{ boost } #{ compiled })"
           end
-        end
-
-        def <<(object)
-          children << object
-        end
-
-        def applied(included = true)
-          children.map { |child| child.applied(included) }
         end
 
         private

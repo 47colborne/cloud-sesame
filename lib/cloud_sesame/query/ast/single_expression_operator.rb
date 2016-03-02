@@ -7,16 +7,12 @@ module CloudSesame
 
         attr_accessor :child
 
-        def is_for(field, options = {})
-          child.is_for field, options if child
+        def <<(object)
+          self.child = object
         end
 
         def applied(included = true)
           child.applied(included)
-        end
-
-        def <<(object)
-          self.child = object
         end
 
         def compile(_detailed = nil)
@@ -24,6 +20,12 @@ module CloudSesame
             "(#{ symbol  }#{ boost } #{ compiled })"
           end
         end
+
+        def is_for(field, options = {})
+          child.is_for field, options if child
+        end
+
+        private
 
         def operator_detailed
           self.class::DETAILED
