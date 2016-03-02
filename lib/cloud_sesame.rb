@@ -1,6 +1,5 @@
 # External Libraries
 # ===============================================
-require 'active_support/core_ext/object/deep_dup'
 require 'aws-sdk'
 require 'forwardable'
 

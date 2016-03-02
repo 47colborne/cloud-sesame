@@ -61,9 +61,9 @@
 # 				fuzzy_percent 0.17
 # 			end
 
-# 			field :searchable_text, 		query: { weight: 2 }
-# 			field :description, 				query: true
-# 			field :tags
+# 			field :searchable_text, 		query: { weight: 2 }, type: :string
+# 			field :description, 				query: true, type: :string
+# 			field :tags,								type: :string
 
 # 			field :affiliate_advertiser_ext_id, facet: { size: 50 }
 # 			field :currency, 						facet: true
@@ -71,7 +71,7 @@
 # 			field :manufacturer_name, 	facet: { size: 50 }
 # 			field :price, 							facet: { buckets: %w([0,25] [25,50] [50,100] [100,200] [200,}), method: 'interval' }
 # 			field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
-# 			field :created_at
+# 			field :created_at,					type: :date
 
 # 		end
 
@@ -110,10 +110,10 @@
 
 # 	@tags = [1, 2]
 # 	q = nil
-# 	profile 10_000 do
+# 	profile 1 do
 # 		q = Product.cloudsearch
 # 							.query("black leather jacket")
-# 							.sort(price: :asc)
+# 							.sort(price: :asc, created_at: :desc)
 # 							.page(3)
 # 							.size(1000)
 # 							.price { gt 1 }
