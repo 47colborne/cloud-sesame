@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Near < SingleExpressionOperator
+      class Near < Abstract::SingleExpressionOperator
         DETAILED = true
 				SYMBOL = :near
 

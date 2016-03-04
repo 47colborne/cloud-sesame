@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Term < SingleExpressionOperator
+      class Term < Abstract::SingleExpressionOperator
         DETAILED = true
         SYMBOL = :term
       end

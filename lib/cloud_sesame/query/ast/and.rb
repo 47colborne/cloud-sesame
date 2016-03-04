@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class And < MultiExpressionOperator
+      class And < Abstract::MultiExpressionOperator
         SYMBOL = :and
       end
     end

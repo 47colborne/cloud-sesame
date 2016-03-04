@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Phrase < SingleExpressionOperator
+      class Phrase < Abstract::SingleExpressionOperator
 				DETAILED = true
         SYMBOL = :phrase
       end

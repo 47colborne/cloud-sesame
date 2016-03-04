@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Root < MultiExpressionOperator
+      class Root < Abstract::MultiExpressionOperator
         SYMBOL = :and # default operator for root
 
         def compile

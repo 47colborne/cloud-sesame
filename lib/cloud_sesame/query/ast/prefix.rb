@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Prefix < SingleExpressionOperator
+      class Prefix < Abstract::SingleExpressionOperator
         DETAILED = true
 				SYMBOL = :prefix
       end

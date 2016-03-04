@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Not < SingleExpressionOperator
+      class Not < Abstract::SingleExpressionOperator
 				SYMBOL = :not
 
         def compile

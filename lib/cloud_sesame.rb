@@ -43,9 +43,9 @@ require 'cloud_sesame/query/domain/literal'
 
 # Query Query Filter Query AST Tree
 # ===============================================
-require 'cloud_sesame/query/ast/operator'
-require 'cloud_sesame/query/ast/multi_expression_operator'
-require 'cloud_sesame/query/ast/single_expression_operator'
+require 'cloud_sesame/query/ast/abstract/operator'
+require 'cloud_sesame/query/ast/abstract/multi_expression_operator'
+require 'cloud_sesame/query/ast/abstract/single_expression_operator'
 require 'cloud_sesame/query/ast/field_array'
 require 'cloud_sesame/query/ast/and'
 require 'cloud_sesame/query/ast/or'

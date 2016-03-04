@@ -4,7 +4,7 @@ module CloudSesame
       describe Or do
 
         it 'should be a type of operator' do
-          expect(Or.ancestors).to include(MultiExpressionOperator)
+          expect(Or.ancestors).to include(Abstract::MultiExpressionOperator)
         end
 
         it 'should have symbol :or' do

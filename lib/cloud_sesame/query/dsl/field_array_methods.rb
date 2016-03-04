@@ -60,7 +60,7 @@ module CloudSesame
 				end
 
 				def build_literal(value)
-					if value.kind_of?(AST::SingleExpressionOperator) || value.is_a?(AST::Literal)
+					if value.kind_of?(AST::Abstract::SingleExpressionOperator) || value.is_a?(AST::Literal)
 						value.is_for field, _context[:fields][field]
 						value
 					else

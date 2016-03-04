@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module AST
-      class Or < MultiExpressionOperator
+      class Or < Abstract::MultiExpressionOperator
         SYMBOL = :or
       end
     end
