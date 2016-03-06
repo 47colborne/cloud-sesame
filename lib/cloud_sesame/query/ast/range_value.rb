@@ -1,41 +1,39 @@
 module CloudSesame
   module Query
     module AST
-      class RangeValue < Value
+      class RangeValue < Abstract::Value
 
-        RANGE_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
+        def initialize(value = nil, type = nil)
 
-        def initialize(value = nil)
-          @data = (
-            if value.kind_of?(Range)
-              range_to_array(value)
-            elsif value.is_a?(String) && (match = string_format?(value))
-              data = match.captures
-              data[1, 2] = data[1, 2].map { |i| Value.parse(i) unless i.nil? || i.empty? }
-              data
-            else
-              default_range
-            end
-          )
+          self.value = RangeValue.range?(value) ? range_handler(value) :
+                       RangeValue.string_range?(value) ? string_handler(value) :
+                       empty_value
+
+          self.type = type if type
         end
 
-        def gt(value = nil)
+        def type=(type)
+          value_type_handler(type) if (@type = type)
+          type
+        end
+
+        def gt(value)
           update_lower_value(value) if value
           return self
         end
 
-        def gte(value = nil)
-          update_lower_value(value, true) if value
+        def gte(value)
+          update_lower_value(value, '[') if value
           return self
         end
 
-        def lt(value = nil)
+        def lt(value)
           update_uppoer_value(value) if value
           return self
         end
 
-        def lte(value = nil)
-          update_uppoer_value(value, true) if value
+        def lte(value)
+          update_uppoer_value(value, ']') if value
           return self
         end
 
@@ -43,40 +41,39 @@ module CloudSesame
           compile
         end
 
-        def compile
-          "#{ data[0] }#{ data[1] },#{ data[2] }#{ data[3] }"
-        end
-
         def ==(object)
-          data == Value.parse(object).data
+          value == RangeValue.new(object).value
         end
 
         private
 
-        def update_lower_value(value, included = false)
-          data[0], data[1] = (included ? '[' : '{'), Value.parse(value)
+        def recompile(value)
+          super "#{ value[0] }#{ value[1] },#{ value[2] }#{ value[3] }"
         end
 
-        def update_uppoer_value(value, included = false)
-          data[2], data[3] = Value.parse(value), (included ? ']' : '}')
+        def update_lower_value(value, included = '{')
+          self.value[0] = included
+          self.value[1] = value
         end
 
-        def string_format?(string)
-           RANGE_FORMAT.match string.tr(' ', '')
+        def update_uppoer_value(value, included = '}')
+          self.value[2] = value
+          self.value[3] = included
         end
 
-        def range_to_array(range)
-          ['[',
-            Value.parse(range.begin),
-            Value.parse(range.end),
-            end_symbol(range)]
+        def range_handler(value)
+          ['[', value.begin, value.end, value.exclude_end? ? '}' : ']']
         end
 
-        def end_symbol(value)
-          value.exclude_end? ? '}' : ']'
+        def string_handler(value)
+          RANGE_FORMAT.match(value.tr(' ', '')).captures
         end
 
-        def default_range
+        def value_type_handler(type)
+          self.value[1, 2] = value[1, 2].map { |v| type.parse(v) unless v.is_a?(String) && v.empty? }
+        end
+
+        def empty_value
           ['{', nil, nil, '}']
         end
 

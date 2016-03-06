@@ -6,19 +6,13 @@ module CloudSesame
 				describe 'initialize' do
 					shared_examples 'initialize with initial value' do
 						it 'should be an array' do
-							expect(subject.data).to be_kind_of(Array)
+							expect(subject.value).to be_kind_of(Array)
 						end
 						it 'should not be empty' do
-							expect(subject.data).to_not be_empty
+							expect(subject.value).to_not be_empty
 						end
 						it 'should capture the range information' do
-							expect(subject.data).to eq data
-						end
-						context 'when begin and end value exists' do
-							it 'should convert begin and end value to Value' do
-								expect(subject.data[1]).to be_kind_of(Value) if data[1]
-								expect(subject.data[2]).to be_kind_of(Value) if data[2]
-							end
+							expect(subject.value).to eq data
 						end
 					end
 
@@ -37,7 +31,7 @@ module CloudSesame
 					context 'when given a range value in string format' do
 						{
 							"[0, nil}" => ['[', 0, nil, '}'],
-							"{, 100]" => ['{', nil, 100, ']'],
+							"{, 100]" => ['{', '', '100', ']'],
 						}.each do |before_value, after_value|
 							subject { RangeValue.new(before_value) }
 							let(:data) { after_value }
@@ -49,7 +43,7 @@ module CloudSesame
 						subject { RangeValue.new }
 						let(:data) { [] }
 						it 'should set the data to the default value' do
-							expect(subject.data).to eq ['{', nil, nil, '}']
+							expect(subject.value).to eq ['{', nil, nil, '}']
 						end
 					end
 				end

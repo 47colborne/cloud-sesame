@@ -69,12 +69,12 @@ module CloudSesame
 			end
 
 			def set_type(type)
-				Query::AST::Value.types.fetch(type)
+				Query::AST::Value.map_type(type)
 			end
 
 			def add_field(name, options)
 				options = merge_with_as_field options if options[:as]
-				options[:type] = set_type(options[:type]) if options[:type]
+				options[:type] = set_type(options[:type])
 				create_default_literal name, options
 				create_field_accessor name
 				filter_query_fields[name] = options
