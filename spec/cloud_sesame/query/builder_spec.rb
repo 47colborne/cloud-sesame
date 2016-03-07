@@ -1,4 +1,4 @@
-require_relative 'dsl/field_accessors_shared_spec'
+require_relative 'dsl/field_accessors_spec'
 
 module CloudSesame
   module Query
