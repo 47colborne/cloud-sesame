@@ -76,7 +76,6 @@ module CloudSesame
 				options = merge_with_as_field options if options[:as]
 				options[:type] = set_type(options[:type])
 				create_default_literal name, options
-				create_field_accessor name
 				filter_query_fields[name] = options
 			end
 
@@ -91,10 +90,6 @@ module CloudSesame
 					node = domain._eval(&block)
 					filter_query_defaults << node if node
 				end
-			end
-
-			def create_field_accessor(name)
-				Query::DSL::FieldAccessors.__define_accessor__(name)
 			end
 
 			def method_missing(name, *args, &block)

@@ -228,11 +228,6 @@ module CloudSesame
           end
         end
 
-        it 'should create an field accessor' do
-          field_name = :an_indexed_field
-          expect{ subject.field field_name, {} }.to change{ Query::DSL::FieldAccessors.instance_methods }.by([field_name])
-        end
-
         context 'when options is passed in' do
           let(:options) {{ hello: "world" }}
           it 'should store the options in filter query fields' do
