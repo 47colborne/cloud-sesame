@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module CloudSesame
 	module Query
 		module DSL

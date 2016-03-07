@@ -1,19 +1,22 @@
-require_relative '../dsl/field_accessors_spec'
+require_relative '../dsl/field_accessors_shared_spec'
 
 module CloudSesame
 	module Query
 		module Domain
 			describe Block do
 
+				# Module Specs
+				# =======================================
 				it_behaves_like 'FieldAccessors' do
+					let(:scope) { AST::Root.new(context, {}) }
 					subject { Block.new(self, context) }
-					let(:children) { AST::FieldArray.new }
-					let(:scope) { Builder.new(context, "Searchable") }
 					before do
 						subject.instance_variable_set(:@_scopes, [scope])
 					end
 				end
 
+				# Class Specs
+				# =======================================
 				class Caller
 
 					def initialize
@@ -74,13 +77,6 @@ module CloudSesame
 					end
 				end
 
-				# def _eval(node, _scope, _return = _scope, &block)
-				# 	_scopes.push node
-				# 	instance_eval &block
-				# 	_scope << node
-				# 	_scopes.pop
-				# 	_scope.is_a?(AST::Root) ? _return : node
-				# end
 				describe '#_eval' do
 
 					let(:node) { AST::And.new({}, {}) }

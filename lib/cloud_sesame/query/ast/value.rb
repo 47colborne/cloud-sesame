@@ -13,13 +13,20 @@ module CloudSesame
           (klass =TYPES[symbol]) ? klass : self
         end
 
+        # if the value is already a range value object
+        # set the type to Value and return the value
+        # else determine the type of value and create it
         def self.parse(value)
-          value.type = self and return value if value.kind_of?(RangeValue)
+          if value.kind_of?(RangeValue)
+            value.type = self
+            return value
+          end
+
           (
             range_value?(value) ? RangeValue :
-            numeric_value? ? NumericValue :
+            numeric_value?(value) ? NumericValue :
             datetime?(value) ? DateValue : StringValue
-          ).new(value, type)
+          ).new(value, self)
 
         end
 

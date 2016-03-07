@@ -1,4 +1,4 @@
-require_relative 'dsl/field_accessors_spec'
+require_relative 'dsl/field_accessors_shared_spec'
 
 module CloudSesame
   module Query
@@ -6,6 +6,7 @@ module CloudSesame
 
     	it_behaves_like 'FieldAccessors' do
 				subject { Builder.new({}, "Searchable") }
+        before { allow(_scope).to receive(:context).and_return(context) }
     	end
 
     end

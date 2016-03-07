@@ -18,7 +18,6 @@ module CloudSesame
 						node = domain._eval(&block)
 						values << node
 					end
-
 			  	_scope.children.field = name
 			  	_scope.children._return = _return
 			  	_scope.children.insert values

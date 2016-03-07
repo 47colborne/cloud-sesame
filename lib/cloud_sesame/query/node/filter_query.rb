@@ -4,7 +4,9 @@ module CloudSesame
       class FilterQuery < Abstract
 
         def compile
-          (compiled = root.compile) && !compiled.empty? ? compiled : nil
+          if (compiled = root.compile) && !compiled.empty?
+            compiled
+          end
         end
 
         def root

@@ -11,8 +11,22 @@ module CloudSesame
             expect(subject.root).to receive(:compile)
             subject.compile
           end
-          it 'should return an hash with filter query' do
-            expect(subject.compile).to eq subject.root.compile
+          context 'when compiled value is nil' do
+            it 'should return nil' do
+              expect(subject.compile).to be_nil
+            end
+          end
+          context 'when compiled value is empty' do
+            it 'should return nil' do
+              expect(subject.compile).to be_nil
+            end
+          end
+          context 'when compiled value is not empty' do
+            let(:value) { "compiled value" }
+            it 'should return the compiled value' do
+              allow(subject.root).to receive(:compile).and_return(value)
+              expect(subject.compile).to eq value
+            end
           end
         end
 

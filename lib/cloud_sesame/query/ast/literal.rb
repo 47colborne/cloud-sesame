@@ -6,10 +6,12 @@ module CloudSesame
         SINGLE_QUATE = /\'/
         ESCAPE_QUATE = "\\'"
 
+        attr_reader :value
+
         def initialize(field, value, options = {})
           @field = field
           @options = options
-          @value = LazyObject.new { options[:type].parse(value) } if value
+          @value = LazyObject.new { (options[:type] || Value).parse(value) } if value
         end
 
         def is_for(field, options = {})
