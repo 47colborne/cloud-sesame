@@ -11,7 +11,6 @@ module CloudSesame
 
 				def literal(name, *values, &block)
 					name = name.to_sym
-
 					if block_given?
 						caller = block.binding.eval "self"
 						options = _scope.context[:fields][name]

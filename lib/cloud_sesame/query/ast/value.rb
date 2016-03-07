@@ -14,18 +14,21 @@ module CloudSesame
         end
 
         def self.parse(value)
-          if value.kind_of?(RangeValue)
-            value.type = self
-            value
-          elsif range?(value) || string_range?(value)
-            RangeValue.new(value, self)
-          elsif numeric?(value) || string_numeric?(value)
-            NumericValue.new(value)
-          elsif datetime?(value)
-            DateValue.new(value)
-          else
-            StringValue.new(value)
-          end
+          value.type = self and return value if value.kind_of?(RangeValue)
+          (
+            range_value?(value) ? RangeValue :
+            numeric_value? ? NumericValue :
+            datetime?(value) ? DateValue : StringValue
+          ).new(value, type)
+
+        end
+
+        def self.range_value?(value)
+          range?(value) || string_range?(value)
+        end
+
+        def self.numeric_value?(value)
+          numeric?(value) || string_numeric?(value)
         end
 
       end

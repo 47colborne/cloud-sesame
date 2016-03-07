@@ -177,16 +177,10 @@ module CloudSesame
         end
 
         context 'when options :default is passed in' do
-          let(:proc) { Proc.new { } }
+          let(:proc) { Proc.new {  } }
           let(:options) {{ default: proc }}
           it 'should remove the default lambda or proc from the options' do
             expect(options).to receive(:delete).with(:default)
-            subject.field field_name, options
-          end
-          it 'should create a literal node using Query::Domain::Literal' do
-            domain = Query::Domain::Literal.new(field_name, {}, self)
-            expect(Query::Domain::Literal).to receive(:new).with(field_name, {}, self).and_return(domain)
-            expect(domain).to receive(:_eval) { |&block| expect(block).to eq proc }
             subject.field field_name, options
           end
 
@@ -208,6 +202,32 @@ module CloudSesame
           end
         end
 
+        context 'when option type is given' do
+          let(:options) {{ type: type }}
+          context 'and type is valid' do
+            let(:type) { :string }
+            it 'should reaplce the type symbol with the corresponded class' do
+              subject.field field_name, options
+              expect(subject.context[:filter_query][:fields][field_name]).to include({type: CloudSesame::Query::AST::StringValue })
+            end
+          end
+          context 'and type is not valid' do
+            let(:type) { nil }
+            it 'should reaplce the type symbol with the default value class' do
+              subject.field field_name, options
+              expect(subject.context[:filter_query][:fields][field_name]).to include({type: CloudSesame::Query::AST::Value })
+            end
+          end
+        end
+
+        context 'when option type is not given' do
+          let(:options) {{}}
+          it 'should set the field type to the default value class' do
+            subject.field field_name, options
+            expect(subject.context[:filter_query][:fields][field_name]).to include({type: CloudSesame::Query::AST::Value })
+          end
+        end
+
         it 'should create an field accessor' do
           field_name = :an_indexed_field
           expect{ subject.field field_name, {} }.to change{ Query::DSL::FieldAccessors.instance_methods }.by([field_name])
@@ -224,7 +244,7 @@ module CloudSesame
         context 'when no options is passed in' do
           it 'should create a options in filter query fields' do
             subject.field field_name
-            expect(subject.context[:filter_query][:fields][field_name]).to eq({})
+            expect(subject.context[:filter_query][:fields][field_name]).to include({type: CloudSesame::Query::AST::Value})
           end
         end
       end

@@ -1,7 +1,18 @@
+require_relative '../dsl/field_accessors_spec'
+
 module CloudSesame
 	module Query
 		module Domain
 			describe Block do
+
+				it_behaves_like 'FieldAccessors' do
+					subject { Block.new(self, context) }
+					let(:children) { AST::FieldArray.new }
+					let(:scope) { Builder.new(context, "Searchable") }
+					before do
+						subject.instance_variable_set(:@_scopes, [scope])
+					end
+				end
 
 				class Caller
 

@@ -10,7 +10,7 @@ module CloudSesame
 
           describe '#boost' do
             context 'given boost option' do
-              let(:options) {{ boost: 2 }}
+              let(:options) { { boost: 2 } }
               it 'should return an compiled boost value' do
                 expect(subject.boost).to eq " boost=2"
               end

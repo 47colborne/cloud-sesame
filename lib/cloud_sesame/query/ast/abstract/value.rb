@@ -29,8 +29,9 @@ module CloudSesame
 						value.kind_of?(Date) || value.kind_of?(Time)
 					end
 
-					def initialize(value)
+					def initialize(value, type = nil)
 						self.value = value
+						@type = type
 					end
 
 					def value=(value)

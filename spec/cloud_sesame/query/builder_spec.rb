@@ -1,11 +1,12 @@
-require 'spec_helper'
+require_relative 'dsl/field_accessors_spec'
 
 module CloudSesame
   module Query
     describe Builder do
-      let(:client) { {} }
-      let(:searchable_class) { "Test" }
-      subject { Builder.new(client, searchable_class) }
+
+    	it_behaves_like 'FieldAccessors' do
+				subject { Builder.new({}, "Searchable") }
+    	end
 
     end
   end
