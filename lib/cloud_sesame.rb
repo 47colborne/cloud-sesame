@@ -16,6 +16,10 @@ require 'cloud_sesame/query/error/missing_operator_symbol'
 require 'cloud_sesame/query/error/missing_query'
 require 'cloud_sesame/query/error/scope_not_defined'
 
+# Query Searchable Specific Class/Module Generator
+# ===============================================
+require 'cloud_sesame/query/searchable_specific'
+
 # Query DSL Methods
 # ===============================================
 require 'cloud_sesame/query/dsl/applied_filter_query'

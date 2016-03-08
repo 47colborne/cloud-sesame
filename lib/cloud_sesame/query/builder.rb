@@ -1,6 +1,7 @@
 module CloudSesame
 	module Query
 		class Builder
+			extend SearchableSpecific
 			include DSL::QueryMethods
 			include DSL::ResponseMethods
 			include DSL::BlockStyledOperators
@@ -10,6 +11,10 @@ module CloudSesame
 			include DSL::PageMethods
 			include DSL::SortMethods
 			include DSL::ReturnMethods
+
+			after_construct do |klass, searchable|
+				self.include DSL::FieldAccessors.construct_module(searchable)
+			end
 
 			attr_reader :context, :searchable
 

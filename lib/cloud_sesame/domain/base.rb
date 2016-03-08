@@ -13,10 +13,11 @@ module CloudSesame
 
 			def initialize(searchable)
 				@searchable = searchable
+				@builder = Query::Builder.construct_class(searchable)
 			end
 
 			def builder
-				Query::Builder.new context, searchable
+				@builder.new context, searchable
 			end
 
 			def client

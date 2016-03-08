@@ -2,6 +2,7 @@ module CloudSesame
 	module Query
 		module DSL
 			module FieldAccessors
+				extend Query::SearchableSpecific
 
 				def literal(name, *values, &block)
 					name = name.to_sym
