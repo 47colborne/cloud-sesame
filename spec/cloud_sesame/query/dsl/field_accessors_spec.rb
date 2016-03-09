@@ -51,6 +51,7 @@ module CloudSesame
 
         context 'when field is registered' do
           let(:value) { "value" }
+          before { DSL::FieldAccessors.__define_accessor__(field_name) }
           it 'should create a literal node' do
             expect(AST::Literal).to receive(:new).with(field_name, value, options)
             subject.send(field_name, value)

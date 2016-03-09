@@ -1,15 +1,42 @@
 module CloudSesame
 	module Query
 		class Builder
-			include DSL::QueryMethods
-			include DSL::ResponseMethods
+			extend SearchableSpecific
+			include DSL::AppliedFilterQuery
 			include DSL::BlockStyledOperators
 			include DSL::FieldAccessors
-			include DSL::ScopeAccessors
-			include DSL::AppliedFilterQuery
 			include DSL::PageMethods
-			include DSL::SortMethods
+			include DSL::QueryMethods
+			include DSL::ResponseMethods
 			include DSL::ReturnMethods
+			include DSL::ScopeAccessors
+			include DSL::SortMethods
+
+
+			# SearchableSpecific construct class callback
+			#
+			# after construct searchable specific builder,
+			# construct searchable specific DSL::FieldAccessors,
+			# and Domain::Block and include the new field accessors
+			# in both builder and domain block
+			# ===================================================
+			after_construct do |searchable|
+				@field_accessor = DSL::FieldAccessors.construct_module(searchable)
+				@block_domain = Domain::Block.construct_class(searchable, modules: [field_accessor])
+				include field_accessor
+			end
+
+			# Domain::Block getter
+			def self.block_domain
+				@block_domain ||= Domain::Block
+			end
+
+			# DSL::FieldAccessors getter
+			def self.field_accessor
+				@field_accessor
+			end
+
+			# ===================================================
 
 			attr_reader :context, :searchable
 
@@ -35,7 +62,7 @@ module CloudSesame
 			def _block_domain(block)
 				if block
 					caller = block.binding.eval("self")
-					Domain::Block.new caller, _context
+					self.class.block_domain.new caller, _context
 				end
 			end
 

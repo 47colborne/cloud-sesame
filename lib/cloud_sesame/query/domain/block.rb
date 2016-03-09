@@ -2,6 +2,7 @@ module CloudSesame
 	module Query
 		module Domain
 			class Block
+				extend SearchableSpecific
 				include DSL::AppliedFilterQuery
 				include DSL::BlockStyledOperators
 				include DSL::FieldAccessors

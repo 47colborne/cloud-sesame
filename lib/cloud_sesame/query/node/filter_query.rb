@@ -19,7 +19,8 @@ module CloudSesame
         private
 
         def strip(string)
-          string.gsub(EXCESS_WHITESPACES, ' ').gsub(ENDING_WHITESPACES, ')')
+          string.gsub(EXCESS_WHITESPACES, ' ')
+                .gsub(ENDING_WHITESPACES, ')')
         end
 
       end

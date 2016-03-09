@@ -1,6 +1,6 @@
 # require 'spec_helper'
 
-# describe CloudSesame do
+# fdescribe CloudSesame do
 #   # FAKE RAILS AND RAILS CACHE
 #   # =====================================
 #   class ::Rails
@@ -109,7 +109,7 @@
 
 #   @tags = [1, 2]
 #   q = nil
-#   profile 1 do
+#   profile 10_000 do
 #   	q = Product.cloudsearch
 #   						.query("black leather jacket")
 #   						.sort(price: :asc, created_at: :desc)
@@ -149,10 +149,6 @@
 #   	q.compile
 
 #   end
-
-#   q1 = Product.cloudsearch.query("shoes").and { manufacturer_name "ca"; tags nil; price nil; created_at Date.today; tags nil; tags nil; }
-#   q2 = Product.cloudsearch.query("shoes").and { manufacturer_name "ca" }
-
 
 #   binding.pry
 
