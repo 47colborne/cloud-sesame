@@ -76,12 +76,17 @@ module CloudSesame
 			def add_field(name, options)
 				options = merge_with_as_field options if options[:as]
 				options[:type] = set_type(options[:type])
+				create_accessor name
 				create_default_literal name, options
 				filter_query_fields[name] = options
 			end
 
 			def merge_with_as_field(options)
 				(existing = filter_query_fields.delete(options[:as])) ? existing.merge(options) : options
+			end
+
+			def create_accessor(name)
+				@builder.field_accessor.__define_accessor__(name)
 			end
 
 			def create_default_literal(name, options)
