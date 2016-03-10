@@ -3,38 +3,30 @@ module CloudSesame
 		module SearchableSpecific
 
 			def construct_class(searchable, modules: [])
-				__constructor__(searchable) do |name|
-					constructed = __define_class__(name, self, modules)
-					if __constructor_callback__
-						constructed.class_exec(searchable, &__constructor_callback__)
-					end
-					constructed
-				end
+				__constructor__(searchable) { |name| __define_class__(name, self, modules) }
 			end
 
 			def construct_module(searchable)
-				__constructor__(searchable) do |name|
-					constructed = __define_module__(name, self)
-					if __constructor_callback__
-						constructed.module_eval(searchable, &__constructor_callback__)
-					end
-					constructed
-				end
+				__constructor__(searchable) { |name| __define_module__(name, self) }
 			end
 
 			def after_construct(&block)
-				__constructor_callback__(block)
+				@__constructor_callback__ = block
 			end
 
 			private
 
-			def __constructor__(klass)
-				name = __get_constant_name__(klass)
-				constants(false).include?(name.to_sym) ? const_get(name) : yield(name)
+			def __constructor__(searchable)
+				constant = !(name = __get_constant_name__(searchable)) ? self :
+									 constants(false).include?(name.to_sym) ? const_get(name) :
+									 yield(name)
+
+				__invoke_callback__(constant, searchable) if @__constructor_callback__
+				constant
 			end
 
-			def __constructor_callback__(block = nil)
-				block ? @constructor_callback = block : @constructor_callback
+			def __invoke_callback__(constant, searchable)
+				constant.send(constant.is_a?(Class) ? :class_exec : :module_eval, searchable, &@__constructor_callback__)
 			end
 
 			def __define_class__(name, parent, modules = [])
@@ -46,7 +38,7 @@ module CloudSesame
 			end
 
 			def __get_constant_name__(constant)
-				constant.to_s.slice(/(?=\:\:)?\w+$/)
+				(name = constant.to_s) ? name.slice(/(?=\:\:)?\w+$/) : nil
 			end
 
 		end
