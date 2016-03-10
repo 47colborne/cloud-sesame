@@ -4,8 +4,8 @@ module CloudSesame
 			module Abstract
 				class Value
 
-					RANGE_FORMAT = /\A(\[|{)(.*),(.*)(\}|\])\z/
-					DIGIT_FORMAT = /\A\d+(.\d+)?\z/
+					RANGE_FORMAT = Regexp.new(/\A(\[|{)(.*),(.*)(\}|\])\z/)
+					DIGIT_FORMAT = Regexp.new(/\A\d+(.\d+)?\z/)
 
 					attr_reader :value, :changed, :compiled
 
