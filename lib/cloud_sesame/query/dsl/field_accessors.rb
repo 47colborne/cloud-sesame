@@ -12,16 +12,18 @@ module CloudSesame
 
 				def literal(name, *values, &block)
 					name = name.to_sym
-					if block_given?
-						caller = block.binding.eval "self"
-						options = _scope.context[:fields][name]
-						domain = Domain::Literal.new(name, options, caller)
-						node = domain._eval(&block)
-						values << node
-					end
+					values << __literal_block_handler__(name, block) if block_given?
 			  	_scope.children.field = name
 			  	_scope.children._return = _return
 			  	_scope.children.insert values
+				end
+
+				private
+
+				def __literal_block_handler__(name, block)
+					caller = block.binding.eval "self"
+					options = _scope.context[:fields][name]
+					Domain::Literal.new(name, options, caller)._eval(&block)
 				end
 
 			end
