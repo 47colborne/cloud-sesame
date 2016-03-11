@@ -32,22 +32,24 @@ module CloudSesame
 			# =========================================
 
 			def default_size(value)
-				page[:size] = value.to_i
+				context_page[:size] = value.to_i
 			end
 
 			def define_sloppiness(value)
-				query[:sloppiness] = Query::Node::Sloppiness.new(value)
+				context_query[:sloppiness] = Query::Node::Sloppiness.new(value)
 			end
 
 			def define_fuzziness(&block)
-				query[:fuzziness] = Query::Node::Fuzziness.new(&block)
+				context_query[:fuzziness] = Query::Node::Fuzziness.new(&block)
 			end
 
 			def field(name, options = {})
-				field_name = (options[:as] || name)
-				add_query(field_name, options.delete(:query)) if options[:query]
-				add_facet(field_name, options.delete(:facet)) if options[:facet]
-				add_field(name.to_sym, options)
+				field_name = (options[:as] || name).to_sym
+
+				add_sort_alias(name, options) if options[:as]
+				add_query_options(field_name, options) if options[:query]
+				add_facet(field_name, options) if options[:facet]
+				add_field(name, options)
 			end
 
 			def scope(name, proc = nil, &block)
@@ -57,20 +59,16 @@ module CloudSesame
 
 			private
 
-			def to_hash(options)
-				options.is_a?(Hash) ? options : {}
+			def add_sort_alias(name, options)
+				context_sort_fields[name] = { as: options[:as] }
 			end
 
-			def add_query(name, options)
-				((context[:query_options] ||= {})[:fields] ||= {})[name] = to_hash(options)
+			def add_query_options(name, options)
+				context_query_options[name] = to_hash(options.delete(:query))
 			end
 
 			def add_facet(name, options)
-				(context[:facet] ||= {})[name] = to_hash(options)
-			end
-
-			def set_type(type)
-				Query::AST::Value.map_type(type)
+				context_facet[name] = to_hash(options.delete(:facet))
 			end
 
 			def add_field(name, options)
@@ -79,6 +77,10 @@ module CloudSesame
 				create_accessor name
 				create_default_literal name, options
 				filter_query_fields[name] = options
+			end
+
+			def set_type(type)
+				Query::AST::Value.map_type(type)
 			end
 
 			def merge_with_as_field(options)
@@ -92,31 +94,42 @@ module CloudSesame
 			def create_default_literal(name, options)
 				if (block = options.delete(:default))
 					caller = block.binding.eval "self"
-					domain = Query::Domain::Literal.new(name, options, caller)
-					node = domain._eval(&block)
+					node = Query::Domain::Literal.new(name, options, caller)._eval(&block)
 					filter_query_defaults << node if node
 				end
 			end
 
-			def method_missing(name, *args, &block)
-				if builder.respond_to?(name)
-					builder.send(name, *args, &block)
-				elsif searchable.respond_to?(name)
-					searchable.send(name, *args, &block)
-				else
-					super
-				end
+			def to_hash(options)
+				options.is_a?(Hash) ? options : {}
 			end
 
-			# CONTEXT ACCESSORS
+			def method_missing(name, *args, &block)
+				builder.respond_to?(name) ? builder.send(name, *args, &block) :
+				searchable.respond_to?(name) ? searchable.send(name, *args, &block) :
+				super
+			end
+
+			# CONTEXT INITIALIZERS
 			# =========================================
 
-			def page
+			def context_page
 				context[:page] ||= {}
 			end
 
-			def query
+			def context_query
 				context[:query] ||= {}
+			end
+
+			def context_query_options
+				(context[:query_options] ||= {})[:fields] ||= {}
+			end
+
+			def context_facet
+				context[:facet] ||= {}
+			end
+
+			def context_sort_fields
+				(context[:sort] ||= {})[:fields] ||= {}
 			end
 
 			def filter_query_fields
