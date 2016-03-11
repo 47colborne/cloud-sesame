@@ -32,7 +32,7 @@ module CloudSesame
 						let(:caching_module) { Caching::GoodCache }
 						before { subject.caching_with(:GoodCache) }
 						it 'should set executor to the caching module' do
-							expect(subject.send(:executor)).to be_kind_of caching_module
+							expect(subject.executor).to be_kind_of caching_module
 						end
 					end
 					context 'when giving a non-existing caching module' do
@@ -44,7 +44,7 @@ module CloudSesame
 						let(:caching_module) { custom_cache }
 						before { subject.caching_with(caching_module) }
 						it 'should set executor as the caching module' do
-							expect(subject.send(:executor)).to be_kind_of caching_module
+							expect(subject.executor).to be_kind_of caching_module
 						end
 					end
 				end
