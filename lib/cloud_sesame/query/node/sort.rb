@@ -26,15 +26,18 @@ module CloudSesame
 				private
 
 				def serialize(hash = {})
-					hash.each.reduce("") do |result, (key, value)|
-						result << ',' unless result.empty?
-						result << "#{ key } #{ value }"
-						result
+					hash.each_with_object("") do |(k, v), o|
+						o << ',' unless o.empty?
+						o << serialize_field(field_name(k), v)
 					end
 				end
 
-				def deserialize(string)
-					Hash[*((string || "").split(',').map { |i| i.strip.split(' ').map(&:to_sym) }.flatten)]
+				def serialize_field(name, value)
+					"#{ name } #{ value }"
+				end
+
+				def field_name(key)
+					context[:fields][key] && (name = context[:fields][key][:as]) ? name : key
 				end
 
 			end

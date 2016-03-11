@@ -5,26 +5,8 @@ module CloudSesame
     module Node
       describe Sort do
 
-        let(:arguments) {{ }}
-        let(:node) { Sort.new(arguments) }
-
-        # describe '#initialize' do
-        #   context 'when arguments passed in' do
-        #     let(:arguments) {{ sort: "score asc,price desc" }}
-        #     it 'should accept sort argument and initialize sorting_attributes' do
-        #       expect(node.sorting_attributes).to eq({ score: :asc, price: :desc })
-        #     end
-        #     it 'should initialize an empty sorting_attributes when arguments sort is empty' do
-        #       arguments[:sort] = ""
-        #       expect(node.sorting_attributes).to eq({ })
-        #     end
-        #   end
-        #   context 'when arguments not passed in' do
-        #     it 'should initialize an empty sorting_attributes' do
-        #       expect(node.sorting_attributes).to eq({ })
-        #     end
-        #   end
-        # end
+        let(:context) {{ fields: {} }}
+        let(:node) { Sort.new(context) }
 
         describe '#[]' do
           context 'with existing attribute' do
@@ -56,11 +38,20 @@ module CloudSesame
           end
         end
 
-        describe '#run' do
+        describe '#compile' do
           context 'with existing sorting attributes' do
-            before { node.sorting_attributes = { score: :asc, price: :desc }}
-            it 'should return a hash with serialized sort attributes' do
-              expect(node.compile).to eq "score asc,price desc"
+            context 'when context contains aliase field' do
+              let(:context) {{ fields: { aliased: { as: :real_name } } }}
+              before { node.sorting_attributes = { aliased: :asc, price: :desc }}
+              it 'should return serialized sort attributes with actual field name' do
+                expect(node.compile).to eq "real_name asc,price desc"
+              end
+            end
+            context 'when context contains no alias field' do
+              before { node.sorting_attributes = { score: :asc, price: :desc }}
+              it 'should return serialized sort attributes' do
+                expect(node.compile).to eq "score asc,price desc"
+              end
             end
           end
           context 'with empty sorting attributes' do
