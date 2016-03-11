@@ -6,6 +6,10 @@ module CloudSesame
 				# SETUP
 				# =======================================
 
+				class ::CustomCache < Caching::Base
+					def fetch(params); end
+				end
+
 				class Caching::GoodCache < Caching::Base
 					def fetch(params); end
 				end
@@ -44,7 +48,14 @@ module CloudSesame
 					end
 					context 'when giving a non-existing caching module' do
 						it 'should raise Unrecognized Caching Module' do
-							expect{ subject.caching_with(:RedisCache) }.to raise_error(Error::Caching, "Unrecognized Caching Module")
+							expect{ subject.caching_with(:UnknowCache) }.to raise_error(NameError)
+						end
+					end
+					context 'when give a class directly' do
+						let(:caching_module) { ::CustomCache }
+						before { subject.caching_with(caching_module) }
+						it 'should set executor as the caching module' do
+							expect(subject.send(:executor)).to be_kind_of caching_module
 						end
 					end
 				end
