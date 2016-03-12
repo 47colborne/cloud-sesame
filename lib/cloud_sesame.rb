@@ -29,14 +29,12 @@ require 'cloud_sesame/query/dsl/field_accessors'
 require 'cloud_sesame/query/dsl/scope_accessors'
 require 'cloud_sesame/query/dsl/operators'
 require 'cloud_sesame/query/dsl/field_array_methods'
-
-require 'cloud_sesame/query/dsl/range_helper'
+require 'cloud_sesame/query/dsl/inspect_method'
 require 'cloud_sesame/query/dsl/page_methods'
 require 'cloud_sesame/query/dsl/query_methods'
-
+require 'cloud_sesame/query/dsl/range_helper'
 require 'cloud_sesame/query/dsl/response_methods'
 require 'cloud_sesame/query/dsl/return_methods'
-
 require 'cloud_sesame/query/dsl/sort_methods'
 
 # Query Query Domain Objects

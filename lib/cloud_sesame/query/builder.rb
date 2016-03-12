@@ -5,6 +5,7 @@ module CloudSesame
 			include DSL::AppliedFilterQuery
 			include DSL::BlockStyledOperators
 			include DSL::FieldAccessors
+			include DSL::InspectMethod
 			include DSL::PageMethods
 			include DSL::QueryMethods
 			include DSL::ResponseMethods
@@ -51,10 +52,6 @@ module CloudSesame
 
 			def compile
 				request.compile
-			end
-
-			def inspect
-				"#<#{ self.class }:#{ object_id } #{ compile }>"
 			end
 
 			private
