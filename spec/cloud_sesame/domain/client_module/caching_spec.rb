@@ -3,48 +3,48 @@ module CloudSesame
 		module ClientModule
 			describe Caching do
 
-				# SETUP
-				# =======================================
-
-				class Caching::GoodCache < Caching::Base
+				class Caching::GoodCache  < Caching::Base
 					def fetch(params); end
 				end
 
-				class Caching::BadCache < Caching::Base
-				end
-
-				class TestClient
-					include Caching
-
-					def aws_client
-						nil
-					end
-
-					def searchable
-						nil
+				let(:custom_cache) do
+					Class.new(Caching::Base) do
+						def fetch(params); end
 					end
 				end
 
-				# TESTS
-				# =======================================
+				let(:test_client) do
+					Class.new do
+						include Caching
+						def aws_client; end
+						def searchable; end
+					end
+				end
 
-				subject { TestClient.new }
+				subject { test_client.new }
 				let(:aws_client) { subject.aws_client }
 				let(:searchable) { subject.searchable }
 
+				before { custom_cache }
+
 				describe '#caching_with' do
 					context 'when giving an existing caching module' do
-						context 'and caching_module respond to fetch' do
-							let(:caching_module) { Caching::GoodCache }
-							before { subject.caching_with(:GoodCache) }
-							it 'should set executor to the caching module' do
-								expect(subject.send(:executor)).to be_kind_of caching_module
-							end
+						let(:caching_module) { Caching::GoodCache }
+						before { subject.caching_with(:GoodCache) }
+						it 'should set executor to the caching module' do
+							expect(subject.executor).to be_kind_of caching_module
 						end
 					end
 					context 'when giving a non-existing caching module' do
 						it 'should raise Unrecognized Caching Module' do
-							expect{ subject.caching_with(:RedisCache) }.to raise_error(Error::Caching, "Unrecognized Caching Module")
+							expect{ subject.caching_with(:UnknowCache) }.to raise_error(NameError)
+						end
+					end
+					context 'when give a class directly' do
+						let(:caching_module) { custom_cache }
+						before { subject.caching_with(caching_module) }
+						it 'should set executor as the caching module' do
+							expect(subject.executor).to be_kind_of caching_module
 						end
 					end
 				end

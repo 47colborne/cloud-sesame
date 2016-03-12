@@ -12,7 +12,7 @@ module CloudSesame
 
 				def literal(name, *values, &block)
 					name = name.to_sym
-					values << __evaluate_block__(name, block) if block_given?
+					values << __literal_block_handler__(name, block) if block_given?
 			  	_scope.children.field = name
 			  	_scope.children._return = _return
 			  	_scope.children.insert values
@@ -20,7 +20,7 @@ module CloudSesame
 
 				private
 
-				def __evaluate_block__(name, block)
+				def __literal_block_handler__(name, block)
 					caller = block.binding.eval "self"
 					options = _scope.context[:fields][name]
 					Domain::Literal.new(name, options, caller)._eval(&block)

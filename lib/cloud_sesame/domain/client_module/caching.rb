@@ -7,11 +7,8 @@ module CloudSesame
 		module ClientModule
 			module Caching
 
-				def caching_with(caching_module)
-					if !module_defined?(caching_module)
-						unrecognized_caching_module
-					end
-					self.executor = module_get(caching_module)
+				def caching_with(klass)
+					self.executor = klass.is_a?(Class) ? klass : module_get(klass)
 				end
 
 				def executor
@@ -24,16 +21,8 @@ module CloudSesame
 
 				private
 
-				def module_defined?(caching_module)
-					ClientModule::Caching.const_defined? caching_module
-				end
-
-				def module_get(caching_module)
-					ClientModule::Caching.const_get caching_module
-				end
-
-				def unrecognized_caching_module
-					raise Error::Caching, "Unrecognized Caching Module"
+				def module_get(klass)
+					ClientModule::Caching.const_get klass, false
 				end
 
 			end
