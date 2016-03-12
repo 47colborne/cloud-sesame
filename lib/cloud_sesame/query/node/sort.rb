@@ -3,41 +3,46 @@ module CloudSesame
 		module Node
 			class Sort < Abstract
 
-				attr_writer :sorting_attributes
+				attr_writer :attributes
 
-				def sorting_attributes
-					@sorting_attributes ||= {}
+				def attributes
+					@attributes ||= {}
 				end
 
 				def [](attribute)
-					sorting_attributes[attribute.to_sym]
+					attributes[attribute.to_sym]
 				end
 
-				def []=(attribute, order = :desc)
-					sorting_attributes[attribute.to_sym] = order.to_sym if order
+				def []=(attribute, order)
+					attributes[attribute.to_sym] = order
 				end
 
 				def compile
-					unless (compiled = serialize sorting_attributes).empty?
+					unless (compiled = serialize attributes).empty?
 						compiled
 					end
 				end
 
 				private
 
-				def serialize(hash = {})
+				def serialize(hash)
 					hash.each_with_object("") do |(k, v), o|
-						o << ',' unless o.empty?
-						o << serialize_field(field_name(k), v)
+						o << (o.empty? ? '' : ',') << serialize_field(k, v)
 					end
 				end
 
 				def serialize_field(name, value)
-					"#{ name } #{ value }"
+					"#{ field_name(name) } #{ value }"
 				end
 
 				def field_name(key)
-					context[:fields][key] && (name = context[:fields][key][:as]) ? name : key
+					(name = alias_field(key)) ? name : key
+				end
+
+				def alias_field(key)
+					context[:fields] &&
+					context[:fields][key] &&
+					context[:fields][key][:as]
 				end
 
 			end

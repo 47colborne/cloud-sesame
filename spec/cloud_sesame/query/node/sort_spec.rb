@@ -10,7 +10,7 @@ module CloudSesame
 
         describe '#[]' do
           context 'with existing attribute' do
-            before { node.sorting_attributes = { score: :asc, price: :desc }}
+            before { node.attributes = { score: :asc, price: :desc }}
             it 'should return the sorting order of the attribute' do
               expect(node[:score]).to eq :asc
               expect(node[:price]).to eq :desc
@@ -26,7 +26,7 @@ module CloudSesame
 
         describe '#[]=' do
           context 'with existing attribute' do
-            before { node.sorting_attributes = { score: :asc, price: :desc }}
+            before { node.attributes = { score: :asc, price: :desc }}
             it 'should override the sorting order of the attribute' do
               expect{ node[:score] = :desc }.to change{ node[:score] }.from(:asc).to(:desc)
             end
@@ -42,13 +42,13 @@ module CloudSesame
           context 'with existing sorting attributes' do
             context 'when context contains aliase field' do
               let(:context) {{ fields: { aliased: { as: :real_name } } }}
-              before { node.sorting_attributes = { aliased: :asc, price: :desc }}
+              before { node.attributes = { aliased: :asc, price: :desc }}
               it 'should return serialized sort attributes with actual field name' do
                 expect(node.compile).to eq "real_name asc,price desc"
               end
             end
             context 'when context contains no alias field' do
-              before { node.sorting_attributes = { score: :asc, price: :desc }}
+              before { node.attributes = { score: :asc, price: :desc }}
               it 'should return serialized sort attributes' do
                 expect(node.compile).to eq "score asc,price desc"
               end
