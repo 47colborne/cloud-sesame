@@ -2,31 +2,32 @@ module CloudSesame
 	module Query
 		module SearchableSpecific
 
-			def construct_class(searchable, modules: [])
-				__constructor__(searchable) { |name| __define_class__(name, self, modules) }
+			def construct_class(klass, modules: [])
+				__constructor__(klass) { |name| __define_class__ name, self, modules }
 			end
 
-			def construct_module(searchable)
-				__constructor__(searchable) { |name| __define_module__(name, self) }
+			def construct_module(klass)
+				__constructor__(klass) { |name| __define_module__ name, self }
 			end
 
 			def after_construct(&block)
-				@__constructor_callback__ = block
+				@__construct_callback__ = block
 			end
 
 			private
 
-			def __constructor__(searchable)
-				constant = !(name = __get_constant_name__(searchable)) ? self :
+			def __constructor__(klass)
+				constant = !(name = __get_constant_name__(klass)) ? self :
 									 constants(false).include?(name.to_sym) ? const_get(name) :
 									 yield(name)
 
-				__invoke_callback__(constant, searchable) if @__constructor_callback__
+				__invoke_callback__(constant, klass) if @__construct_callback__
 				constant
 			end
 
-			def __invoke_callback__(constant, searchable)
-				constant.send(constant.is_a?(Class) ? :class_exec : :module_eval, searchable, &@__constructor_callback__)
+			def __invoke_callback__(constant, klass)
+				eval_method = constant.is_a?(Class) ? :class_exec : :module_eval
+				constant.send(eval_method, klass, &@__construct_callback__)
 			end
 
 			def __define_class__(name, parent, modules = [])
