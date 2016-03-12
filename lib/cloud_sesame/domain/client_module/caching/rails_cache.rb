@@ -14,7 +14,11 @@ module CloudSesame
 					def fetch(params)
 						Rails.cache.fetch(hexdigest(params)) do
 							results = search params
-							OpenStruct.new(status: results.status, hits: results.hits, facets: results.facets)
+							OpenStruct.new(
+								status: results.status,
+								hits: results.hits,
+								facets: results.facets
+							)
 						end
 					end
 
