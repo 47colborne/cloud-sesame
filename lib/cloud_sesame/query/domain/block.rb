@@ -2,14 +2,15 @@ module CloudSesame
 	module Query
 		module Domain
 			class Block
-				extend SearchableSpecific
+				extend ClassSpecific
 				include DSL::AppliedFilterQuery
 				include DSL::BlockStyledOperators
-				include DSL::FieldAccessors
         include DSL::Operators
         include DSL::RangeHelper
         include DSL::ScopeAccessors
         include DSL::BindCaller
+
+        after_construct { |_, field_accessor| include field_accessor }
 
 				attr_reader :_caller, :_context, :_scopes
 

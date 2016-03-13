@@ -1,10 +1,9 @@
 module CloudSesame
 	module Query
 		class Builder
-			extend SearchableSpecific
+			extend ClassSpecific
 			include DSL::AppliedFilterQuery
 			include DSL::BlockStyledOperators
-			include DSL::FieldAccessors
 			include DSL::InspectMethod
 			include DSL::PageMethods
 			include DSL::QueryMethods
@@ -13,8 +12,7 @@ module CloudSesame
 			include DSL::ScopeAccessors
 			include DSL::SortMethods
 
-
-			# SearchableSpecific construct class callback
+			# ClassSpecific construct class callback
 			#
 			# after construct searchable specific builder,
 			# construct searchable specific DSL::FieldAccessors,
@@ -23,7 +21,9 @@ module CloudSesame
 			# ===================================================
 			after_construct do |searchable|
 				@field_accessor = DSL::FieldAccessors.construct_module(searchable)
-				@block_domain = Domain::Block.construct_class(searchable, modules: [field_accessor])
+				@block_domain = Domain::Block.construct_class(searchable, callback_args: [field_accessor])
+				@request = Node::Request.construct_class(searchable)
+
 				include field_accessor
 			end
 
@@ -32,9 +32,14 @@ module CloudSesame
 				@block_domain ||= Domain::Block
 			end
 
+			# Node::Request getter
+			def self.request
+				@request ||= Node::Request
+			end
+
 			# DSL::FieldAccessors getter
 			def self.field_accessor
-				@field_accessor
+				@field_accessor ||= DSL::FieldAccessors
 			end
 
 			# ===================================================
@@ -47,7 +52,7 @@ module CloudSesame
 			end
 
 			def request
-				@request ||= Node::Request.new context
+				@request ||= self.class.request.new context
 			end
 
 			def compile

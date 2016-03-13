@@ -11,6 +11,7 @@ module CloudSesame
 					let(:scope) { AST::Root.new(context, {}) }
 					subject { Block.new(self, context) }
 					before do
+						Block.include DSL::FieldAccessors
 						subject.instance_variable_set(:@_scopes, [scope])
 					end
 				end
@@ -32,7 +33,6 @@ module CloudSesame
 
 				[
 					DSL::BlockStyledOperators,
-					DSL::FieldAccessors,
 					DSL::ScopeAccessors,
 					DSL::Operators,
 					DSL::BindCaller

@@ -5,9 +5,9 @@ require 'forwardable'
 
 # Internal Libraries
 # ===============================================
-require 'abstract_object'
-require 'lazy_object'
-require 'cloud_sesame/config/credential'
+require 'services/abstract_object'
+require 'services/class_specific'
+require 'services/lazy_object'
 
 # Custom Errors
 # ===============================================
@@ -16,9 +16,9 @@ require 'cloud_sesame/query/error/missing_operator_symbol'
 require 'cloud_sesame/query/error/missing_query'
 require 'cloud_sesame/query/error/scope_not_defined'
 
-# Query Searchable Specific Class/Module Generator
+# Global Credential
 # ===============================================
-require 'cloud_sesame/query/searchable_specific'
+require 'cloud_sesame/config/credential'
 
 # Query DSL Methods
 # ===============================================
@@ -84,7 +84,6 @@ require 'cloud_sesame/query/node/return'
 # Query Builder Interface
 # ===============================================
 require 'cloud_sesame/query/builder'
-require 'cloud_sesame/query/scope'
 
 # Domain Objects
 # ===============================================

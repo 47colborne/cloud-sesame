@@ -2,7 +2,7 @@ module CloudSesame
 	module Query
 		module DSL
 			module FieldAccessors
-				extend Query::SearchableSpecific
+				extend ClassSpecific
 
 				def self.__define_accessor__(name)
 					define_method name do |*values, &block|

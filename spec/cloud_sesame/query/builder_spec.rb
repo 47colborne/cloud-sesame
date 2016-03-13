@@ -6,7 +6,11 @@ module CloudSesame
 
     	it_behaves_like 'FieldAccessors' do
 				subject { Builder.new({}, "Searchable") }
-        before { allow(_scope).to receive(:context).and_return(context) }
+        before {
+        	Builder.include DSL::FieldAccessors
+        	Domain::Block.include DSL::FieldAccessors
+        	allow(_scope).to receive(:context).and_return(context)
+        }
     	end
 
     end
