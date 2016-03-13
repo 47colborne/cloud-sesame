@@ -13,7 +13,7 @@ module CloudSesame
           end
 
           def children
-            @children ||= create_children
+            @children ||= build_children
           end
 
           def compile
@@ -24,10 +24,9 @@ module CloudSesame
 
           private
 
-          def create_children
-            array = FieldArray.new
-            array._scope = self
-            array
+          def build_children
+            (children = FieldArray.new)._scope = self
+            children
           end
 
         end
