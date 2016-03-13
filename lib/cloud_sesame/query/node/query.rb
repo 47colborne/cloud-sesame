@@ -2,6 +2,7 @@ module CloudSesame
 	module Query
 		module Node
 			class Query < Abstract
+				extend ClassSpecific
 
 				attr_accessor :query
 

@@ -2,12 +2,21 @@ module CloudSesame
 	module Query
 		module Node
 			class Request < Abstract
+				extend ClassSpecific
+
+				after_construct do |searchable|
+					@query = Query.construct_class(searchable)
+				end
+
+				def self.query
+					@query
+				end
 
 				# CHILDREN
 				# =========================================
 
 				def query
-					@query ||= Query.new(context[:query])
+					@query ||= self.class.query.new(context[:query])
 				end
 
 				def query_options
