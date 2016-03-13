@@ -42,7 +42,7 @@ module CloudSesame
         end
 
         def ==(object)
-          value == RangeValue.new(object).value
+          value == RangeValue.new(object, Value).value
         end
 
         private

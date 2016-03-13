@@ -4,18 +4,16 @@ module CloudSesame
 			module AppliedFilterQuery
 
 				def included?(field, value = nil)
-					field = field.to_sym
-					applied = applied_filters(true)
-					if value
-						 applied[field] && applied[field].include?(value)
-					else
-						applied[field] && !applied[field].empty?
-					end
+					applied?(field, value, true)
 				end
 
 				def excluded?(field, value = nil)
+					applied?(field, value, false)
+				end
+
+				def applied?(field, value, included = nil)
 					field = field.to_sym
-					applied = applied_filters(false)
+					applied = applied_filters(included)
 					if value
 						applied[field] && applied[field].include?(value)
 					else
@@ -31,12 +29,6 @@ module CloudSesame
 						end
 					end
 					applied
-				end
-
-				private
-
-				def field_options_for(field)
-					_context[:fields][field.to_sym]
 				end
 
 			end
