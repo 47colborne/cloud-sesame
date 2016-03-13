@@ -1,7 +1,7 @@
 module CloudSesame
-	module Query
-		module AST
-			class NumericValue < Abstract::Value
+  module Query
+    module AST
+      class NumericValue < Abstract::Value
 
         def self.parse(value)
           range?(value) || string_range?(value) ? RangeValue.parse(value, self) : new(value)
@@ -18,10 +18,10 @@ module CloudSesame
         private
 
         def recompile(value)
-					super value.to_s
+          super value.to_s
         end
 
-			end
-		end
-	end
+      end
+    end
+  end
 end

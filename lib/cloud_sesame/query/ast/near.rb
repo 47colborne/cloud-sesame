@@ -3,13 +3,13 @@ module CloudSesame
     module AST
       class Near < Abstract::SingleExpressionOperator
         DETAILED = true
-				SYMBOL = :near
+        SYMBOL = :near
 
-				def compile(_detailed = nil)
+        def compile(_detailed = nil)
           if child && (compiled = child.compile operator_detailed) && !compiled.empty?
             "(#{ symbol }#{ boost }#{ distance } #{ compiled })"
           end
-				end
+        end
 
         def distance
           " distance=#{ options[:distance] }" if options[:distance]

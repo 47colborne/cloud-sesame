@@ -2,7 +2,7 @@ module CloudSesame
   module Query
     module AST
       class Not < Abstract::SingleExpressionOperator
-				SYMBOL = :not
+        SYMBOL = :not
 
         def compile
           if child && (compiled = child.compile) && !compiled.empty?
