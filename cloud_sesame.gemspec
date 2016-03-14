@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'CloudSesame'
-  s.version     = '0.7.0'
-  s.date        = '2016-03-13'
+  s.version     = '0.7.1'
+  s.date        = '2016-03-14'
   s.summary     = "AWS CloudSearch Query DSL"
   s.description = "AWS CloudSearch Query DSL"
   s.authors = [
