@@ -3,8 +3,8 @@ module CloudSesame
     module Node
       class FilterQuery < Abstract
 
-        EXCESS_WHITESPACES = Regexp.new(/\s{2,}/)
-        ENDING_WHITESPACES = Regexp.new(/\s+\)$/)
+        EXCESS_WHITESPACES = Regexp.new(/\s{2,}/).freeze
+        ENDING_WHITESPACES = Regexp.new(/\s+\)$/).freeze
 
         def compile
           if (compiled = root.compile) && !(compiled = strip(compiled)).empty?
@@ -19,8 +19,9 @@ module CloudSesame
         private
 
         def strip(string)
-          string.gsub(EXCESS_WHITESPACES, ' ')
-                .gsub(ENDING_WHITESPACES, ')')
+          string.gsub!(EXCESS_WHITESPACES, ' '.freeze)
+          string.gsub!(ENDING_WHITESPACES, ')'.freeze)
+          string
         end
 
       end

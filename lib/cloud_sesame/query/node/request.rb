@@ -84,10 +84,6 @@ module CloudSesame
 					compiled[:query_parser] = query_parser.compile
 				end
 
-				def insert(key, value)
-
-				end
-
 				def insert_rest(compiled)
 					{
 						query_options: query_options,

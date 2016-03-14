@@ -3,8 +3,8 @@ module CloudSesame
     module AST
       class Literal
 
-        SINGLE_QUATE = Regexp.new(/\'/)
-        ESCAPE_QUATE = Regexp.new("\\'")
+        SINGLE_QUATE = Regexp.new(/\'/).freeze
+        ESCAPE_QUATE = "\\'".freeze
 
         attr_reader :value
 

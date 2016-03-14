@@ -3,17 +3,17 @@ module CloudSesame
 		module AST
 			class StringValue < Abstract::Value
 
-				SINGLE_QUATE = Regexp.new(/\'/)
-        ESCAPE_QUATE = Regexp.new("\\'")
+				SINGLE_QUATE = Regexp.new(/\'/).freeze
+        ESCAPE_QUATE = "\\'".freeze
 
 				def self.parse(value)
-					new(value.is_a?(String) ? value : value.to_s) if value
+					new value.to_s if value
 				end
 
 				private
 
 				def recompile(value)
-					super escape(value)
+					super escape value.to_s
 				end
 
 				def escape(value)

@@ -3,7 +3,7 @@ module CloudSesame
     module Node
       class Fuzziness
 
-        EXCLUDING_TERMS = /^\-/
+        EXCLUDING_TERMS = /^\-/.freeze
 
         def initialize(&block)
 
@@ -28,13 +28,14 @@ module CloudSesame
         end
 
         def compile(string)
-          "(#{ each_word_in(string) { |word| fuzziness(word) }.compact.join('+') })"
+          (compiled = each_word_in(string) { |word| fuzziness(word) }).compact!
+          "(#{ compiled.join('+') })"
         end
 
         private
 
         def each_word_in(string, &block)
-          string.split(' ').map(&block)
+          string.split(' ').map!(&block)
         end
 
         def fuzziness(word)

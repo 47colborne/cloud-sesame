@@ -23,7 +23,7 @@ module CloudSesame
 
 				def applied_filters(included = nil)
 					applied = Hash.new { |hash, key| hash[key] = [] }
-					_scope.applied.flatten.compact.each do |result|
+					_scope.applied.flatten!.compact!.each do |result|
 						if included.nil? || result[:included] == included
 							applied[result[:field]] << result[:value]
 						end

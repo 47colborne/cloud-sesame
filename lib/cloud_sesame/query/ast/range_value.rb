@@ -66,11 +66,11 @@ module CloudSesame
         end
 
         def string_handler(value)
-          RANGE_FORMAT.match(value.tr(' ', '')).captures
+          RANGE_FORMAT.match(strip(value)).captures
         end
 
         def value_type_handler(type)
-          self.value[1, 2] = value[1, 2].map { |v| type.parse(v) unless v.is_a?(String) && v.empty? }
+          self.value[1, 2] = value[1, 2].map { |v| type.parse(v) unless v.to_s.empty? }
         end
 
         def empty_value

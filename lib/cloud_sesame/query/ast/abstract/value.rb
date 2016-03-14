@@ -4,8 +4,8 @@ module CloudSesame
       module Abstract
         class Value
 
-          RANGE_FORMAT = Regexp.new(/\A(\[|{)(.*),(.*)(\}|\])\z/)
-          DIGIT_FORMAT = Regexp.new(/\A\d+(.\d+)?\z/)
+          RANGE_FORMAT = Regexp.new(/\A(\[|{)(.*),(.*)(\}|\])\z/).freeze
+          DIGIT_FORMAT = Regexp.new(/\A\d+(.\d+)?\z/).freeze
 
           attr_reader :value, :changed, :compiled
 
@@ -14,7 +14,7 @@ module CloudSesame
           end
 
           def self.string_range?(value)
-            value.is_a?(String) && RANGE_FORMAT =~ value.tr(' ', '')
+            RANGE_FORMAT =~ strip(value)
           end
 
           def self.numeric?(value)
@@ -22,7 +22,7 @@ module CloudSesame
           end
 
           def self.string_numeric?(value)
-            value.is_a?(String) && DIGIT_FORMAT =~ value
+            DIGIT_FORMAT =~ value.to_s
           end
 
           def self.datetime?(value)
@@ -50,8 +50,7 @@ module CloudSesame
           end
 
           def ==(value)
-            (value.kind_of?(Abstract::Value) &&
-              compile == value.compile) ||
+            (value.respond_to?(:compile) && compile == value.compile) ||
             @value == value ||
             compile == value
           end
@@ -61,6 +60,25 @@ module CloudSesame
           def recompile(value)
             @changed = false
             @compiled = value
+          end
+
+          # Private Helper Methods
+          # ===============================================
+
+          def self.strip(string)
+            string.to_s.tr(' '.freeze, ''.freeze)
+          end
+
+          def self.strip!(string)
+            string.to_s.tr!(' '.freeze, ''.freeze)
+          end
+
+          def strip(string)
+            string.to_s.tr(' '.freeze, ''.freeze)
+          end
+
+          def strip!(string)
+            string.to_s.tr!(' '.freeze, ''.freeze)
           end
 
         end

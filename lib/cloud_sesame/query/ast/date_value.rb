@@ -3,6 +3,8 @@ module CloudSesame
     module AST
       class DateValue < StringValue
 
+        FORMAT = '%FT%TZ'.freeze
+
         def self.parse(value)
           range?(value) || string_range?(value) ? RangeValue.parse(value, self) : new(value)
         end
@@ -18,11 +20,7 @@ module CloudSesame
         end
 
         def format(value)
-          value.strftime '%FT%TZ'
-        end
-
-        def strip(value)
-          value.tr(' ', '')
+          value.strftime FORMAT
         end
 
       end
