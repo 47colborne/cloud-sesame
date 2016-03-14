@@ -13,7 +13,7 @@ module CloudSesame
         end
 
         def root
-          @root ||= CloudSesame::Query::AST::Root.new context
+          @root ||= AST::Root.new context
         end
 
         private
