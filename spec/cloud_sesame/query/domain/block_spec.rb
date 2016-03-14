@@ -1,3 +1,4 @@
+require_relative '../dsl/applied_filter_query_spec'
 require_relative '../dsl/field_accessors_spec'
 
 module CloudSesame
@@ -7,6 +8,12 @@ module CloudSesame
 
 				# Module Specs
 				# =======================================
+				it_behaves_like DSL::AppliedFilterQuery do
+					let(:scope) { AST::Root.new({}, {}) }
+	      	subject { Block.new(self, {}) }
+	      	before { subject.instance_variable_set(:@_scopes, [scope]) }
+				end
+
 				it_behaves_like 'FieldAccessors' do
 					let(:scope) { AST::Root.new(context, {}) }
 					subject { Block.new(self, context) }

@@ -1,8 +1,13 @@
+require_relative 'dsl/applied_filter_query_spec'
 require_relative 'dsl/field_accessors_spec'
 
 module CloudSesame
   module Query
     describe Builder do
+
+      it_behaves_like DSL::AppliedFilterQuery do
+        subject { Builder.new({}, "Searchable") }
+      end
 
       it_behaves_like 'FieldAccessors' do
         subject { Builder.new({}, "Searchable") }

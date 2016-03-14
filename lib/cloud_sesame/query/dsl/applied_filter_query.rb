@@ -11,7 +11,7 @@ module CloudSesame
 					applied?(field, value, false)
 				end
 
-				def applied?(field, value, included = nil)
+				def applied?(field, value = nil, included = nil)
 					field = field.to_sym
 					applied = applied_filters(included)
 					if value
@@ -22,14 +22,18 @@ module CloudSesame
 				end
 
 				def applied_filters(included = nil)
-					applied = Hash.new { |hash, key| hash[key] = [] }
-					(applied_filter_query = _scope.applied.flatten!).compact!
-					applied_filter_query.each do |result|
-						if included.nil? || result[:included] == included
-							applied[result[:field]] << result[:value]
+					result = Hash.new { |hash, key| hash[key] = [] }
+
+					(applied_fields = _scope.applied).flatten!
+					applied_fields.compact!
+
+					applied_fields.each do |field|
+						if included.nil? || field[:included] == included
+							result[field[:field]] << field[:value]
 						end
 					end
-					applied
+
+					result
 				end
 
 			end
