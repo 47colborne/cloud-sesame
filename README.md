@@ -1,5 +1,5 @@
 #CloudSesame
-Powerful and Flexible Clouas1dSearch Query DSL
+Powerful and Flexible AWS CloudSearch Query DSL
 
 [![Build Status](https://travis-ci.org/47colborne/cloud-sesame.svg?branch=master)](https://travis-ci.org/47colborne/cloud-sesame)
 [![Gem Version](https://badge.fury.io/rb/CloudSesame.svg)](https://badge.fury.io/rb/CloudSesame)
