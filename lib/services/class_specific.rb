@@ -15,10 +15,11 @@ module ClassSpecific
   private
 
   def __constructor__(klass, callback_args)
-    constant = !(name = __get_constant_name__(klass)) ? self :
-               constants(false).include?(name.to_sym) ? const_get(name) :
-               yield(name)
+    return self if !(name = __get_constant_name__(klass))
+    return const_get(name) if constants(false).include?(name.to_sym)
 
+    yield(name)
+    constant = yield(name)
     __invoke_callback__(constant, klass, *callback_args) if @__construct_callback__
     constant
   end
@@ -26,7 +27,6 @@ module ClassSpecific
   def __invoke_callback__(constant, klass, *args)
     eval_method = constant.is_a?(Class) ? :class_exec : :module_exec
     constant.send(eval_method, klass, *args, &@__construct_callback__)
-    @__construct_callback__ = nil
   end
 
   def __define_subclass__(name, parent)
