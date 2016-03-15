@@ -9,11 +9,11 @@ module CloudSesame
         subject { Builder.new({}, "Searchable") }
       end
 
-      it_behaves_like 'FieldAccessors' do
+      it_behaves_like DSL::FieldAccessors do
         subject { Builder.new({}, "Searchable") }
         before {
-            Builder.send(:include, DSL::FieldAccessors)
-            Domain::Block.send(:include, DSL::FieldAccessors)
+          Builder.send(:include, DSL::FieldAccessors)
+          Domain::Block.send(:include, DSL::FieldAccessors)
           allow(_scope).to receive(:context).and_return(context)
         }
       end

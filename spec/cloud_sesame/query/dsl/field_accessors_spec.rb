@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module DSL
-      shared_examples_for 'FieldAccessors' do
+      shared_examples_for FieldAccessors do
         let(:field_name) { :test_field_name }
         let(:_scope) { subject.send(:_scope) }
         let(:context) { { fields: { field_name => {} } } }

@@ -16,10 +16,9 @@ module ClassSpecific
 
   def __constructor__(klass, callback_args)
     return self if !(name = __get_constant_name__(klass))
-    return const_get(name) if constants(false).include?(name.to_sym)
+    return const_get(name, false) if const_defined?(name.to_sym, false)
 
-    yield(name)
-    constant = yield(name)
+    constant = yield name
     __invoke_callback__(constant, klass, *callback_args) if @__construct_callback__
     constant
   end

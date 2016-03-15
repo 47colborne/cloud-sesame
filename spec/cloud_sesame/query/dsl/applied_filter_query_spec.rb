@@ -1,6 +1,7 @@
 module CloudSesame
   module Query
     module DSL
+
       shared_examples AppliedFilterQuery do
 
         let(:applied_field) { :applied }

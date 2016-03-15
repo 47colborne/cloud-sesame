@@ -14,7 +14,7 @@ module CloudSesame
 	      	before { subject.instance_variable_set(:@_scopes, [scope]) }
 				end
 
-				it_behaves_like 'FieldAccessors' do
+				it_behaves_like DSL::FieldAccessors do
 					let(:scope) { AST::Root.new(context, {}) }
 					subject { Block.new(self, context) }
 					before do
