@@ -6,7 +6,7 @@ module CloudSesame
         FORMAT = '%FT%TZ'.freeze
 
         def self.parse(value)
-          range?(value) || string_range?(value) ? RangeValue.parse(value, self) : new(value)
+          range?(value) || string_range?(value) ? RangeValue.new(value, self) : new(value)
         end
 
         def to_s

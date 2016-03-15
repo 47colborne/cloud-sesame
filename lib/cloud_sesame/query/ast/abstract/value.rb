@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CloudSesame
   module Query
     module AST
@@ -66,19 +68,19 @@ module CloudSesame
           # ===============================================
 
           def self.strip(string)
-            string.to_s.tr(' '.freeze, ''.freeze)
+            string.to_s.tr(' ', '')
           end
 
           def self.strip!(string)
-            string.to_s.tr!(' '.freeze, ''.freeze)
+            string.to_s.tr!(' ', '')
           end
 
           def strip(string)
-            string.to_s.tr(' '.freeze, ''.freeze)
+            string.to_s.tr(' ', '')
           end
 
           def strip!(string)
-            string.to_s.tr!(' '.freeze, ''.freeze)
+            string.to_s.tr!(' ', '')
           end
 
         end

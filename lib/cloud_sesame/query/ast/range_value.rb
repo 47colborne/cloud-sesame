@@ -4,7 +4,6 @@ module CloudSesame
       class RangeValue < Abstract::Value
 
         def initialize(value = nil, type = nil)
-
           self.value = RangeValue.range?(value) ? range_handler(value) :
                        RangeValue.string_range?(value) ? string_handler(value) :
                        empty_value
