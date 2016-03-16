@@ -6,7 +6,7 @@ module CloudSesame
         TYPES = {
           string: StringValue,
           numeric: NumericValue,
-          date: DateValue
+          datetime: DateValue
         }
 
         def self.map_type(symbol)
