@@ -9,7 +9,7 @@ module CloudSesame
           end
 
           def applied(included = true)
-            children.map { |child| child.applied(included) }
+            children.map { |child| child.applied included }
           end
 
           def children
