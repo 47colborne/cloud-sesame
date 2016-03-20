@@ -60,7 +60,7 @@ module CloudSesame
             it 'should return an hash contains field value and included' do
               expect(subject.applied(included)).to include(
                 field: field,
-                value: value,
+                value: CloudSesame::Query::AST::StringValue.new(value),
                 included: included
               )
             end
