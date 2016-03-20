@@ -6,17 +6,24 @@ module CloudSesame
       module Abstract
         class Value
 
+          # CONSTANTS
+          # =====================================
           RANGE_FORMAT = Regexp.new(/\A(\[|{)(.*),(.*)(\}|\])\z/).freeze
           DIGIT_FORMAT = Regexp.new(/\A\d+(.\d+)?\z/).freeze
+          DATETIME_FORMAT = Regexp.new(/\d+{4}-\d+{2}-\d+{2}T\d+{2}:\d+{2}:\d+{2}/).freeze
+          DATE_FORMAT = Regexp.new(/\d+{4}-\d+{2}-\d+{2}/).freeze
 
           attr_reader :value, :changed, :compiled
+
+          # CLASS METHODS
+          # =====================================
 
           def self.range?(value)
             value.kind_of?(Range)
           end
 
           def self.string_range?(value)
-            RANGE_FORMAT =~ strip(value)
+            value.is_a?(String) && !!(RANGE_FORMAT =~ strip(value))
           end
 
           def self.numeric?(value)
@@ -24,12 +31,23 @@ module CloudSesame
           end
 
           def self.string_numeric?(value)
-            DIGIT_FORMAT =~ value.to_s
+            value.is_a?(String) && !!(DIGIT_FORMAT =~ value)
           end
 
           def self.datetime?(value)
             value.kind_of?(Date) || value.kind_of?(Time)
           end
+
+          def self.string_datetime?(value)
+            value.is_a?(String) && DATETIME_FORMAT =~ value
+          end
+
+          def self.string_date?(value)
+            value.is_a?(String) && DATE_FORMAT =~ value
+          end
+
+          # INSTANCE METHODS
+          # =====================================
 
           def initialize(value, type = nil)
             self.value = value
