@@ -15,11 +15,9 @@ module CloudSesame
 				attr_reader :_caller, :_context, :_scopes
 
 				def initialize(_caller, _context)
-					@_caller = _caller
+					self._caller = _caller
 					@_context = _context
 					@_scopes = []
-
-					_bind_caller_instance_variables
 				end
 
 				def _eval(node, _scope, _return = _scope, &block)

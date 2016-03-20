@@ -28,10 +28,9 @@ module CloudSesame
 				private
 
 				def _block_domain(block)
-					@_block_domain ||= (
-						caller = block.binding.eval("self")
-						Domain::Block.new caller, _scope.context
-					)
+					caller = block.binding.eval("self")
+					@_block_domain._caller = caller
+					@_block_domain
 				end
 
 				def missing_block

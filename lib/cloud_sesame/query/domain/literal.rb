@@ -10,9 +10,7 @@ module CloudSesame
 				def initialize(_name, _options, _caller)
 					@_name = _name
 					@_options = _options
-					@_caller = _caller
-
-					_bind_caller_instance_variables
+					self._caller = _caller
 				end
 
 				def _eval(&block)

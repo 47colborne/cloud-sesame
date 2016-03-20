@@ -8,12 +8,6 @@ module CloudSesame
           child.applied !included
         end
 
-        def compile
-          if child && (compiled = child.compile) && !compiled.empty?
-            "(#{ symbol  }#{ boost } #{ compiled })"
-          end
-        end
-
       end
     end
   end

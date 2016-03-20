@@ -16,7 +16,7 @@ module CloudSesame
             @children ||= build_children
           end
 
-          def compile
+          def compile(_ = nil)
             if !children.empty? && (compiled = children.compile) && !compiled.empty?
               "(#{ symbol  }#{ boost } #{ compiled })"
             end

@@ -8,7 +8,7 @@ module CloudSesame
 
         attr_reader :field, :value, :options
 
-        def initialize(field, value, options)
+        def initialize(field, value, options = {})
           @field = field
           @options = options || default_options
           @value = parse_value(value) if value

@@ -24,6 +24,10 @@ module CloudSesame
           end
 
           describe '#compile' do
+            it 'should accept one optional param' do
+              expect{ subject.compile(true) }.to_not raise_error
+            end
+
             context 'when theres children' do
               let(:child) { OpenStruct.new(compile: "compiled") }
               before { subject.children << child }

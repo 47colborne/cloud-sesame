@@ -62,10 +62,8 @@ module CloudSesame
       private
 
       def _block_domain(block)
-        if block
-          caller = block.binding.eval("self")
-          self.class.block_domain.new caller, _context
-        end
+        caller = block ? block.binding.eval("self") : nil
+        self.class.block_domain.new caller, _context
       end
 
       def _scope
