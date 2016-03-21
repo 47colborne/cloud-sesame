@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module DSL
-      module FieldAccessors
+      module LiteralMethods
         extend ClassSpecific
 
         def self.__define_accessor__(name)

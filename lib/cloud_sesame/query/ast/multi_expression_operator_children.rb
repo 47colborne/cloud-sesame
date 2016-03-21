@@ -1,11 +1,17 @@
 module CloudSesame
   module Query
     module AST
-      class FieldArray < Array
-        include DSL::FieldArrayMethods
+      class MultiExpressionOperatorChildren < Array
+        include DSL::LiteralChainingMethods
 
         attr_accessor :_scope, :_return
         attr_reader :field
+
+        def self.build(scope, children = nil)
+          array = new(children || [])
+          array._scope = scope
+          array
+        end
 
         def field=(field)
           parents.clear

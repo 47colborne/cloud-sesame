@@ -25,8 +25,7 @@ module CloudSesame
           private
 
           def build_children
-            (children = FieldArray.new)._scope = self
-            children
+            MultiExpressionOperatorChildren.build(self)
           end
 
         end

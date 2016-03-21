@@ -88,7 +88,7 @@ module CloudSesame
       end
 
       def create_accessor(name)
-        @builder.field_accessor.__define_accessor__(name)
+        @builder.literal_methods.__define_accessor__(name)
       end
 
       def create_default_literal(name, options)

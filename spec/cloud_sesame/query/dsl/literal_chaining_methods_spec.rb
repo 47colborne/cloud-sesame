@@ -1,7 +1,7 @@
 module CloudSesame
 	module Query
 		module DSL
-			describe FieldArrayMethods do
+			describe LiteralChainingMethods do
 
 				# Setup Test Class
 				class Product

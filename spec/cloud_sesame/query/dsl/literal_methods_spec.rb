@@ -1,7 +1,7 @@
 module CloudSesame
   module Query
     module DSL
-      shared_examples_for FieldAccessors do
+      shared_examples_for LiteralMethods do
         let(:field_name) { :test_field_name }
         let(:_scope) { subject.send(:_scope) }
         let(:context) { { fields: { field_name => {} } } }
@@ -51,7 +51,7 @@ module CloudSesame
 
         context 'when field is registered' do
           let(:value) { "value" }
-          before { DSL::FieldAccessors.__define_accessor__(field_name) }
+          before { DSL::LiteralMethods.__define_accessor__(field_name) }
           it 'should create a literal node' do
             expect(AST::Literal).to receive(:new).with(field_name, value, options)
             subject.send(field_name, value)
@@ -68,7 +68,7 @@ module CloudSesame
           it 'should return the field array if called from inside a block' do
             array = nil
             subject.and { array = send(field_name, value) }
-            expect(array).to be_kind_of(AST::FieldArray)
+            expect(array).to be_kind_of(AST::MultiExpressionOperatorChildren)
             expect(array).to include(AST::Literal)
           end
           it 'should set the field array#field' do

@@ -1,12 +1,7 @@
-# =========================================================
-# field array methods enables field array to chain
-# operators after calling the field expression
-# accessor
-# =========================================================
 module CloudSesame
 	module Query
 		module DSL
-			module FieldArrayMethods
+			module LiteralChainingMethods
 
 				# NOT
 				# =======================================

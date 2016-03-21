@@ -1,5 +1,5 @@
 require_relative '../dsl/applied_filter_query_spec'
-require_relative '../dsl/field_accessors_spec'
+require_relative '../dsl/literal_methods_spec'
 
 module CloudSesame
 	module Query
@@ -14,11 +14,11 @@ module CloudSesame
 	      	before { subject.instance_variable_set(:@_scopes, [scope]) }
 				end
 
-				it_behaves_like DSL::FieldAccessors do
+				it_behaves_like DSL::LiteralMethods do
 					let(:scope) { AST::Root.new(context, {}) }
 					subject { Block.new(self, context) }
 					before do
-						Block.send(:include, DSL::FieldAccessors)
+						Block.send(:include, DSL::LiteralMethods)
 						subject.instance_variable_set(:@_scopes, [scope])
 					end
 				end

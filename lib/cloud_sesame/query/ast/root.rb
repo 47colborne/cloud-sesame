@@ -10,10 +10,8 @@ module CloudSesame
 
         private
 
-        def create_children
-          array = FieldArray.new(context[:defaults] || [])
-          array._scope = self
-          array
+        def build_children
+          MultiExpressionOperatorChildren.build(self, context[:defaults])
         end
 
       end

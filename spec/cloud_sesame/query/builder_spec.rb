@@ -1,5 +1,5 @@
 require_relative 'dsl/applied_filter_query_spec'
-require_relative 'dsl/field_accessors_spec'
+require_relative 'dsl/literal_methods_spec'
 
 module CloudSesame
   module Query
@@ -9,11 +9,11 @@ module CloudSesame
         subject { Builder.new({}, "Searchable") }
       end
 
-      it_behaves_like DSL::FieldAccessors do
+      it_behaves_like DSL::LiteralMethods do
         subject { Builder.new({}, "Searchable") }
         before {
-          Builder.send(:include, DSL::FieldAccessors)
-          Domain::Block.send(:include, DSL::FieldAccessors)
+          Builder.send(:include, DSL::LiteralMethods)
+          Domain::Block.send(:include, DSL::LiteralMethods)
           allow(_scope).to receive(:context).and_return(context)
         }
       end

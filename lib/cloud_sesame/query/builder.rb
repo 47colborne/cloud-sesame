@@ -15,16 +15,16 @@ module CloudSesame
       # ClassSpecific construct class callback
       #
       # after construct searchable specific builder,
-      # construct searchable specific DSL::FieldAccessors,
+      # construct searchable specific DSL::LiteralMethods,
       # and Domain::Block and include the new field accessors
       # in both builder and domain block
       # ===================================================
       after_construct do |searchable|
-        @field_accessor = DSL::FieldAccessors.construct_module(searchable)
-        @block_domain = Domain::Block.construct_class(searchable, callback_args: [field_accessor])
+        @literal_methods = DSL::LiteralMethods.construct_module(searchable)
+        @block_domain = Domain::Block.construct_class(searchable, callback_args: [literal_methods])
         @request = Node::Request.construct_class(searchable)
 
-        include field_accessor
+        include literal_methods
       end
 
       # Domain::Block getter
@@ -37,9 +37,9 @@ module CloudSesame
         @request ||= Node::Request
       end
 
-      # DSL::FieldAccessors getter
-      def self.field_accessor
-        @field_accessor ||= DSL::FieldAccessors
+      # DSL::LiteralMethods getter
+      def self.literal_methods
+        @literal_methods ||= DSL::LiteralMethods
       end
 
       # ===================================================
