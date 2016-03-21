@@ -19,7 +19,7 @@ module CloudSesame
               expect(subject.children).to be_empty
             end
             it 'should be an Field Array' do
-              expect(subject.children).to be_a AST::FieldArray
+              expect(subject.children).to be_a AST::MultiExpressionOperatorChildren
             end
           end
 
