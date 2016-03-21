@@ -9,14 +9,14 @@ module CloudSesame
           end
 
           def applied(included = true)
-            children.map { |child| child.applied(included) }
+            children.map { |child| child.applied included }
           end
 
           def children
             @children ||= build_children
           end
 
-          def compile
+          def compile(_ = nil)
             if !children.empty? && (compiled = children.compile) && !compiled.empty?
               "(#{ symbol  }#{ boost } #{ compiled })"
             end

@@ -8,10 +8,7 @@ module CloudSesame
         DATE_FORMAT = '%F'.freeze
 
         def self.parse(value)
-          if value.kind_of?(RangeValue)
-            value.type = self
-            return value
-          end
+          return value.parse self if value.kind_of?(RangeValue)
 
           range?(value) || string_range?(value) ? RangeValue.new(value, self) :
           string_datetime?(value) ? new(parse_datetime(value)) :
