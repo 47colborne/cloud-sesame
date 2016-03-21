@@ -88,7 +88,6 @@ module CloudSesame
           end
         end
 
-        # (detailed ? detailed_format : standard_format) if @value
         describe '#compile' do
           context 'when value is not present' do
             let(:value) { nil }
