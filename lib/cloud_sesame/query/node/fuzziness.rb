@@ -3,7 +3,7 @@ module CloudSesame
     module Node
       class Fuzziness
 
-        EXCLUDING_TERMS = /^\-/.freeze
+        EXCLUDING_TERMS = /(^\-|\*$)/.freeze
 
         def initialize(&block)
 

@@ -70,10 +70,32 @@ module CloudSesame
             include_examples 'common query compile actions'
           end
           context 'when fuzziness is defined' do
+            let(:query_string) { 'firstword secondword' }
             let(:parser) { Fuzziness.new }
             let(:context) {{ fuzziness: parser }}
+
             include_examples 'common query compile actions'
             include_examples 'with additional parser defined', "fuzziness"
+
+            it 'applies fuzziness to each word in the query' do
+              expect(subject.compile).to include('(firstword~2+secondword~2)')
+            end
+
+            context 'negative query terms' do
+              let(:query_string) { 'firstword -excludedword' }
+
+              it 'do not have fuzziness applied' do
+                expect(subject.compile).to include('(firstword~2+-excludedword)')
+              end
+            end
+
+            context 'wildcard query terms' do
+              let(:query_string) { 'firstword wildcard*' }
+
+              it 'do not have fuzziness applied' do
+                expect(subject.compile).to include('(firstword~2+wildcard*)')
+              end
+            end
           end
           context 'when sloppiness is defined' do
             let(:parser) { Sloppiness.new(3) }

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    CloudSesame (0.7.6)
+    CloudSesame (0.7.7)
       aws-sdk (~> 2)
 
 GEM
