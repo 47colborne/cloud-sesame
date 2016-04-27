@@ -20,7 +20,7 @@ module CloudSesame
 				# ACCESS CALLER'S METHODS
 				# =========================================
 				def method_missing(name, *args, &block)
-					if _caller && _caller.respond_to?(name, *args, &block)
+					if _caller && _caller.respond_to?(name, true)
 						_caller.send(name, *args, &block)
 					else
 						super
