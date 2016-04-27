@@ -1,19 +1,19 @@
 PATH
   remote: .
   specs:
-    CloudSesame (0.7.7)
+    CloudSesame (0.7.8)
       aws-sdk (~> 2)
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.2.0)
-    aws-sdk (2.2.31)
-      aws-sdk-resources (= 2.2.31)
-    aws-sdk-core (2.2.31)
+    aws-sdk (2.2.37)
+      aws-sdk-resources (= 2.2.37)
+    aws-sdk-core (2.2.37)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.2.31)
-      aws-sdk-core (= 2.2.31)
+    aws-sdk-resources (2.2.37)
+      aws-sdk-core (= 2.2.37)
     codeclimate-test-reporter (0.5.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.1)
@@ -38,11 +38,11 @@ GEM
     guard-rubocop (1.2.0)
       guard (~> 2.0)
       rubocop (~> 0.20)
-    jmespath (1.2.3)
+    jmespath (1.2.4)
       json_pure (>= 1.8.1)
     json (1.8.3)
     json_pure (1.8.3)
-    listen (3.0.6)
+    listen (3.1.1)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
     lumberjack (1.0.10)
@@ -51,7 +51,7 @@ GEM
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    parser (2.3.0.7)
+    parser (2.3.1.0)
       ast (~> 2.2)
     powerpack (0.1.1)
     pry (0.10.3)
@@ -82,7 +82,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-prof (0.15.9)
-    ruby-progressbar (1.7.5)
+    ruby-progressbar (1.8.0)
     shellany (0.0.1)
     simplecov (0.11.2)
       docile (~> 1.1.0)

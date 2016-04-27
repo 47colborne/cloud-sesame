@@ -109,7 +109,7 @@
 
 #   @tags = [1, 2]
 #   q = nil
-#   profile 1 do
+#   profile 10_000 do
 #   	q = Product.cloudsearch
 #   						.query("black leather jacket")
 #   						.sort(price: :asc, created_at: :desc)
@@ -119,12 +119,12 @@
 #   						.tags { "2" }
 #   						.and {
 #   							or! {
-#   								tags *@tags
 #   								tags nil
 #   								and! {
 #   									tags.not "3", "4"
 #   								}
 #   								and!.not {
+#                     tags *@tags
 #   									tags.start_with "5", "6"
 #   									tags.not.start_with("7")
 #   									tags.not.near("8", distance: 7)

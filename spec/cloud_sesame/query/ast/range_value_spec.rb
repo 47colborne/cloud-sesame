@@ -68,8 +68,8 @@ module CloudSesame
 
 					context 'when given no initial value' do
 						let(:initial_value) { nil }
-						let(:lower_bound) { "[" }
-						let(:upper_bound) { "]" }
+						let(:lower_bound) { "{" }
+						let(:upper_bound) { "}" }
 						let(:start_value) { nil }
 						let(:end_value) { nil }
 						include_examples 'determine lower bound, begin, end'
