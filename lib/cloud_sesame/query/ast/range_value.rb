@@ -87,7 +87,7 @@ module CloudSesame
           initialize_value(*RANGE_FORMAT.match(strip(string)).captures)
         end
 
-        def initialize_value(lb = '[', bv = nil, ev = nil, up = ']')
+        def initialize_value(lb = '{', bv = nil, ev = nil, up = '}')
           [lb, bv, ev, up]
         end
 
