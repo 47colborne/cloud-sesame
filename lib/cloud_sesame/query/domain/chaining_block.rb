@@ -28,8 +28,10 @@ module CloudSesame
 				private
 
 				def _block_domain(block)
-					caller = block.binding.eval("self")
-					@_block_domain._caller = caller
+					unless @_block_domain && @_block_domain._caller
+						caller = block.binding.eval("self")
+						@_block_domain._caller = caller
+					end
 					@_block_domain
 				end
 
