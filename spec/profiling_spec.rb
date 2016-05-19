@@ -72,6 +72,8 @@
 #   		field :category_string, 		facet: { sort: 'bucket', size: 10_000 }
 #   		field :created_at,					type: :datetime
 
+#       scope :min_price, ->(min) { price{ gte(min) } if min }
+
 #   	end
 
 #   end

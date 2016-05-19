@@ -104,9 +104,13 @@ module CloudSesame
       end
 
       def method_missing(name, *args, &block)
-        builder.respond_to?(name) ? builder.send(name, *args, &block) :
-        searchable.respond_to?(name) ? searchable.send(name, *args, &block) :
-        super
+        if builder.respond_to?(name, true) || filter_query_scopes[name]
+          builder.send(name, *args, &block)
+        elsif searchable.respond_to?(name, true)
+         searchable.send(name, *args, &block)
+        else
+          super
+        end
       end
 
       # CONTEXT INITIALIZERS

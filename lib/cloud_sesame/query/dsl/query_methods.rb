@@ -5,7 +5,7 @@ module CloudSesame
 
 				def query(input = false)
 					if input || input.nil?
-						request.query.query = input if input
+						request.query.query = input
 						return self
 					else
 						request.query.query

@@ -268,11 +268,11 @@ module CloudSesame
       context 'when method missing' do
         let(:undefined_method) { :undefined_method }
         let(:args) { [1,2,3] }
-        context 'and builder resposnds to the method' do
-          let(:builder) { subject.builder }
+        let(:builder) { subject.builder }
           before { allow(subject).to receive(:builder).and_return(builder) }
+        context 'and builder resposnds to the method' do
           it 'should check if builder responds to the method' do
-            expect(builder).to receive(:respond_to?).with(undefined_method)
+            expect(builder).to receive(:respond_to?).with(undefined_method, true)
             subject.undefined_method rescue nil
           end
           it 'should call method on builder with parameters passed in' do
@@ -281,10 +281,20 @@ module CloudSesame
             subject.undefined_method(*args)
           end
         end
-
+        context 'and scopes responds to the method' do
+          let(:filter_query) { { scopes: { undefined_method: nil } } }
+          before {
+            subject.context[:filter_query] = filter_query
+            allow(builder).to receive(undefined_method).and_return(nil)
+          }
+          it 'should call method on builder with parameters' do
+            expect(builder).to receive(undefined_method).with(*args)
+            subject.undefined_method(*args)
+          end
+        end
         context 'and builder not responds to the methods but searchable do' do
           it 'should check if callee existing and responds to the method' do
-            expect(searchable).to receive(:respond_to?).with(undefined_method)
+            expect(searchable).to receive(:respond_to?).with(undefined_method, true)
             subject.undefined_method rescue nil
           end
           it 'should call method on searchable with parameters passed in' do
