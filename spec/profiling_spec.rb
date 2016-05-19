@@ -111,7 +111,7 @@
 
 #   @tags = [1, 2]
 #   q = nil
-#   profile 10_000 do
+#   profile 0 do
 #   	q = Product.cloudsearch
 #   						.query("black leather jacket")
 #   						.sort(price: :asc, created_at: :desc)

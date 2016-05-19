@@ -3,6 +3,8 @@ module CloudSesame
     module AST
       class RangeValue < Abstract::Value
 
+        STRING_NUMBER = Regexp.new(/^\d+(.\d+?)$/)
+
         def initialize(value = nil, type = nil)
           self.value =  RangeValue.range?(value) ? build_from_range(value) :
                         RangeValue.string_range?(value) ? build_from_string(value) :
@@ -84,7 +86,9 @@ module CloudSesame
         end
 
         def build_from_string(string)
-          initialize_value(*RANGE_FORMAT.match(strip(string)).captures)
+          matches = RANGE_FORMAT.match(strip(string)).captures
+          matches[1,2] = matches[1,2].map { |i| i unless i.empty? }
+          initialize_value(*matches)
         end
 
         def initialize_value(lb = '{', bv = nil, ev = nil, up = '}')
