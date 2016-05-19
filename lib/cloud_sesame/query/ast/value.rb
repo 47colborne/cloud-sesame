@@ -18,7 +18,7 @@ module CloudSesame
           (
             range_value?(value) ? RangeValue :
             numeric_value?(value) ? NumericValue :
-            datetime?(value) ? DateValue : StringValue
+            datetime_value?(value) ? DateValue : StringValue
           ).new(value, self)
         end
 
@@ -28,6 +28,10 @@ module CloudSesame
 
         def self.numeric_value?(value)
           numeric?(value) || string_numeric?(value)
+        end
+
+        def self.datetime_value?(value)
+          datetime?(value) || string_datetime?(value) || string_time?(value)
         end
 
       end

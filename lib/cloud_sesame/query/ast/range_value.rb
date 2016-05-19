@@ -86,7 +86,7 @@ module CloudSesame
         end
 
         def build_from_string(string)
-          matches = RANGE_FORMAT.match(strip(string)).captures
+          matches = RANGE_FORMAT.match(string.strip).captures
           matches[1,2] = matches[1,2].map { |i| i unless i.empty? }
           initialize_value(*matches)
         end

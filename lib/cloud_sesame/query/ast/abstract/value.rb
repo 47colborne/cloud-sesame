@@ -11,6 +11,7 @@ module CloudSesame
           RANGE_FORMAT = Regexp.new(/\A(\[|{)(.*),(.*)(\}|\])\z/).freeze
           DIGIT_FORMAT = Regexp.new(/\A\d+(.\d+)?\z/).freeze
           DATETIME_FORMAT = Regexp.new(/\d+{4}-\d+{2}-\d+{2}T\d+{2}:\d+{2}:\d+{2}/).freeze
+          TIME_FORMAT = Regexp.new(/\d+{4}-\d+{2}-\d+{2} \d+{2}:\d+{2}:\d+{2}/).freeze
           DATE_FORMAT = Regexp.new(/\d+{4}-\d+{2}-\d+{2}/).freeze
 
           attr_reader :value, :changed, :compiled
@@ -40,6 +41,10 @@ module CloudSesame
 
           def self.string_datetime?(value)
             value.is_a?(String) && DATETIME_FORMAT =~ value
+          end
+
+          def self.string_time?(value)
+            value.is_a?(String) && TIME_FORMAT =~ value
           end
 
           def self.string_date?(value)
