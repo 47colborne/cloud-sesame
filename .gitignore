@@ -2,6 +2,7 @@
 aws.yml
 tmp
 **/*.DS_Store
-
-
+# IDE files
+.idea
+*.iml
 

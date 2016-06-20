@@ -10,9 +10,8 @@ module CloudSesame
         end
 
         def compile
-          { return: fields.join(',') } unless fields.empty?
+          fields.join(',') unless fields.empty?
         end
-
       end
     end
   end
