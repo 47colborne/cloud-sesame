@@ -8,7 +8,7 @@ module CloudSesame
 
         describe '#initialize' do
           context 'when arguments passed in' do
-            let(:arguments) { { page: 2, size: 13 } }
+            let(:arguments) { { size: 13 } }
             it 'should initialize the page with the page argument' do
               expect(node.page).to eq 1
             end
@@ -53,6 +53,23 @@ module CloudSesame
           end
         end
 
+        describe '#compile' do
+          context 'when cursor is not set' do
+            let(:arguments) { { size: 13, page: 3 } }
+
+            it 'compiles with start and size' do
+              expect(node.compile).to include start: 26, size: 13
+            end
+          end
+          context 'when cursor is set' do
+            let(:arguments) { { cursor: 3, size: 13, page: 2 } }
+
+            it 'compiles with only cursor and size' do
+              expect(node.compile).to include cursor: 3, size: 13
+              expect(node.compile).to_not include :start
+            end
+          end
+        end
       end
     end
   end

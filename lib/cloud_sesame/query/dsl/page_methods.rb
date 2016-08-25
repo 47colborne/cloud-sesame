@@ -5,6 +5,15 @@ module CloudSesame
 
 				# CLAUSE: PAGE and SIZE
 				# =========================================
+				def cursor(input = false)
+					if input != false
+						request.page.cursor = input
+						return self
+					else
+						request.page.cursor
+					end
+				end
+
 				def page(input = false)
 					if input || input.nil?
 						request.page.start = nil

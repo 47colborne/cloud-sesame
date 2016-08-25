@@ -4,8 +4,8 @@ module CloudSesame
       class Abstract
         attr_reader :context
 
-        def initialize(context)
-          @context = context || {}
+        def initialize(context = {})
+          @context = context
         end
       end
     end
