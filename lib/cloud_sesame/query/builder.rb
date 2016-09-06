@@ -11,6 +11,7 @@ module CloudSesame
       include DSL::ReturnMethods
       include DSL::ScopeAccessors
       include DSL::SortMethods
+      include DSL::KGramPhraseMethods
 
       # ClassSpecific construct class callback
       #

@@ -9,7 +9,7 @@ module CloudSesame
 				end
 
 				def self.query
-					@query
+					@query ||= Query
 				end
 
 				# CHILDREN

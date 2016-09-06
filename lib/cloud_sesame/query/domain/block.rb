@@ -9,6 +9,7 @@ module CloudSesame
         include DSL::RangeHelper
         include DSL::ScopeAccessors
         include DSL::BindCaller
+        include DSL::KGramPhraseMethods
 
         after_construct { |_, field_accessor| include field_accessor }
 

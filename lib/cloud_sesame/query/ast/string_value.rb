@@ -10,6 +10,10 @@ module CloudSesame
 					new value.to_s if value
 				end
 
+				def to_ary
+					compile.split(' ')
+				end
+
 				private
 
 				def recompile(value)
