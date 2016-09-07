@@ -10,20 +10,19 @@ module CloudSesame
             words = value.split(DELIMITER).compact
 
             or!(options) do
-              literal field, phrase(value, boost: words.size * MULTIPLIER)
+              literal field, phrase(value, boost: MULTIPLIER * words.size)
 
-              each_k_gram_combination(words) do |combination|
-                terms = (words - combination).join(' ')
+              each_k_gram_combination(words, options[:min]) do |combination, original|
+                remaining_terms = (original - combination).join(' ')
+                unique_phrase = combination.join(' ')
+                k = MULTIPLIER * combination.size
 
-                val = combination.join(' ')
-                boost = MULTIPLIER * combination.size
-
-                and!(boost: boost + 2) do
-                  literal field, phrase(val)
-                  literal field, term(terms)
+                and!(boost: k + 2) do
+                  literal field, phrase(unique_phrase)
+                  literal field, term(remaining_terms)
                 end
 
-                literal field, phrase(val, boost: boost)
+                literal field, phrase(unique_phrase, boost: k)
               end
 
               literal field, term(value)
@@ -35,14 +34,13 @@ module CloudSesame
 
         private
 
-        def each_k_gram_combination(array)
-          min = [array.size - 4, 1].max
-          n = array.size - 1
-          while n > min
-            array.each_cons(n) do |combination|
-              yield combination
-            end
-
+        def each_k_gram_combination(array, min)
+          min ||= 4
+          size = array.size
+          m = [size - min, 1].max
+          n = size - 1
+          while n > m
+            array.each_cons(n) { |con| yield(con, array) }
             n -= 1
           end
         end
@@ -50,11 +48,3 @@ module CloudSesame
     end
   end
 end
-
-# (or
-#   (phrase 'black leather jacket')
-#   (and (phrase 'black leather') (term 'jacket'))
-#   (phrase 'black leather')
-#   (and (phrase 'leather jacket') (term 'black'))
-#   (phrase 'leather jacket')
-# )
