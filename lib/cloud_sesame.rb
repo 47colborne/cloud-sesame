@@ -38,6 +38,7 @@ require 'cloud_sesame/query/dsl/response_methods'
 require 'cloud_sesame/query/dsl/return_methods'
 require 'cloud_sesame/query/dsl/sort_methods'
 require 'cloud_sesame/query/dsl/k_gram_phrase_methods'
+require 'cloud_sesame/query/dsl/any_term_methods'
 
 # Query Query Domain Objects
 # ===============================================
