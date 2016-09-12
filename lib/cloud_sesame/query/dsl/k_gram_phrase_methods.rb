@@ -10,7 +10,7 @@ module CloudSesame
             words = value.split(DELIMITER).compact
 
             or!(options) do
-              literal field, phrase(value, boost: MULTIPLIER * words.size)
+              literal field, phrase(value, boost: MULTIPLIER * words.size + MULTIPLIER)
 
               each_k_gram_combination(words, options[:min]) do |combination, original|
                 remaining_terms = (original - combination).join(' ')

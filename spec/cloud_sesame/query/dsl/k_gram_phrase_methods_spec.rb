@@ -30,7 +30,7 @@ module CloudSesame
               phrase_node = or_node.children.first
               expect(phrase_node).to be_kind_of AST::Phrase
               expect(phrase_node.child.value).to eq(phrase)
-              expect(phrase_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 3)
+              expect(phrase_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 3 + KGramPhraseMethods::MULTIPLIER)
             end
 
             it 'builds a term node with original term' do
