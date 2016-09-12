@@ -3,7 +3,7 @@ module CloudSesame
     module DSL
       module KGramPhraseMethods
         DELIMITER = / |-/.freeze
-        MULTIPLIER = 5
+        MULTIPLIER = 10 # Even number that controls the separation between k-grams
 
         def k_gram_phrase(field, value, options = {})
           if value && !value.empty?
@@ -15,17 +15,17 @@ module CloudSesame
               each_k_gram_combination(words, options[:min]) do |combination, original|
                 remaining_terms = (original - combination).join(' ')
                 unique_phrase = combination.join(' ')
-                k = MULTIPLIER * combination.size
+                boost = MULTIPLIER * combination.size
 
-                and!(boost: k + 2) do
+                and!(boost: boost + MULTIPLIER / 2) do
                   literal field, phrase(unique_phrase)
                   literal field, term(remaining_terms)
                 end
 
-                literal field, phrase(unique_phrase, boost: k)
+                literal field, phrase(unique_phrase, boost: boost)
               end
 
-              literal field, term(value)
+              literal field, term(value, boost: MULTIPLIER)
             end
           end
 

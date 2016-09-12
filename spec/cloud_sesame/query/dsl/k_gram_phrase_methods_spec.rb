@@ -30,6 +30,7 @@ module CloudSesame
               phrase_node = or_node.children.first
               expect(phrase_node).to be_kind_of AST::Phrase
               expect(phrase_node.child.value).to eq(phrase)
+              expect(phrase_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 3)
             end
 
             it 'builds a term node with original term' do
@@ -38,6 +39,7 @@ module CloudSesame
               term_node = or_node.children.last
               expect(term_node).to be_kind_of AST::Term
               expect(term_node.child.value).to eq(phrase)
+              expect(term_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER)
             end
 
             it 'builds bunch of phrase nodes with k grams' do
@@ -47,21 +49,21 @@ module CloudSesame
               expect(k_nodes[0]).to be_kind_of AST::And
 
               expect(k_nodes[1]).to be_kind_of AST::Phrase
-              expect(k_nodes[1].options[:boost]).to eq(10)
+              expect(k_nodes[1].options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2)
               expect(k_nodes[1].child.value).to eq('listerine mouth')
 
               expect(k_nodes[2]).to be_kind_of AST::And
 
               expect(k_nodes[3]).to be_kind_of AST::Phrase
-              expect(k_nodes[3].options[:boost]).to eq(10)
+              expect(k_nodes[3].options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2)
               expect(k_nodes[3].child.value).to eq('mouth wash')
             end
 
-            it 'builds the correct first And node' do
+            it 'builds the correct first And node (for k-gram plus excluded terms)' do
               cloudsearch.k_gram_phrase(:name, phrase)
               and_node = or_node.children[1..-1][0]
 
-              expect(and_node.options[:boost]).to eq(12)
+              expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2)
 
               expect(and_node.children.first).to be_kind_of AST::Phrase
               expect(and_node.children.first.child.value).to eq('listerine mouth')
@@ -70,11 +72,11 @@ module CloudSesame
               expect(and_node.children.last.child.value).to eq('wash')
             end
 
-            it 'builds the correct second And node' do
+            it 'builds the correct second And node (for k-gram plus excluded terms)' do
               cloudsearch.k_gram_phrase(:name, phrase)
               and_node = or_node.children[1..-1][2]
 
-              expect(and_node.options[:boost]).to eq(12)
+              expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2)
 
               expect(and_node.children.first).to be_kind_of AST::Phrase
               expect(and_node.children.first.child.value).to eq('mouth wash')
