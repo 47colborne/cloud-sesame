@@ -5,4 +5,5 @@ tmp
 # IDE files
 .idea
 *.iml
+coverage
 
