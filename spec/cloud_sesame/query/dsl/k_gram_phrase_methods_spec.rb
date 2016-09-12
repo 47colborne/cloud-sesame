@@ -36,7 +36,7 @@ module CloudSesame
             it 'builds a term node with original term' do
               cloudsearch.k_gram_phrase(:name, phrase)
 
-              term_node = or_node.children.last
+              term_node = or_node.children[-2]
               expect(term_node).to be_kind_of AST::Term
               expect(term_node.child.value).to eq(phrase)
               expect(term_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER)
@@ -44,7 +44,7 @@ module CloudSesame
 
             it 'builds bunch of phrase nodes with k grams' do
               cloudsearch.k_gram_phrase(:name, phrase)
-              k_nodes = or_node.children[1..-1]
+              k_nodes = or_node.children[1..-2]
 
               expect(k_nodes[0]).to be_kind_of AST::And
 
@@ -61,7 +61,7 @@ module CloudSesame
 
             it 'builds the correct first And node (for k-gram plus excluded terms)' do
               cloudsearch.k_gram_phrase(:name, phrase)
-              and_node = or_node.children[1..-1][0]
+              and_node = or_node.children[1..-2][0]
 
               expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2)
 
@@ -74,7 +74,7 @@ module CloudSesame
 
             it 'builds the correct second And node (for k-gram plus excluded terms)' do
               cloudsearch.k_gram_phrase(:name, phrase)
-              and_node = or_node.children[1..-1][2]
+              and_node = or_node.children[1..-2][2]
 
               expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2)
 
@@ -83,6 +83,20 @@ module CloudSesame
 
               expect(and_node.children.last).to be_kind_of AST::Term
               expect(and_node.children.last.child.value).to eq('listerine')
+            end
+
+            it 'builds an or node with term nodes for each word' do
+              cloudsearch.k_gram_phrase(:name, phrase)
+              node = or_node.children.last
+
+              expect(node).to be_kind_of(AST::Or)
+              expect(node.children.length).to eq(3)
+              expect(node.children[0]).to be_kind_of(AST::Term)
+              expect(node.children[0].child.value).to eq('listerine')
+              expect(node.children[1]).to be_kind_of(AST::Term)
+              expect(node.children[1].child.value).to eq('mouth')
+              expect(node.children[2]).to be_kind_of(AST::Term)
+              expect(node.children[2].child.value).to eq('wash')
             end
           end
 
