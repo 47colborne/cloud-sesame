@@ -17,15 +17,15 @@ module CloudSesame
                 unique_phrase = combination.join(' ')
                 boost = MULTIPLIER * combination.size
 
-                and!(boost: boost + MULTIPLIER / 2) do
+                and!(boost: boost + MULTIPLIER / 2 + MULTIPLIER) do
                   literal field, phrase(unique_phrase)
                   literal field, term(remaining_terms)
                 end
 
-                literal field, phrase(unique_phrase, boost: boost)
+                literal field, phrase(unique_phrase, boost: boost / 2)
               end
 
-              literal field, term(value, boost: MULTIPLIER)
+              literal field, term(value, boost: MULTIPLIER + MULTIPLIER)
               any_term(field, words.join(' '))
             end
           end

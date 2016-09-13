@@ -39,7 +39,7 @@ module CloudSesame
               term_node = or_node.children[-2]
               expect(term_node).to be_kind_of AST::Term
               expect(term_node.child.value).to eq(phrase)
-              expect(term_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER)
+              expect(term_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER + KGramPhraseMethods::MULTIPLIER)
             end
 
             it 'builds bunch of phrase nodes with k grams' do
@@ -49,13 +49,13 @@ module CloudSesame
               expect(k_nodes[0]).to be_kind_of AST::And
 
               expect(k_nodes[1]).to be_kind_of AST::Phrase
-              expect(k_nodes[1].options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2)
+              expect(k_nodes[1].options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 / 2)
               expect(k_nodes[1].child.value).to eq('listerine mouth')
 
               expect(k_nodes[2]).to be_kind_of AST::And
 
               expect(k_nodes[3]).to be_kind_of AST::Phrase
-              expect(k_nodes[3].options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2)
+              expect(k_nodes[3].options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 / 2)
               expect(k_nodes[3].child.value).to eq('mouth wash')
             end
 
@@ -63,7 +63,7 @@ module CloudSesame
               cloudsearch.k_gram_phrase(:name, phrase)
               and_node = or_node.children[1..-2][0]
 
-              expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2)
+              expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2 + KGramPhraseMethods::MULTIPLIER)
 
               expect(and_node.children.first).to be_kind_of AST::Phrase
               expect(and_node.children.first.child.value).to eq('listerine mouth')
@@ -76,7 +76,7 @@ module CloudSesame
               cloudsearch.k_gram_phrase(:name, phrase)
               and_node = or_node.children[1..-2][2]
 
-              expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2)
+              expect(and_node.options[:boost]).to eq(KGramPhraseMethods::MULTIPLIER * 2 + KGramPhraseMethods::MULTIPLIER / 2 + KGramPhraseMethods::MULTIPLIER)
 
               expect(and_node.children.first).to be_kind_of AST::Phrase
               expect(and_node.children.first.child.value).to eq('mouth wash')
