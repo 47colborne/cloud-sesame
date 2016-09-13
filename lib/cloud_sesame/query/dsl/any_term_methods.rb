@@ -2,7 +2,11 @@ module CloudSesame
   module Query
     module DSL
       module AnyTermMethods
-        def any_term(field, words, options = {})
+        DELIMITER = ' '.freeze
+
+        def any_term(field, phrase, options = {})
+          words = phrase&.split(DELIMITER)
+
           if words && words.length > 0
             or!(options) do
               words.map do |word|
