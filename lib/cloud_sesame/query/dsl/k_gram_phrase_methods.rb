@@ -2,7 +2,7 @@ module CloudSesame
   module Query
     module DSL
       module KGramPhraseMethods
-        DELIMITER = / |-/.freeze
+        DELIMITER = ' '.freeze
         MULTIPLIER = 10 # Even number that controls the separation between k-grams
 
         def k_gram_phrase(field, value, options = {})

@@ -98,6 +98,11 @@ module CloudSesame
               expect(node.children[2]).to be_kind_of(AST::Term)
               expect(node.children[2].child.value).to eq('wash')
             end
+
+            it 'splits the phrase on space and nothing else' do
+              cloudsearch.k_gram_phrase(:name, 'word-word2 word3')
+              expect(or_node.children.length).to eq(3)
+            end
           end
 
           context 'when phrase is empty' do
@@ -108,7 +113,6 @@ module CloudSesame
             end
           end
         end
-
       end
     end
   end
