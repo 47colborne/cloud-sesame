@@ -26,7 +26,7 @@ module CloudSesame
               end
 
               literal field, term(value, boost: MULTIPLIER)
-              any_term(field, words)
+              any_term(field, words.join(' '))
             end
           end
 
