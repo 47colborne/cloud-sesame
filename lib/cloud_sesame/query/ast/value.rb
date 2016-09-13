@@ -27,7 +27,7 @@ module CloudSesame
         end
 
         def self.numeric_value?(value)
-          numeric?(value) || string_numeric?(value)
+          numeric?(value) #|| string_numeric?(value)
         end
 
         def self.datetime_value?(value)
