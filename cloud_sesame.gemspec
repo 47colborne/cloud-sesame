@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'CloudSesame'
-  s.version     = '0.9.4'
-  s.date        = '2016-09-12'
+  s.version     = '1.0.0'
+  s.date        = '2017-03-29'
   s.summary     = "AWS CloudSearch Query DSL"
   s.description = "AWS CloudSearch Query DSL"
   s.authors = [
@@ -33,5 +33,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'ruby-prof'
   s.add_development_dependency 'guard-rubocop'
-  s.add_development_dependency 'codeclimate-test-reporter'
 end
