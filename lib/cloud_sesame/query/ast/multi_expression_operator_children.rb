@@ -27,7 +27,7 @@ module CloudSesame
         end
 
         def compile
-          map(&:compile).join(' ')
+          map(&:compile).compact.join(' ')
         end
 
       end

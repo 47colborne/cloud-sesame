@@ -2,6 +2,7 @@
 # ===============================================
 require 'aws-sdk'
 require 'forwardable'
+require 'date'
 
 # Internal Libraries
 # ===============================================

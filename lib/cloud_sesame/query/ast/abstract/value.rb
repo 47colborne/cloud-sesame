@@ -24,27 +24,27 @@ module CloudSesame
           end
 
           def self.string_range?(value)
-            value.is_a?(String) && !!(RANGE_FORMAT =~ strip(value))
+            value.is_a?(::String) && !!(RANGE_FORMAT =~ strip(value))
           end
 
           def self.numeric?(value)
-            value.is_a?(Numeric)
+            value.is_a?(::Numeric)
           end
 
           def self.string_numeric?(value)
-            value.is_a?(String) && !!(DIGIT_FORMAT =~ value)
+            value.is_a?(::String) && !!(DIGIT_FORMAT =~ value)
           end
 
           def self.datetime?(value)
-            value.kind_of?(Date) || value.kind_of?(Time)
+            value.kind_of?(::Date) || value.kind_of?(::Time)
           end
 
           def self.string_datetime?(value)
-            value.is_a?(String) && DATETIME_FORMAT =~ value
+            value.is_a?(::String) && DATETIME_FORMAT =~ value
           end
 
           def self.string_time?(value)
-            value.is_a?(String) && TIME_FORMAT =~ value
+            value.is_a?(::String) && TIME_FORMAT =~ value
           end
 
           def self.string_date?(value)

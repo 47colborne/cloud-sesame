@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'securerandom'
 
 describe AbstractObject do
 
