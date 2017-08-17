@@ -3,8 +3,8 @@ module CloudSesame
     module AST
       class Literal
 
-        SINGLE_QUATE = Regexp.new(/\'/).freeze
-        ESCAPE_QUATE = "\\'".freeze
+        SINGLE_QUOTE = Regexp.new(/'/).freeze
+        ESCAPE_QUOTE = "\\'".freeze
 
         attr_reader :field, :value, :options
 
@@ -42,7 +42,7 @@ module CloudSesame
         end
 
         def escape(data)
-          "'#{ data.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
+          "'#{ data.gsub(SINGLE_QUOTE) { ESCAPE_QUOTE } }'"
         end
 
         def parse_value(value)

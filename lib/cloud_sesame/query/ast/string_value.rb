@@ -3,8 +3,8 @@ module CloudSesame
 		module AST
 			class StringValue < Abstract::Value
 
-				SINGLE_QUATE = Regexp.new(/\'/).freeze
-        ESCAPE_QUATE = "\\'".freeze
+				SINGLE_QUOTE = Regexp.new(/'/).freeze
+        ESCAPE_QUOTE = "\\'".freeze
 
 				def self.parse(value)
 					new value.to_s if value
@@ -21,7 +21,7 @@ module CloudSesame
 				end
 
 				def escape(value)
-				  "'#{ value.gsub(SINGLE_QUATE) { ESCAPE_QUATE } }'"
+				  "'#{ value.gsub('\\', '\\\\\\\\').gsub(SINGLE_QUOTE) { ESCAPE_QUOTE } }'"
 				end
 
 			end
