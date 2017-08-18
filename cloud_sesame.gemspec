@@ -33,4 +33,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'ruby-prof'
   s.add_development_dependency 'guard-rubocop'
+  s.add_development_dependency 'rake'
 end
