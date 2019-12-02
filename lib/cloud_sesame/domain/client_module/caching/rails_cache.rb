@@ -1,4 +1,5 @@
 require 'ostruct'
+require 'digest'
 
 module CloudSesame
   module Domain
