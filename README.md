@@ -8,11 +8,11 @@ Powerful and Flexible AWS CloudSearch Query DSL
 
 ## Installation
 * In terminal type:
-```
+```bash
 gem install CloudSesame
 ```
 * Or add this line to the application in `Gemfile`:
-```
+```ruby
 gem 'CloudSesame'
 ```
 
@@ -33,7 +33,7 @@ end
 
 #### define_cloudsearch(&block)
 Includes all Model/Class specific cloudsearch configurations
-```
+```ruby
 class Product
   include CloudSesame
 
@@ -112,16 +112,19 @@ calling field and pass in a field_name will create an field expression accessor
 ```ruby
 field :name
 ```
+
 and field expression accessor can be called to create a field expression
 ```ruby
 Product.cloudsearch.name("user")
 
 { filter_query: "name:'user'" }
 ```
+
 - aliased field name 
-```
+```ruby
 field :text1, as: :name
 ```
+
 and field expression accessor method name will be `name`
 ```ruby
 Product.cloudsearch.name("user")
@@ -245,10 +248,11 @@ define_cloudsearch {
 ## Query DSL
 - `.cloudsearch` returns a CloudSesame::Domain::Base instance. It is the entry point to start building up the query
 - A CloudSesame::Query::Builder instance is expected to return from any query methods chained after `.cloudsearch` 
-```
+```ruby
 Product.cloudsearch #=> <CloudSesame::Domain::Base/>
 query = Product.cloudsearch.query("shoes") => <CloudSesame::Query::Builder query:'shoes'/>
 ```
+
 **Query methods can be chained and build up**
 ```ruby
 query = Product.cloudsearch.query("shoes")
@@ -441,4 +445,4 @@ r.gt(Date.today)	=> "{'2016-01-18T00:00:00Z',}"
 * `#clear_reponse` => resets the response
 
 ## Other Methods
-* #compile  => compiles the current query and return the compiled hash
+* `#compile`  => compiles the current query and return the compiled hash
