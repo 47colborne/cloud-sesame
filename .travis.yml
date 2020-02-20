@@ -1,8 +1,11 @@
 language: ruby
-before_install: gem update --system
+before_install:
+  - yes | gem update --system --force
+  - gem install bundler
 script: bundle exec rspec
 rvm:
-- 2.3.0
+  - 2.3.0
+  - 2.6.5
 notifications:
   email:
     recipients:
