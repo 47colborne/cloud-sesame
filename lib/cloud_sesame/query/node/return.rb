@@ -3,7 +3,7 @@ module CloudSesame
     module Node
       class Return < Abstract
 
-        attr_accessor :fields
+        attr_writer :fields
 
         def fields
           @fields ||= []
