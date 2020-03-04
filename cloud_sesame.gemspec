@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.test_files = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ['lib']
 
-  s.add_dependency 'aws-sdk', '~> 2'
+  s.add_dependency 'aws-sdk', '~> 3'
 
   s.add_development_dependency 'rspec', '~> 3'
   s.add_development_dependency 'pry', '~> 0'
